@@ -1,3 +1,11 @@
+---
+tags: [source, history]
+created: 2026-11-06
+updated: 2026-11-08
+---
+
+Hub: [[00 - Project Context]]. README of the earlier `idea2/` folder, kept as history. Its file layout is outdated: papers are now in `docs/papers/`, the proposal in `docs/proposal/`, notes in this vault, code in `src/`. It cites `../notes.md`, which is missing (see [[Open Questions]], Q2). Current state: [[Proposal]]. Original text follows unchanged.
+
 # Idea 2: Autoencoder anomaly detection for physical-layer security in fiber-wireless (FiWi) 6G
 
 Target: QPAIN 2027, Track 02 (Physical Layer Security in Photonic Networks; AI-driven Intrusion and Anomaly Detection).

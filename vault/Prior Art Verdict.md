@@ -1,3 +1,11 @@
+---
+tags: [prior-art, literature]
+created: 2026-11-06
+updated: 2026-11-08
+---
+
+Hub: [[00 - Project Context]]. Source note from the earlier prior-art pass (status key FULL / PAGE / ABS = read depth). Paper notes: [[Literature Index]]. Claims: [[Claims and Risks]]. Original text follows unchanged.
+
 # Prior art and novelty verdict (updated 2026-11-06 after deep pass)
 
 Status key: FULL = full text read (this session). PAGE = arXiv/abstract page read. ABS = Consensus abstract only (not safe to cite for specific claims).

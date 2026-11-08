@@ -1,3 +1,11 @@
+---
+tags: [experiment, draft]
+created: 2026-11-06
+updated: 2026-11-08
+---
+
+Hub: [[00 - Project Context]]. Original design draft, kept as a source. Current plan: [[Experiment Plan]]. Original text follows unchanged.
+
 # Experiment design (FREEZE before running; log any later change with date and reason)
 
 ## Question

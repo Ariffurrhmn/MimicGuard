@@ -1,3 +1,11 @@
+---
+tags: [timeline, plan]
+created: 2026-11-06
+updated: 2026-11-08
+---
+
+Hub: [[00 - Project Context]]. Week-by-week plan to the internal 18 Dec 2026 target. Related: [[Experiment Plan]], [[Audit - Venues]]. Original text follows unchanged.
+
 # Timeline (today 2026-11-06; internal deadline 2026-12-18)
 
 | Week (start) | Goal | Done when |

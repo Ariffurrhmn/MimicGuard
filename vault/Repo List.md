@@ -15,4 +15,4 @@ Repos this project depends on or borrows from. Hub: [[00 - Project Context]]. Ru
 | QPAIN-instructions | `D:\Cloud Extension\QPAIN\Working paper\MimicGuard\external\QPAIN-instructions` (git-ignored clone, previously at `src/repo`) | https://github.com/Ariffurrhmn/QPAIN-instructions.git | Venue author toolkit: distilled QPAIN 2027 rules, links, LaTeX template, compliance and lint scripts. Its rule facts are UNVERIFIED (relayed by a third party, per its own README). Contains a personal-data file, so it must stay private and out of this repo. |
 
 ## Using GainSplit as a template
-Read, in order: `CLAUDE.md`, [[Repo Rules]], [[Vault Conventions]], [[00 - Project Context]], `vault/Templates/`, `.gitignore`, `README.md`. Copy structure and rules, not project-specific content.
+Read, in order: the root instructions file, [[Repo Rules]], [[Vault Conventions]], [[00 - Project Context]], `vault/Templates/`, `.gitignore`, `README.md`. Copy structure and rules, not project-specific content.

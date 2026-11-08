@@ -1,3 +1,11 @@
+---
+tags: [search, log]
+created: 2026-11-06
+updated: 2026-11-08
+---
+
+Hub: [[00 - Project Context]]. Searches run so far; gaps are visible here. Related: [[Prior Art Verdict]], [[Open Questions]]. Original text follows unchanged.
+
 # Search log (append every search; include dead ends)
 
 | Date | Tool | Query | Results used | Notes / gap |

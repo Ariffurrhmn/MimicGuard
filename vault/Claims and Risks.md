@@ -1,3 +1,11 @@
+---
+tags: [claims, risks]
+created: 2026-11-06
+updated: 2026-11-08
+---
+
+Hub: [[00 - Project Context]]. Claims ledger and kill criteria. See also [[Risks]] and [[Experiment Plan]]. Original text follows unchanged.
+
 # Claims ledger and kill criteria
 
 | ID | Claim (draft) | Evidence needed | Would be falsified by | Status |

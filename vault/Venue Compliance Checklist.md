@@ -1,3 +1,11 @@
+---
+tags: [venue, checklist]
+created: 2026-11-06
+updated: 2026-11-08
+---
+
+Hub: [[00 - Project Context]]. Checklist from the earlier notes; its source is UNVERIFIED (see [[Audit - Venues]]). Original text follows unchanged.
+
 # Venue compliance checklist (source: confkit repo RULES.md, relayed by Gemini 2026-11-05, UNVERIFIED. Re-read qpain.org first.)
 
 - [ ] Re-read live qpain.org: deadline, timezone, portal URL, template link, page limit, AI-use policy. Email organisers about UNKNOWNs.
