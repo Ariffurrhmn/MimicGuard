@@ -1,0 +1,664 @@
+Machine Learning-based Anomaly Detection in
+Optical Fiber Monitoring
+
+KHOULOUD ABDELLI,1,3 * JOO YEON CHO,1 FLORIAN AZENDORF,2 HELMUT
+GRIESSER,1 CARSTEN TROPSCHUG,2 STEPHAN PACHNICKE3
+
+1ADVA Optical Networking SE, Fraunhoferstr. 9a, 82152 Munich/Martinsried, Germany
+2ADVA Optical Networking SE, Märzenquelle 1-3, 98617 Meiningen, Germany
+3 Christian-Albrechts-Universität zu Kiel, Kaiserstr. 2, 24143 Kiel, Germany
+*Corresponding author: kabdelli@adva.com
+
+Received XX Month XXXX; revised XX Month, XXXX; accepted XX Month XXXX; posted XX Month XXXX (Doc. ID XXXXX); published XX Month XXXX
+
+Secure and reliable data communication in optical networks is critical for high-speed Internet. However, optical
+fibers, serving as the data transmission medium providing connectivity to billons of users worldwide, are prone to a
+variety of anomalies resulting from hard failures (e.g., fiber cuts) and malicious physical attacks (e.g., optical
+eavesdropping (fiber tapping)) etc. Such anomalies may cause network disruption and thereby inducing huge
+financial and data losses, or compromise the confidentiality of optical networks by gaining unauthorized access to
+the carried data, or gradually degrade the network operations. Therefore, it is highly required to implement efficient
+anomaly detection, diagnosis, and localization schemes for enhancing the availability and reliability of optical
+networks. In this paper, we propose a data driven approach to accurately and quickly detect, diagnose, and localize
+fiber anomalies including fiber cuts, and optical eavesdropping attacks. The proposed method combines an
+autoencoder-based anomaly detection and an attention-based bidirectional gated recurrent unit algorithm,
+whereby the former is used for fault detection and the latter is adopted for fault diagnosis and localization once an
+anomaly is detected by the autoencoder. We verify the efficiency of our proposed approach by experiments under
+various anomaly scenarios using real operational data. The experimental results demonstrate that: (i) the
+autoencoder detects any fiber fault or anomaly with an F1 score of 96.86%; and (ii) the attention-based bidirectional
+gated recurrent unit algorithm identifies the the detected anomalies with an average accuracy of 98.2%, and
+localizes the faults with an average root mean square error of 0.19 m.
+
+http://dx.doi.org/10.1364/JOCN.99.099999
+
+1. INTRODUCTION                                                      the position on the optical fiber. As result, a recorded OTDR trace
+                                                                     illustrating the positions of faults along the fiber, is generated,
+Optical fiber is the essential medium for transporting a large       and used for event analysis. However, OTDR traces are difficult
+amount of data through the aggregated Internet, mobile               to interpret even by highly experienced engineers mainly due to
+backhaul and core network. A single fiber link connects              the noise overwhelming the signals. Analyzing OTDR signals
+thousands of customers and enterprises, carrying a mixture of        using conventional methods can be time consuming as
+personal, business, and public data. Therefore, the impact of a      performing a lot of averaging of OTDR measurements is required
+broken fiber can be enormous and must be responded to                to remove the noise and thereby to achieve a good event
+immediately.                                                         detection and localization accuracy. Therefore, it would be
+                                                                     highly beneficial to develop a reliable automated diagnostic
+In general, optical fiber is vulnerable to different types of        method that accurately and quickly detects, diagnoses and
+anomalies including fiber cut, fiber eavesdropping (fiber            pinpoints fiber faults given the OTDR data and thereby reducing
+tapping) etc. Such anomalies compromise the availability and         operation-and-maintenance expenses (OPEX) and eliminating
+the confidentiality of an optical network. Specifically, the manual  the time needed to investigate the cause and determine a search
+discovery of incidents occurring in the fiber requires               area. Upon finding the fault location, appropriate action is taken
+considerable expert knowledge and probing time until a fault         to remedy the fault and restore service as quickly as possible.
+(e.g., broken fiber) is identified. Fiber monitoring aims at
+detecting anomalies in an optical layer by logging and analyzing     Recently, machine learning (ML)-based approaches have shown
+the monitoring data. It has mainly been performed using optical      great potential to tackle the problem of fiber event detection and
+time domain reflectometry (OTDR), a technique based on               localization [2]. In this respect, long short-term memory, and
+Rayleigh backscattering, widely applied for fiber characteristics'   convolutional neural networks (CNNs) have been proposed to
+measurements and for fiber fault detection and localization [1].     detect and localize the reflective fiber events induced by the
+OTDR operates like an optical radar. It sends a series of optical    connectors and mechanical splices [3-5]. A hybrid ML-based
+pulses into the fiber under the test. The backscattered signals are  framework combining a bidirectional long short memory
+then recorded as a function of time, which can be converted into     (BiLSTM) network and CNNs, called BiLSTM-CNN, has been
+                                                                     presented for detecting, localizing, and discriminating between
+reflective, non-reflective and merged events [6]. To tackle the       2.1.1 Fiber cut
+challenge of fiber event analysis under very low conditions (SNR      Fiber cut is a disastrous physical failure in optical networks,
+levels ranging from -5 dB and 15 dB), a method combining a            capable of causing widespread disruption. In most cases fiber
+denoising convolutional autoencoder (DCAE) and a BiLSTM has           cuts are the result of accidental cable damages due to
+been proposed, whereby the former is used for noise removal of        construction activities, ship anchors at cable landing points, or
+OTDR signals and the latter, trained with noiseless OTDR signals,     natural disasters like earthquakes or tornadoes, and only rarely
+is adopted for fault detection, localization, and diagnosis with the  by intentional damage such as sabotage with the malevolent
+denoised signal by DCAE as input [7]. The ML models presented         intent to induce a denial-of-service. Fiber cuts are considered as
+in the last two publications were trained using experimental          the single largest cause of service outages. As reported by the
+data incorporating faults modeled using optical components            Federal Communication Commission (FCC), more than one-third
+such as connectors or reflectors. Therefore, the generalization       of service disruptions are caused by fiber-cable breaks [8]. Any
+and robustness capabilities of such models may severely               service outage due to a fiber cut results in massive data loss,
+degrade when tested with new unseen data including real               network disruption, and huge financial loss etc [9]. In 1991, a
+induced faults with various patterns such as fiber bend events        severed fiber-optic cable shut down all New York airports and
+generated for different bending radius values. Furthermore,           induced air traffic control problems [10]. It is time-consuming to
+although such methods distinguish the non-reflective events           locate and repair fiber cuts.
+from the other events, they cannot easily discriminate the faults     2.1.1 Optical eavesdropping
+due to bad splice or fiber tapping. Generally, the generated fiber    Optical eavesdropping attack permits the eavesdropper to gain
+fault data for training ML-based diagnostic methods is highly         an unauthorized access to the carried data by directly accessing
+unbalanced (the instances of normal states are higher than the        the optical channel via fiber tapping for the purpose of stealing
+faulty instances), which inevitably raises the issues caused by       mission-critical and sensitive information. There are several
+unbalanced class distributions. Additionally, it can be               fiber tapping techniques which can be adopted to launch the
+prohibitively expensive and cumbersome to obtain data                 eavesdropping attack, such as fiber bending, optical splitting,
+representing all types of faults or anomalies generated for           evanescent coupling, V Groove cut etc [11]. However, the easiest
+different scenarios or settings that are accurately labeled. That     method to make the eavesdropping intrusion undetected is
+is why unsupervised ML techniques, particularly reconstruction-       microfiber bending by using commercially available clip-on
+based anomaly detection approaches, are frequently adopted.           coupler. Fiber-optic cable tapping incidents have been reported
+                                                                      such as the eavesdropping device, which was discovered illegally
+In this paper, an unsupervised ML technique, an autoencoder, is       installed on Verizon's optical network in 2003 to glean
+proposed to quickly detect any anomaly or unexpected                  information from a mutual fund company regarding its quarterly
+abnormal event patterns in optical fibers. Once an anomaly or         statement prior to its public disclosure [12]. Although, it is easy
+fault is detected, a diagnostic ML model adopting attention           to perform an eavesdropping intrusion, it is challenging to detect
+mechanisms and bidirectional gated recurrent unit network, is         such intrusion using conventional intrusion detection methods
+used to diagnose and localize the fault. The proposed methods         such as OTDR-based techniques.
+are applied to noisy OTDR data with SNR levels varying from 0         2.2 Autoencoder
+dB to 30 dB, including several real faults induced at different
+locations of an optical network. Our contributions can be             An autoencoder (AE) is a type of artificial neural network
+summarized as follows:                                                seeking to learn a compressed representation of an input in an
+                                                                      unsupervised manner [13]. As shown in Fig. 1, an AE is
+      · An autoencoder based anomaly detection model is               composed of two sub-models namely the encoder  and the
+            proposed for detecting any faults in fiber optics         decoder . Generally, the encoder and the decoder are of
+            including fiber cut and fiber tapping attack.             symmetrical architecture comprising of several layers each
+                                                                      succeeded by a nonlinear function and shared parameters . The
+      · An attention-based bidirectional gated recurrent unit         encoder (. ) compresses an input  into lower-dimensional
+            model for fiber fault diagnosis and localization is       latent-space representation  , and the decoder (.) maps the
+            presented.                                                encoded representation back into the estimated vector  of the
+                                                                      original input vector. For an autoencoder composed of multiple
+      · The efficiency of the proposed methods is validated           layers, the nonlinear encoder and decoder mappings can be
+            using experimental monitoring data.                       formulated as follows:
+
+Throughout this article "Diagnose" refers to the operation of                        (.) =  ( (-(. )) +  ) (1)
+discriminating between the different types of faults. "Localize"                  (.) =  ( (-(. )) +  ) (2)
+stands for the act of estimating the location of the fault. "Detect"
+refers to the operation of finding out any abnormal behavior in       where  represents the number of hidden layers,  and  denote
+optical fiber.                                                        the nonlinear activation functions,  and  are weight
+                                                                      matrices,  and  represent the bias vectors, and  denotes the
+The rest of this paper is structured as follows: Section 2 gives      learnable model parameters {, , , }. (. ) = , and
+some background information about the physical fiber attacks,         0(. ) = (. ).
+the autoencoder, and bidirectional gated recurrent unit
+algorithm. Section 3 presents the proposed framework for
+predictive fiber monitoring. Section 4 describes the
+experimental setup and the validation of the presented
+approach. Conclusions are drawn in Section 5.
+
+2. BACKGROUND
+
+2.1 Fiber anomalies
+nput        ncoder                                                          = ( + -1 + )                                (4)
+
+                                                                            = ( + -1 + )                                (5)
+
+1                                                 1                         = tanh(  + (   -1) + ) (6)
+
+                                                                            =   -1 + (1 - )                             (7)
+
+                                                   atent space     where  denotes the update gate,  represents the reset gate, 
+                                                                   is the input vector,  is the output vector,  and  represent the
+Fig. 1. Structure of a standard autoencoder composed of two        weight matrix and the bias vector respectively.  is the gate
+nonlinear mappings (fully connected feedforward neural             activation function and tanh represents the output activation
+networks) namely the encoder and the decoder.                      function. The "" operator represents the Hadamard product.
+
+The training objective of the autoencoder is to minimize the       Hidden  1  eset gate pdate gate                        ew hidden
+reconstruction error between the output  and the input ,                                                       +        state
+referred as the loss function (), typically the mean square
+error (MSE), expressed as:                                         state
+
+                         () =  - 2 (3)                                                                                 andidate
+                                                                                                                      hidden state
+AE has been widely used for anomaly detection by adopting the
+reconstruction error as anomaly score. It is trained with only                                          tanh
+normal data representing the normal behavior. After training,
+AE will reconstruct the normal instances very well, while it will  Fig. 2. Structure of the gated recurrent unit (GRU) cell.
+fail to reproduce the anomalous observations by yielding high
+reconstruction errors. The process of the classification of an     BiGRU is an extension of GRU that helps to improve the
+instance as anomalous/normal is shown in Alg. 1.                   performance of the model. It consists of two GRUs: one forward
+                                                                   GRU model that takes the input in a forward direction, and one
+                                                                   backward GRU model that learns the reversed input. The output
+                                                                    of the model is generated by combining the forward output 
+                                                                   and backward output  as described by the following equations:
+
+Algorithm 1: Autoencoder based anomaly detection                           =  (  , -1)                            (8)
+                                                                           =  (  , -1)                            (9)
+Input: Normal dataset , anomalous dataset ()  = 1, ... , ,                 =    ,                                 (10)
+
+threshold 
+
+Output: reconstruction error  - 
+
+1: train an autoencoder given the normal data                      where  denotes an element-wise sum.
+
+2: for  = 1 to  do                                                 2.4 Multi-task learning
+3:   () = () - ((()))
+                                                                   Multi-task learning is a subfield of ML aiming at improving the
+4: if   () >  then                                                 overall performance of multiple tasks by learning them jointly
+                                                                   while sharing knowledge across them. It has been widely
+5:    () is anomalous                                              adopted in various fields ranging from natural language
+                                                                   processing to computer vision. The multi-task learning
+6: else                                                            approaches can be generally categorized into two architectures:
+                                                                   hard- and soft parameter sharing. The hard parameter sharing
+7:    () is normal                                                 method is performed by sharing the hidden layers with the
+                                                                   different tasks (completely sharing the weights and the
+8: end if                                                          parameters between all tasks) while preserving task-specific
+                                                                   output layers learnt independently by each task. Whereas for the
+9: end for                                                         soft parameter sharing approach, a model with its own
+                                                                   parameters is learnt for each task and the distance between the
+2.3 Bidirectional Gated Recurrent unit (BiGRU)                     parameters of the model is then regularized to encourage
+The Gated Recurrent Unit (GRU) recently proposed to solve the      similarities among related parameters [3].
+gradient vanishing problem [14], is an improved version of
+standard recurrent neural networks (RNNs), used to process         3. PROPOSED APPROACH
+sequential data and to capture long-term dependencies. The
+typical structure of GRU shown in Fig. 2, contains two gates       As shown in Fig. 3, the proposed framework for fiber monitoring
+namely reset and update gates, controlling the flow of the         can be broken into five main stages: (1) optical fiber network
+information. The update gate regulates the information that        monitoring and data collection, (2) data processing, (3) fiber
+flows into the memory, while the reset gate controls the           anomaly detection, (4) fiber fault diagnosis and localization, (5)
+information flowing out of the memory.                             mitigation and recovery from fiber failures. The optical fibers
+The GRU cell is updated at each time step t by applying the        deployed in the network infrastructure are periodically
+following equations:
+monitored using OTDR (i.e fiber monitoring unit). The generated       distance, combined with the sequence's computed SNR ().
+OTDR traces (i.e monitoring data) are sent to the software-           ncluding the information about the sequence's S during the
+defined networking (SDN) controller managing the optical              training phase helps the ML model to learn the behavior of the
+infrastructure. Then, the said data is segmented into fixed length    normal signal pattern for each input SNR level and thereby to
+sequences and normalized. Afterwards, the processed data is fed       boost the performance [3]. The fed input to the encoder is then
+to the ML based anomaly detection model for detecting the fiber       compressed into low dimensional representation through
+anomalies or faults. If a fiber anomaly is detected, a ML model for   adopting 2 GRU layers composed of 64 and 32 cells, respectively,
+fault diagnosis and localization is adopted to diagnose the fault     which capture the relevant sequential features modelling the
+and localize it. Based on the identified fault, a set of recovery     normal state under different SNRs. Afterwards, the decoder
+rules is applied to mitigate such fault. The SDN controller notifies  reconstructs the output, given the compressed representation
+the network operation center in case of failure, which informs        output of the encoder. The decoder is inversely symmetric to the
+the customer about the type of detected fault and its location,       encoder part. Exponential linear unit (ELU) is selected as an
+and notifies the maintenance and repair service in case of fiber      activation function for each hidden layer of the model. The cost
+cut.                                                                  function is set to the mean square error (MSE), which is adjusted
+For this work, we consider the fiber anomalies fiber cut and          by using the Adam optimizer.
+optical eavesdropping attack as examples of harmful or major
+fiber faults. Given that the patterns of the aforementioned faults    nput  ncoder           ecoder                     utput
+and the anomalies bad splice and dirty connector are similar,
+particularly under very low SNR conditions, we include them                                                                                                                                                         1
+during the training phase of the ML model for fault diagnosis to      1
+ensure a reliable fault identification and reduce false alarms.
+                                                                                                                        3
+
+                                                                      30                                                30
+
+                                                                      Fig. 4. Structure of the proposed model for fiber anomaly
+                                                                      detection.
+
+                                                                      3.2 Fault Diagnosis and Localization Model
+
+Fig. 3. Overview of the ML-based fiber monitoring process.            As the tasks, namely the fault diagnosis , and the fault position
+                                                                      estimation  can benefit from feature space sharing, the
+3.1 Anomaly Detection Model                                           proposed model for fault diagnosis and localization is a
+                                                                      multitask learning framework with hard parameter sharing
+The autoencoder is trained with normal data only representing         adopted to learn the tasks simultaneously in order to enhance
+the normal behavior in order to learn the distribution                the generalization capability. The architecture of the proposed
+characterizing the normal state. After the training of the            framework is composed of shared hidden layers distributing the
+autoencoder and for the inference phase, the reconstruction           knowledge across the tasks  and  followed by a specific task
+error is adopted as an anomaly score to detect any potential          layer. The shared hidden layers adopt a combination of
+fault. A well-trained autoencoder will reconstruct the normal         bidirectional gated recurrent unit (BiGRU) network and
+instances very well since they will have the same pattern or          attention mechanisms. The BiGRU is used to capture the
+distribution as the training data, while it will fail to reproduce    sequential features characterizing each fault's pattern, whereas
+the anomalous observations by yielding high reconstruction            the attention mechanisms help the model to concentrate more
+errors. The process of the classification of an instance as           on the relevant features in order to improve the fault diagnosis
+anomalous/normal is illustrated in Algorithm 1. If the computed       and localization accuracy. As shown in Fig. 5, the input (i.e., the
+anomaly score is higher than a set threshold , the instance is        abnormal sample detected by the GRU-based autoencoder) is
+classified as" anomalous", else it is assigned as" normal".  is a     firstly fed to 2 BiGRU layers composed of 64 and 32 cells,
+hyperparameter optimized to ensure high detection accuracy            respectively, to learn the relevant sequential features
+and is adjusted by taking into consideration the degradation and      [,  ... ]. Then, the attention layer assigns to each
+the aging effect of the optical fiber.                                extracted feature hi a weight (i.e., attention score) i, which is
+                                                                      calculated as follows:
+The architecture of the proposed autoencoder model for fiber
+anomaly detection is illustrated in Fig. 4. The model contains an            = (   )                              ()
+encoder and a decoder sub-model with 4 layers. The encoder                   = softmax (  )                       (1 )
+takes as an input a 30-length sequence of an OTDR trace [,
+, ... ] representing the attenuation of the fiber along the           where ,  denote weight matrices. The softmax is used to
+                                                                      normalize  and to ensure that   0, and   = 1.
+                                                                      The different computed weights  are aggregated to obtain a
+                                                                      weighted feature vector (i.e., attention context vector) , which
+
+                                                                      captures the relevant information to improve the performance
+
+                                                                      of the neural network model.  is computed as follows:
+
+                                                                             =      (13)
+Afterwards,  is transferred to two task-specific layers                                                                                           model normal events in the fiber optic link. To vary the fiber
+dedicated to solving the tasks of fault diagnosis (1) and fault                                                                                   bending pattern and thereby to enhance the generalizability
+localization (2) respectively, by leveraging the knowledge                                                                                        capability of the ML model, the bend radius of the clip-on coupler
+extracted by the attention-based BiGRU shared layers. The                                                                                         is ranged from 2.5 mm to 10 mm. Different bad splices with
+model is trained by minimizing the loss function formulated as:                                                                                   dissimilar losses are performed to create a varying bad splicing
+                                                                                                                                                  fault pattern. The OTDR configuration parameters namely the
+                        = 11 + 2 2, (14)                                                                                                          pulse width, the wavelength and the sampling time are set to 10
+                                                                                                                                                  ns, 1650 nm and 1 ns, respectively. From 62 up to 65,000 OTDR
+where 1and 2 denote the loss of 1 and 2, and the first one                                                                                        records are collected and averaged. Figure 7 shows an example
+is the cross-entropy loss whereas the second one is the                                                                                           of a recorded OTDR trace incorporating the different faults,
+regression loss (MSE). The loss weights  and  are                                                                                                 whereas Fig. 8 illustrates the patterns of the investigated faults.
+hyperparameters to be tuned.
+                                                                                                                                                  4.2 Data Preprocessing
+   utput layer              Fault type                                                                Fault location
+Task speci ic layers                                                                                                                              The generated OTDR traces are segmented into sequences of
+                      1                                                                                                                           length 30 and normalized. For each sequence,  is computed and
+                                                                                                                                                  assigned. For the training of the GRU-based autoencoder (GRU-
+ttention layer                                                                         onte t ector                                               AE), only the normal state sequences incorporating either no
+                                                                                                                                                  fault or normal events induced by the optical components, are
+                                                                           1                                      31                              considered, whereas for testing, both normal samples and faulty
+                                                                                                     30                                           sequences incorporating an anomaly, are used. For training
+i hidden layers                1                                                                                                        31        GRU-AE, a dataset of 47,904 samples is built and split into a
+                                                                                                                    30                            training (70%), and a test dataset (30%).
+Forward layer         1                                                                                                       31                  For training the attention based BiGRU model, we consider only
+ ackward layer                      1                                                                        30                               31  the faulty sequences. For each sequence, the fault type (fiber
+                                                                                                                          30                      eavesdropping, bad splice, fiber cut, dirty connector), the fault
+                                                                                                                                                  position defined as the index within the sequence, are assigned.
+nput layer                                                                    1                                               30                  A dataset of 61,849 samples is used for training the fault
+                                                                                                                                                  diagnosis and localization ML model. The said data is divided
+                                                                                                                                                  into a training (60%), a validation (20%) and a test dataset
+                                                                                                                                                  (20%).
+
+Fig. 5. Structure of the proposed attention-based bidirectional
+gated recurrent unit model for fiber fault diagnosis and
+localization.
+
+4. VALIDATION OF THE PROPOSED APPROACH
+
+4.1 Experimental Data
+
+To validate the proposed approach, the experimental setup
+shown in Fig. 6 is conducted. The setup is used to record OTDR
+traces incorporating different types of fiber faults namely fiber
+cut, fiber eavesdropping (fiber tapping), dirty connector and bad
+splice. To reproduce a real passive optical network environment,
+4 couplers are employed. Optical components like connectors,
+variable optical attenuator (VOA) and reflector are utilized to
+
+                                                                                 0 km  ad splice                                        2.2 km                   m                            .2 km                                0. km
+                                                                                                                        0                                                                  0                     Fiber cut
+
+                                                                                                                     0                                                                  0
+                                                                                                                 m                                                             2m
+                                                                                                     irty connector
+                      2m                                                                                          m
+                                              0
+                                              0
+
+                                                                                 3 0m                                             hysical contact ( ) connector  oupler                           lip on oupler                           Variable optical
+                                                                                                                                  Fiber patch cable              pen connector                                                            attenuator (V )
+                                                                                       Fiber tapping                                                             Fiber
+                                                                                                                                    ngled ( ) connector                                                                                     ending
+                                                                                                                                                                                              SF  Small form factor pluggable
+
+                                                                                                                                                                                                                            (SF )
+
+                                                                                                                                                                                                  e lector
+
+Fig. 6. Experimental setup for generating OTDR data containing different faults induced at different locations in an optical network.
+Fig. 7. Example of OTDR trace generated using the experimental                · Precision (P) quantifies the relevance of the
+setup shown in Fig. 6.                                                              predictions made by the ML model. It is expressed as:
+
+4.3 Performance Assessment                                                                 = 
+4.3.1 Evaluation Metrics
+The fault detection is modeled as a binary classification, whereby                                         + 
+we distinguish among sequences with label "1: fault" (i.e.,
+"positi e") or "0: normal" (i.e., "negati e"). We consider:                   · Recall (R) provides the total relevant results correctly
+                                                                                    classified by the ML model. It is formulated as:
+     · true positives (TP): umber of sequences of type " "
+            correctly classified with label " ";                                           = 
+
+     · true negatives (TN): umber of sequences of type "0"                                                  + 
+            correctly classified with label "0";
+                                                                              · F1 score is the harmonic mean of the precision and
+     · false positives (FP): Number of sequences of type "0"                        recall, calculated as:
+            misclassified with label " ";
+                                                                                          1 =  
+     · false negatives (FN): umber of sequences of type " "
+            misclassified with label "0".                                                                        + 
+
+                                                                        4.3.2 Fault Detection Capability
+
+                                                                        The anomaly detection capability of GRU-AE is optimized by
+                                                                        selecting an optimal threshold . Figure 9 shows the precision,
+                                                                        the recall, and the F score cur es as function of . f the selected
+                                                                        threshold is too low, many faults will be classified as normal,
+                                                                        leading to a higher false positive ratio. Whereas if the chosen
+                                                                        threshold is too high, many "normal" sequences will be classified
+                                                                        as "faulty", resulting in a higher false negati e ratio. Therefore,
+                                                                        the optimal threshold that ensures the best precision and recall
+                                                                        tradeoff (i.e., maximizing the F1 score) is chosen. For the
+                                                                        optimally selected threshold of 0.008, the precision, the recall,
+                                                                        and the F1 scores are 96.9%, 96.86%, and 96.86%, respectively.
+
+(a)                            (b)
+
+(c)                                 (d)                                 Fig. 9. The optimal threshold selection based on the precision,
+                                                                        recall and F1 scores yielded by GRU-AE.
+Fig. 8. Patterns of the faults: (a) fiber tapping, (b) bad splice, (c)
+                                                                        The receiver operating characteristic (ROC) curve, illustrating
+                                                                        the performance of the model at different threshold settings,
+                                                                        shown in Fig. 10, proves that GRU-AE can distinguish very well
+                                                                        between the normal and faulty classes by achieving a high area
+                                                                        under the curve (AUC) (i.e., measuring the degree of separability
+                                                                        between the classes) of 0.98.
+
+dirty connector (the second peak, whereas the first and last
+
+peaks are induced due to PC connector and open PC connector
+
+respectively), (d) fiber cut.
+
+To assess the detection capability, the following metrics are
+adopted:
+                                                                    setting the number of cells for each layer of the encoder to 64
+                                                                    yields the best performance (lowest reconstruction error).
+
+                                                                    ++
+                                                                                                              (a)
+
+                                                                    (b)
+
+Fig. 10. The receiver operating characteristic curve of GRU-AE.                                                                          (c)
+
+4.3.3 Optimization of GRU-AE                                        Fig. 12. Optimization of the GRU-AE model: (a) reconstruction
+                                                                    errors with different depths for different cells per layer, (b) for
+Network architectures with various sizes are evaluated to select    different activation functions in the hidden layers, (c) for several
+the optimum one, achieving the best performance while               number of cells per hidden layer of the encoder.
+ensuring a moderate complexity. The impact of the parameters,
+namely "depth" (i.e., the number of hidden layers), "width" (i.e.,  4.3.4 Comparison of GRU-AE with other ML models
+number of cells for each hidden layer), and the activation
+function, on the performance of GRU-AE in terms of                  The GRU-AE model is compared to other unsupervised anomaly
+reconstruction error is investigated. The number of hidden          detection methods namely isolation forest (IF), local outlier
+layers with either 32 or 64 cells is firstly varied from 2 to 8.    factor (LOF), and one-class support vector machine (OCSVM), in
+Different activation functions for the hidden layers, namely        terms of F1 score and the area under the precision recall curve
+rectified Linear Unit (ReLU), leaky ReLU, scaled exponential        (AUPRC) metrics. IF isolates the outliers in the data by
+linear unit (SELU), and ELU, are analyzed. Figure 11 shows the      performing a random partition on the data observations and
+output of each activation function for a given input. Several       then computing the split value between the maximum and
+combinations of number of cells for each hidden layer of the        minimum of the chosen instance. The path length defined as the
+encoder network are tested.                                         number of splits required to isolate each observation is adopted
+                                                                    as anomaly score. LOF computes the anomaly score by
+Fig. 11. The output of different activation functions.              measuring the local deviation of the density of a given instance
+                                                                    with respect to its neighbors. OCSVM learns the boundary
+As shown in Fig. 12 (a), the reconstruction error of GRU-AE         decision encompassing the normal data in the feature space, and
+shows a decreasing trend with the increase of the depth for a       during the inference stage, any sample lying outside that
+different number of cells per hidden layer, before reaching the     boundary is considered an anomaly. IF, LOF, and OCSVM are
+optimum depth of 4. Increasing the depth helps the GRU-AE           trained with normal data, like the GRU-AE model, and tested
+model to capture more features modelling the normal behavior.       with unseen data including both normal and abnormal data. The
+However, widening the layers higher than 6 can lead to              results shown in Table 1 demonstrate that the GRU-AE model
+overfitting and thus reduces the performance of the GRU-AE. As      outperforms the other ML methods by yielding the highest
+illustrated in Fig. 12 (b), adopting ELU as activation function in  values of F1 score and AUPRC scores. Compared to the tested ML
+the hidden layers achieves the smallest reconstruction error        algorithms GRU-AE provides significant improvements of more
+compared to the other functions. Figure 12 (c) confirms that        than 5.5% and 6.36% in AUPRC and F1 scores, respectively.
+                                       TABLE I
+COMPARISON OF DIFFERENT ANOMALY DETECTION ML METHODS IN TERMS
+OF AREA UNDER THE PRECISION RECALL CURVE (AUPRC) AND F1 SCORE.
+
+                    THE BEST RESULT IS SHOWN IN BOLD.
+
+Method  F1 score (%)  AUPRC (%)
+
+OCSVM   49.8           94.1
+IF      86.9           71.5
+LOF     90.5           61.7
+GRU-AE  96.86          99.6
+
+4.3.5 Fault Diagnosis Capability                                    Fig. 14. The diagnosis accuracy of the A-BiGRU model.
+
+The confusion matrix shown in Fig. 13, proves that the attention    The feature learning ability of A-BiGRU under very low SNR
+based BiGRU model (A-BiGRU) diagnoses the different faults          conditions (SNR  5 dB) for solving the task 1 is visually
+with an accuracy higher than 97%, and accurately distinguishes      investigated using the t-distributed stochastic neighbor
+the physical fiber attack by achieving an accuracy of 98%. As for   embedding (t-SNE) technique [15]. Figure 15 shows that first the
+low SNR sequences, the patterns of eavesdropping and bad            learned features under SNR levels lower than 1 dB are of very
+splice faults look similar, the ML model mis-classified a little    poor separability and A-BiGRU misclassifies most of the faults as
+these classes. The same applies for dirty connector and fiber cut   fiber cut mainly due to the similarity of the different fault
+patterns under low SNR conditions leading to low                    patterns under those SNR conditions because of the high noise
+misclassification rates.                                            overwhelming the patterns, second the extracted features
+                                                                    become more and more discriminative with the increase of the
+                                                                    SNR, and third A-BiGRU can learn effective features for accurate
+                                                                    fault diagnosis even for an SNR condition higher than 2 dB.
+
+                                                                         (a)
+
+Fig. 13. The confusion matrix of A-BiGRU model.
+
+Figure 14 shows the effects of SNR on the diagnosis accuracy of
+
+A-BiGRU. The accuracy increases with SNR. For SNR values
+
+higher than 10 dB, the accuracy is approaching 100%. For an
+
+SNR lower than 2 dB, the accuracy is worse as it is very difficult
+
+to differentiate the different faults mainly due to the noise that
+
+adversely impacts the patterns of the faults which might look
+
+similar under very low SNR levels. For input sequences of SNR       (b)
+
+higher than 2dB, A-BiGRU could discriminate the different types
+
+of faults with a good accuracy higher than 90.5%.
+(c)
+
+                                                Fig. 16. Histogram of position prediction errors yielded by A-
+                                                BiGRU model.
+
+(d)
+
+Fig. 15. Visualization of the feature learning under low SNR      Fig. 17: Fault position estimation error (RMSE) for the ML
+conditions: (a) 0 dB SNR, (b) 1 dB SNR, (c) 2 dB SNR, (d) 5 dB    model.
+SNR.
+                                                                  4.3.7 Comparison of BiGRU with other existing ML approaches
+4.3.6 Fault Localization Capability
+                                                                  The BiGRU is compared to two baseline ML models recently
+To assess the fault localization accuracy of the A-BiGRU model,   proposed for fiber fault diagnosis and localization, namely
+two evaluations metrics namely the prediction error               BiLSTM-CNN [6] and BiLSTM [7]. For the sake of a fair
+representing the difference between the predicted and actual      comparison, BiLSTM-CNN and BiLSTM are retrained with the
+position of the fault, and the root mean square error (RMSE) are  same training data as BiGRU, and we adjusted their structures
+adopted. Figure 16 shows that A-BiGRU achieves very small         for solving only the two learning tasks 1 and 2. For the
+prediction errors with a mean of 0.05 m and a standard deviation  architectures of the models, BiLSTM is composed of one BiLSTM
+of 0.2, which proves that the ML model accurately localizes the   layer with 32 cells followed by task-specific layers composed of
+faults. We analyzed the fault localization estimation             16 and 20 neurons, respectively. In contrast the BiLSTM-CNN
+performance of A-BiGRU as function of SNR. As depicted in Fig.    model consists of one BiLSTM layer with 32 cells followed by
+17, A-BiGRU accurately localizes the faults by achieving an       CNN layers containing mainly one convolutional layer having 32
+average root mean square error (RMSE) of 0.19 m, and that the     filters with the max pooling layer succeeded by a dropout layer,
+RMSE decreases with SNR. For lower S alues (S  0 d ),             and two task-specific layers composed of 16 and 20 neurons,
+the RMSE can be higher than 0.35 m, whereas for SNR values        respectively. The length of the input sequence of both models is
+higher than 13 dB, it is less than 0.2 m and it could be further  set to 30. We compare the different models by adopting as
+reduced up to less than 0.1 m for SNR values higher than 27 dB.   evaluation metrics the average diagnostic accuracy to assess the
+                                                                  fault diagnosis capability, and the average RMSE to evaluate the
+                                                                  fault localization performance. Figure 18 (a) proves that the
+                                                                  proposed model outperforms the existing methods by achieving
+                                                                  an improvement of 8.8% in accuracy due to the inclusion of the
+                                                                  SNR during the training phase and the adoption of the attention
+                                                                  mechanisms to capture the relevant features and thereby boost
+the performance. Figure 18 (b) shows that the proposed method
+achieves the lowest RMSE value compared to the other models.
+
+                                   (a)
+
+                                                                   Fig. 19. The confusion matrix of model B.
+
+            (b)                                                    Table 3 proves that model A outperforms model B in terms of
+                                                                   accuracy with an improvement of 5.1%, which demonstrates the
+                                                                   importance of adopting the autoencoder to discriminate the
+                                                                   normal class from the faulty classes and thereby enhances the
+                                                                   fault diagnosis capability of BiGRU and reduces the false alarm
+                                                                   rate.
+
+                                                                                                         TABLE III
+                                                                   COMPARISON OF ML MODELS IN TERMS OF AVERAGE ACCURACY. THE BEST
+
+                                                                                            RESULT IS SHOWN IN BOLD.
+
+Fig. 19: Comparison between the proposed model and existing        Method                            Average accuracy (%)
+ML methods in terms of: (a) average diagnostic accuracy and (b)    Model A (GRU-AE + BiGRU)                    96.9
+average RMSE.
+                                                                   Model B (without GRU-AE)                      91.8
+The comparison of the results of computational inference time
+between the proposed model and the existing methods are            4.3.9 Investigation of the Robustness of BiGRU
+shown in Table 2. As it can be seen, the proposed model
+consumes slightly more time than the existing methods due to       Given that the BiGRU model is trained with data incorporating
+its deeper architecture.                                           the faults induced at fixed locations of the network to assess the
+                                                                   robustness capability of the proposed method, we modify the
+                                       TABLE II                    locations of the different faults as shown in Fig. 20, and test the
+COMPUTIONAL TIME OF POPOSED MODEL AND EXISTING METHODS.            performance of BiGRU given the new data generated using the
+                                                                   new experimental setup.
+                    THE BEST RESULT IS SHOWN IN BOLD.
+                                                                             0 km Fiber tapping               0        .2 km
+
+Method      Inference time (12,370 samples)                           2m                                0                irty
+                                                                                                     m                 connector
+BiLSTM      1.06 ± .  
+BiLSTM-CNN  1.18 ± 0.14                                                   0                  Fiber cut
+BiGRU       2.1± 0.13 
+                                                                                                     m
+                                                                   T
+
+4.3.8 Integrated learning approach GRU-AE- BiGRU                          0
+
+The performance of the integrated approach combining GRU-AE                  3 0m             ad
+and BiGRU models, called model A, is compared to a BiGRU                                     splice
+model trained to discriminate between the normal state and the
+different types of faults (omitting the use of the autoencoder),   Fig. 20: Modified experimental setup for testing the robustness
+denoted by model B, in terms of average accuracy metric. The       of the BiGRU model. For a legend of symbols, please refer to Fig.
+model B is trained with data including both normal and faulty      6.
+data modelling the different fault classes. Figure 19 shows the
+confusion matrix obtained by model B. As it can be noticed, it is  Tested with that data, the BiGRU achieves a good fault diagnosis
+hard for the model to distinguish between the normal class and     capability by yielding an accuracy of 96.8%, proving that the ML
+the other faults namely bad splices and eavesdropping events       model effectively learns the different types of faults, and thus is
+due to the similarity of their patterns under low SNR conditions.  capable of diagnosing them at different locations of the network.
+5. CONCLUSION                                                            [12] Sandra Kay Miller, "Hacking at the Speed of Light ", Security
+                                                                                Solutions Magazine, April 2006.
+A ML-based approach for fiber fault detection, identification and
+localization is proposed. The presented framework includes an            [13] M. . Kramer, " onlinear principal component analysis
+autoencoder model to detect the fiber anomalies and an                          using autoassociative neural networks," h Journal. 37
+attention based bidirectional gated recurrent unit method to                    (2): 233­243, 1991.
+recognize the detected fiber faults and localize them. The
+effectiveness of the proposed approach is validated using OTDR           [14] K. ho et al, " earning hrase epresentations using
+data incorporating various faults including fiber cuts and optical              Encoder- ecoder for Statistical Machine Translation,"
+eavesdropping attacks. The experimental results proved that the                 Proceedings of the 2014 Conference on Empirical Methods
+presented framework achieves a good fault detection and                         in Natural Language Processing, 1724-1734, 2014.
+diagnosis capability and a high localization accuracy. Our
+experiments show that ML techniques can enhance the                      [15] an der Maaten et al., ``Visualizing data using t-S ,''
+performance of the anomaly detection and fault diagnosis and                    Journal of Machine Learning Research. 9. 2579-2605, 2008.
+localization in fiber monitoring, and thereby minimize the false
+positive alarms, saving time and maintenance costs. In our future
+work, we plan to which is usually operated in a very complex,
+sophisticated, intelligent, and autonomous environment.
+
+Acknowledgements. This work has been performed in the framework
+of the CELTIC-NEXT project AI-NET-PROTECT (Project ID C2019/3-4),
+and it is partly funded by the German Federal Ministry of Education and
+Research (FKZ16KIS1279K).
+
+REFERENCES
+
+[1] . W et al., " dentification method of non-reflective faults
+
+based on index distribution of optical fibers," pt press.
+
+2014 Jan 13;22(1):325-37.
+
+[2] O. N- oateng, et al., " redicting the actual location of faults
+
+in underground optical networks using linear regression,"
+
+Engineering Reports (2021).
+
+[3] K. bdelli et al., " eflecti e fiber fault detection and
+
+characterization using long short-term memory,"
+
+IEEE/OSA J. Opt. Commun. Netw., vol. 13, no. 10, October
+
+2021.
+
+[4] K. bdelli et al., " eflecti e ent etection and
+
+Characterization in Fiber Optical Links Given Noisy OTDR
+
+Signals," hotonic Networks; 22th ITG Symposium, 2021.
+
+[5] W. Zhang et al., " deep con olutional neural network with
+
+new training methods for bearing fault diagnosis under
+
+noisy en ironment and different working load, "Mechanical
+
+Systems and Signal Processing, Volume 100, 2018.
+
+[ ] K. bdelli et al., " i STM-CNN based Multitask Learning
+
+pproach for Fiber Fault iagnosis," F 202 .
+
+[7] K. Abdelli et al., "Optical Fiber Fault Detection and
+
+Localization in a Noisy OTDR Trace Based on Denoising
+
+Convolutional Autoencoder and Bidirectional Long Short-
+
+Term Memory," in Journal of Lightwave Technology, doi:
+
+10.1109/JLT.2021.3138268.
+
+[8] A. A.- . akar, et al., " new technique of real-time
+
+monitoring of fiber optic cable networks transmission,"
+
+Optics and Lasers in Engineering 45: 126-130 (2007).
+
+[9] han, .K., et al., "Fiber-fault identification for branched
+
+access networks using a wavelength-sweeping monitoring
+
+source,"     hoton. Technol. ett., : 4-616 (1999).
+
+[10] oronha, Val. " etworks, Security and omple ity: The
+
+Role of Public Policy in Critical Infrastructure Protection -
+
+y Sean . orman." (200 ).
+
+[11] K. Shaneman and S. Gray, "Optical network security:
+
+technical analysis of fiber tapping mechanisms and
+
+methods for detection & prevention," IEEE MILCOM 2004.
+
+Military Communications Conference, 2004., 2004, pp. 711-
+
+716 Vol. 2.
+
