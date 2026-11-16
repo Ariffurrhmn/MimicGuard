@@ -1,0 +1,56 @@
+# Frozen base configuration (Experiment Plan, frozen 2026-11-15).
+# Values marked "assumption" still need a citation or stay flagged as
+# assumptions in the paper (vault: Open Questions Q11).
+
+seed: 0
+
+signal:
+  symbol_rate_baud: 1.0e+10    # assumption
+  window_symbols: 256
+  pilot_symbols: 32            # first symbols of each window are known pilots
+
+fiber:
+  enabled: true
+  length_km: 20.0              # assumption
+  attenuation_db_per_km: 0.2   # typical SMF value at 1550 nm, to be cited
+  dispersion_ps_nm_km: 17.0    # typical SMF value at 1550 nm, to be cited
+  wavelength_nm: 1550.0
+  residual_dispersion_fraction: 0.05   # share left after compensation, assumption
+  snr_db: 30.0                 # in-band SNR from amplifier noise, assumption
+  noise_enabled: true
+  laser_linewidth_hz: 1.0e+5   # assumption
+
+handover:
+  mode: fixed_gain             # fixed_gain | agc
+
+wireless:
+  fading: rayleigh             # none | rician | rayleigh
+  rician_k: 5.0
+  snr_db: 20.0                 # SNR at the wireless receiver; path loss folded in
+
+receiver:
+  csi: pilot                   # pilot | perfect
+
+grid:
+  snr_db: [0, 5, 10, 15, 20, 25, 30]
+  fading: [none, rician, rayleigh]
+  alpha: [0.0, 0.25, 0.5, 0.75, 1.0]
+  seeds: 10
+
+attacker:
+  # Footprint of the tap at alpha = 0 (all assumptions); alpha hides it order by order.
+  # Sizes calibrated 2026-11-15 so detectability steps down with alpha at the
+  # reference cell (no fading, 20 dB): best single-feature AUC 1.00, 1.00, 0.89, 0.74, 0.51.
+  tap_fraction: 0.1            # mean: share of optical power removed
+  excess_snr_db: 30.0          # variance: insertion noise, SNR relative to the tapped signal
+  echo: 0.03                   # higher order: relative amplitude of a one-symbol echo
+
+dataset:
+  windows_per_realisation: 200
+  attack_onset_window: 100     # test streams: normal before, attack from here on
+
+split:
+  realisations: 50
+  train: 0.6
+  val: 0.2
+  test: 0.2

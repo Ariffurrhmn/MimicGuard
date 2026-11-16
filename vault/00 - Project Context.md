@@ -1,7 +1,7 @@
 ---
 tags: [hub, context]
 created: 2026-11-08
-updated: 2026-11-08
+updated: 2026-11-16
 ---
 
 # 00 - Project Context
@@ -9,7 +9,7 @@ updated: 2026-11-08
 **START HERE.** Hub of the vault. Read this, then the newest entry of [[Session Log]], then follow links as needed. Writing rules: [[Vault Conventions]]. Standing repo rules: [[Repo Rules]].
 
 ## Summary
-Project **MimicGuard**: a simulation and benchmarking study of an unsupervised autoencoder that detects a channel-mimicking eavesdropper on a two-segment fiber-wireless (FiWi) link with a handover point. The autoencoder is trained on normal channel data only; the anomaly score is reconstruction error; the threshold comes from a target false-alarm rate on normal data. It is compared with classical detectors (energy, CUSUM, OC-SVM, Isolation Forest, LOF, PCA residual) while the attacker's imitation fidelity is swept. Target venue: QPAIN 2027, Track 02 (dates and formats unchecked, see [[Audit - Venues]]). Status: proposal written, novelty check partly done, experiment design not frozen, no code yet. Details: [[Proposal]], [[Experiment Plan]].
+Project **MimicGuard**: a simulation and benchmarking study of an unsupervised autoencoder that detects a channel-mimicking eavesdropper on a two-segment fiber-wireless (FiWi) link with a handover point. The autoencoder is trained on normal channel data only; the anomaly score is reconstruction error; the threshold comes from a target false-alarm rate on normal data. It is compared with classical detectors (energy, CUSUM, OC-SVM, Isolation Forest, LOF, PCA residual) while the attacker's imitation fidelity is swept. Target venue: QPAIN 2027, Track 02 (live site checked 2026-11-15: deadline 20 Dec 2026, timezone not stated, 4-6 pages incl. references, double-blind; see [[Audit - Venues]]). Status: design frozen; channel, attacker and dataset built and checked; detectors next. Details: [[Proposal]], [[Experiment Plan]].
 
 The project name and goal line were not supplied explicitly at setup; they were taken from the folder name and the proposal (see [[Open Questions]]).
 
@@ -30,13 +30,15 @@ The project name and goal line were not supplied explicitly at setup; they were 
 
 ## Current state (keep updated)
 - Repo layout: `vault/` (this), `src/`, `experiments/`, `data/` (git-ignored), `results/`, `paper/`, `docs/` (proposal and paper PDFs), `external/` (git-ignored clone of the venue toolkit, see [[Repo List]]).
-- Done: proposal PDF/DOCX, prior-art pass (see [[Prior Art Verdict]]), experiment design draft.
-- Not done: IEEE Xplore / Google Scholar search, frozen experiment design, simulator, detectors, any results.
+- Done: proposal PDF/DOCX, prior-art pass (see [[Prior Art Verdict]]), experiment design draft, plain-language overview PDF with workbench module diagram (`docs/proposal/overview/`, see [[Session Log]] 2026-11-11), experiment design frozen 2026-11-15 ([[Experiment Plan]]), M0 setup and M1 channel simulator with passing sanity check ([[M1 Sanity Results]]), M2 attacker and M3 features/dataset with footprint check ([[M2 Footprint Check]]).
+- M4 detectors, M5 evaluation and a self-contained Kaggle notebook (`notebooks/mimicguard_kaggle.ipynb`) built 2026-11-16; only a local smoke run so far ([[Session Log]]).
+- Not done: Google Scholar search (blocked by CAPTCHA; Xplore and OpenAlex done 2026-11-15, C1 holds in hedged form), the full sweep and any reportable detection results, ablations.
 - Next actions: top of [[Session Log]] and [[Open Questions]].
 - Novelty status: moderate-low; framed as integration and evaluation, not a new method ([[Prior Art Verdict]]).
+- Contribution options (2026-11-12): deferred on 2026-11-15; the original plan stands ([[Decisions]], [[Contribution Options]]).
 
 ## Rules of thumb
 - Evidence labels: **VERIFIED** (read the source), **INFERRED**, **IDEA**, **UNVERIFIED**. Never upgrade a label without reading the source.
-- Venue deadlines and formats are unchecked. Do not state them as facts.
+- Venue facts were read on the live site on 2026-11-15 ([[Audit - Venues]]); the deadline timezone is still unknown. Re-check the important-dates page before submitting.
 - Simulation-only: say so in the abstract. Do not write "first", "novel framework" or "guaranteed secure".
 - Attack data is never used for training or threshold selection.

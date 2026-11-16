@@ -1,0 +1,1027 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MimicGuard Pipeline</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: lab-notebook stepper. A 12-step progress rail, one scene card holding a wide diagram,
+   facts and a "produces" line, and a sticky transport bar (Prev / Autoplay / Next). */
+:root{
+  --bg:#EDF1F4; --surface:#FFFFFF; --sunk:#E2E8ED; --ink:#14202B; --muted:#596875; --line:#CBD5DD;
+  --sig:#0B7894; --sig-soft:#CDE6EE; --atk:#C2440E; --atk-soft:#F5DACB;
+  --done:#2C7A4C; --done-soft:#D5EBDD; --next:#A3650A; --next-soft:#F3E3C6;
+  --c2:#A8417F; --c3:#6656B0; --c4:#3B8A56; --c5:#87929E;
+  --f-display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Consolas,"Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E141A; --surface:#151E26; --sunk:#1D2833; --ink:#E3EAF0; --muted:#97A5B2; --line:#2B3845;
+    --sig:#4DC0DD; --sig-soft:#183C48; --atk:#F28A4E; --atk-soft:#4A2A1A;
+    --done:#62C08A; --done-soft:#173826; --next:#E2AE4E; --next-soft:#3E2F14;
+    --c2:#E07AB6; --c3:#A497F0; --c4:#72C98F; --c5:#7F8B97;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E141A; --surface:#151E26; --sunk:#1D2833; --ink:#E3EAF0; --muted:#97A5B2; --line:#2B3845;
+  --sig:#4DC0DD; --sig-soft:#183C48; --atk:#F28A4E; --atk-soft:#4A2A1A;
+  --done:#62C08A; --done-soft:#173826; --next:#E2AE4E; --next-soft:#3E2F14;
+  --c2:#E07AB6; --c3:#A497F0; --c4:#72C98F; --c5:#7F8B97;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding-block:28px 0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{display:grid;gap:6px;margin-bottom:22px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,4vw,38px);line-height:1.1;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.top p{margin:0;max-width:68ch;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:6px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:22px;height:6px;border-radius:3px;display:inline-block}
+
+/* progress rail */
+.rail{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px;margin-bottom:16px;list-style:none;padding:0}
+.rail button{all:unset;cursor:pointer;display:grid;gap:5px;padding:4px 2px 6px;border-radius:6px;min-width:0}
+.rail button:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+.rail .bar{height:8px;border-radius:4px;background:var(--sunk);border:1px solid var(--line);position:relative;overflow:hidden}
+.rail [data-status="done"] .bar{background:var(--done);border-color:var(--done)}
+.rail [data-status="next"] .bar{background:var(--next);border-color:var(--next)}
+.rail .num{font-family:var(--f-mono);font-size:11px;color:var(--muted);display:flex;justify-content:space-between;gap:4px}
+.rail .tag{font-size:9.5px;letter-spacing:.06em;font-weight:600}
+.rail [data-status="done"] .tag{color:var(--done)}
+.rail [data-status="next"] .tag{color:var(--next)}
+.rail .lab{font-size:12px;line-height:1.2;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rail button[aria-current="step"] .bar{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--ink)}
+.rail button[aria-current="step"] .lab{font-weight:600}
+.rail button:not([aria-current="step"]) .lab{color:var(--muted)}
+
+/* stage */
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 24px 20px}
+.scene{display:grid;gap:14px}
+.scene[hidden]{display:none}
+.scene-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}
+.stepno{font-family:var(--f-mono);font-size:12.5px;color:var(--muted)}
+.mile{font-family:var(--f-mono);font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--ink)}
+.pill{font-size:11px;font-weight:600;letter-spacing:.08em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
+.pill.done{background:var(--done-soft);color:var(--done)}
+.pill.next{background:var(--next-soft);color:var(--next)}
+.pill.planned{border:1px dashed var(--line);color:var(--muted)}
+h2{font-family:var(--f-display);font-weight:650;font-size:clamp(21px,2.6vw,27px);line-height:1.2;margin:0;text-wrap:balance}
+.lead{margin:0;max-width:72ch;font-size:16px}
+.fig{overflow-x:auto;border-radius:10px;background:var(--bg);border:1px solid var(--line)}
+.fig svg{display:block;width:100%;min-width:640px;height:auto}
+.figs2{display:grid;grid-template-columns:1.2fr 1fr;gap:12px}
+.figs2>div{min-width:0}
+.figs2 .fig svg{min-width:420px}
+.figcap{font-size:12.5px;color:var(--muted);margin:6px 2px 0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:4px 28px;margin:0;padding:0;list-style:none}
+.facts li{position:relative;padding-left:16px;font-size:14.5px;min-width:0}
+.facts li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:7px;border-radius:2px;background:var(--sig)}
+.facts li.atk::before{background:var(--atk)}
+.lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;padding:1px 5px;border-radius:4px;border:1px solid var(--line);color:var(--muted);vertical-align:1px;white-space:nowrap}
+.produces{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;padding:10px 12px;border-radius:8px;background:var(--sunk);font-size:13.5px}
+.produces b{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.produces span{min-width:0;overflow-wrap:anywhere}
+code{font-family:var(--f-mono);font-size:.9em;background:var(--sunk);padding:0 4px;border-radius:4px;overflow-wrap:anywhere}
+.produces code{background:var(--surface)}
+
+/* checks (scene 2) */
+.checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.check{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:grid;gap:6px;min-width:0}
+.check .h{font-size:13px;color:var(--muted)}
+.check .v{font-family:var(--f-display);font-size:24px;font-weight:700;font-variant-numeric:tabular-nums}
+.check .track{height:8px;background:var(--sunk);border-radius:4px;overflow:hidden}
+.check .track i{display:block;height:100%;width:0;background:var(--done);border-radius:4px;transition:width 1.2s cubic-bezier(.2,.7,.2,1)}
+.check .s{font-size:12px;color:var(--muted)}
+
+/* alpha control (scene 3) */
+.alpha{display:grid;gap:8px;padding:12px 14px;border:1px solid var(--line);border-radius:10px}
+.alpha-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.alpha label{font-weight:600}
+.alpha output{font-family:var(--f-mono);font-size:18px;font-variant-numeric:tabular-nums;min-width:4ch;display:inline-block}
+.alpha input[type=range]{width:100%;accent-color:var(--atk);margin:0}
+.segs{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3px;font-size:12px}
+.segs div{padding:4px 6px;border-radius:5px;background:var(--sunk);color:var(--muted);transition:background .3s,color .3s;min-width:0}
+.segs div.on{background:var(--atk-soft);color:var(--ink)}
+.segs b{font-family:var(--f-mono);font-weight:500;display:block}
+.badge{font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;background:var(--done-soft);color:var(--done);transition:opacity .3s}
+.btn{font:inherit;font-size:13.5px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 12px;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--muted)}
+.btn:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+.btn.primary{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.btn[disabled]{opacity:.4;cursor:default}
+
+.keyrow{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
+.keyrow span{display:inline-flex;align-items:center;gap:6px}
+
+/* cards grid (scenes 11, 12) */
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.card{border:1px solid var(--line);border-radius:10px;padding:10px 12px 12px;display:grid;gap:6px;align-content:start;min-width:0;background:var(--bg)}
+.card h3{font-family:var(--f-display);font-size:15px;margin:0;font-weight:650}
+.card p{margin:0;font-size:13px;color:var(--muted)}
+.card svg{width:100%;height:auto;display:block}
+
+/* transport bar */
+.transport{position:sticky;bottom:0;z-index:5;margin-top:16px;
+  padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--line)}
+.transport .in{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.transport .count{font-family:var(--f-mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;margin-left:auto}
+.dwell{flex:1 1 120px;height:4px;background:var(--sunk);border-radius:2px;overflow:hidden;min-width:80px}
+.dwell i{display:block;height:100%;width:0;background:var(--ink)}
+footer{font-size:12.5px;color:var(--muted);padding-block:14px 30px;max-width:80ch}
+
+/* svg text */
+svg text{font-family:var(--f-body)}
+.t{fill:var(--ink);font-size:14px}
+.tb{fill:var(--ink);font-size:15px;font-weight:600}
+.tm{fill:var(--muted);font-size:12.5px}
+.mono{font-family:var(--f-mono)!important}
+.box{fill:var(--surface);stroke:var(--line);stroke-width:1.2}
+.box-ink{fill:var(--surface);stroke:var(--ink);stroke-width:1.4}
+.wire{stroke:var(--muted);stroke-width:2;fill:none}
+.axis{stroke:var(--muted);stroke-width:1;fill:none}
+.gridl{stroke:var(--line);stroke-width:1;fill:none}
+
+@media (max-width:820px){
+  .figs2{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .checks{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .stage{padding:16px 14px}
+  .rail .lab{display:none}
+  .rail .tag{display:none}
+  .rail{gap:3px}
+  .cards{grid-template-columns:1fr}
+  .segs{font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){
+  .check .track i{transition:none}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">MimicGuard · simulation study · status 15 Nov 2026</div>
+    <h1>The MimicGuard experiment pipeline, step by step</h1>
+    <p>Can an autoencoder trained only on normal fiber-wireless channel data spot an eavesdropper that imitates the channel, and how does it compare with classical detectors as the imitation gets better? Twelve steps; the first four are built and checked.</p>
+    <div class="legend" aria-hidden="true">
+      <span><i class="sw" style="background:var(--done)"></i>Done</span>
+      <span><i class="sw" style="background:var(--next)"></i>Next</span>
+      <span><i class="sw" style="background:var(--sunk);border:1px solid var(--line)"></i>Planned</span>
+      <span><i class="sw" style="background:var(--sig)"></i>Normal signal</span>
+      <span><i class="sw" style="background:var(--atk)"></i>Attacker</span>
+    </div>
+  </header>
+
+  <ol class="rail" id="rail" aria-label="Pipeline steps"></ol>
+
+  <main class="stage" id="stage">
+
+    <!-- 1 -->
+    <section class="scene" data-step="1" data-status="done" data-m="Design" data-short="Design">
+      <h2>Freeze the design</h2>
+      <p class="lead">Before any detector was written, every condition the study will test was fixed, so later results cannot be tuned to look good.</p>
+      <div class="fig"><svg id="s1" viewBox="0 0 880 330" role="img" aria-label="Experiment grid: 7 SNR levels by 3 fading types, each cell split into 5 attacker fidelity values, repeated over 10 seeds"></svg></div>
+      <ul class="facts">
+        <li>SNR at the wireless receiver: 0, 5, 10, 15, 20, 25, 30 dB (7 levels).</li>
+        <li>Fading: none, Rician (K = 5), Rayleigh.</li>
+        <li class="atk">Attacker fidelity α: 0, 0.25, 0.5, 0.75, 1. At 0 the tap leaves its full footprint; at 1 it hides all of it.</li>
+        <li>10 seeds per cell. 7 × 3 × 5 = 105 cells, so 1,050 cell-seed runs.</li>
+        <li>Six features per window and a fixed attacker model (both shown in steps 3 and 4).</li>
+        <li>Data split 60 / 20 / 20 by channel realisation, so no realisation appears in two sets.</li>
+      </ul>
+      <div class="produces"><b>Produces</b><span><code>experiments/configs/base.yaml</code>: the frozen grid and every model parameter. Values marked "assumption" there still need a citation.</span></div>
+    </section>
+
+    <!-- 2 -->
+    <section class="scene" data-step="2" data-status="done" data-m="M1" data-short="Channel" hidden>
+      <h2>Channel simulator</h2>
+      <p class="lead">QPSK symbols are simulated one by one as they cross 20 km of fiber, are handed over to a radio link, and are recovered at the receiver.</p>
+      <div class="fig"><svg id="s2" viewBox="0 0 880 336" role="img" aria-label="Signal chain: transmitter, 20 km fiber, handover, wireless link, receiver, with constellation snapshots"></svg></div>
+      <p class="figcap">Constellation snapshots are drawn to show the idea; noise and fade sizes are not to scale.</p>
+      <div>
+        <h3 style="font-family:var(--f-display);font-size:16px;margin:4px 0 8px">Check: does the simulated bit error rate match theory?</h3>
+        <div class="fig"><svg id="s2b" viewBox="0 0 880 258" role="img" aria-label="Bit error rate versus SNR for no fading, Rician and Rayleigh: simulation points lie on the theory curves"></svg></div>
+        <p class="figcap">Data: <code>results/m1_sanity/ber.json</code>, 8.96 million bits per point. Points with zero errors are not drawn. The line is the unconditional theory curve.</p>
+      </div>
+      <div class="checks" id="checks">
+        <div class="check"><div class="h">No fading (AWGN)</div><div class="v">8.2%</div><div class="track"><i data-w="82"></i></div><div class="s">largest gap to theory; worst point has about 110 expected errors</div></div>
+        <div class="check"><div class="h">Rician, K = 5</div><div class="v">4.3%</div><div class="track"><i data-w="43"></i></div><div class="s">largest gap to theory given the drawn fades</div></div>
+        <div class="check"><div class="h">Rayleigh</div><div class="v">1.5%</div><div class="track"><i data-w="15"></i></div><div class="s">largest gap to theory given the drawn fades</div></div>
+      </div>
+      <ul class="facts">
+        <li>The check uses an ideal fiber and perfect channel knowledge, compared with theory for the fades actually drawn, over points with at least 100 expected errors. Bars span 0 to 10%.</li>
+        <li>Against the plain fading curves the gap reaches 48% (Rician) and 14% (Rayleigh) at high SNR. That is sampling error: a few deep fades among 20,000 windows cause most errors.</li>
+        <li>Full link with pilots: no fading needs about 1 dB more SNR at a bit error rate of 10<sup>−3</sup>; under fading the penalty is small. <span class="lbl">INFERRED from plot</span></li>
+        <li>19 unit tests in <code>tests/</code> pass (config, seeds, attenuation, dispersion, gain, AGC, fading power, pilot estimate, BER).</li>
+      </ul>
+      <div class="produces"><b>Produces</b><span><code>experiments/m1_sanity.py --windows 20000</code> → <code>results/m1_sanity/</code> (<code>ber.json</code>, <code>summary.json</code>, <code>ber_vs_snr.png</code>). Code: <code>src/mimicguard/channel.py</code>, <code>receiver.py</code>, <code>theory.py</code>.</span></div>
+    </section>
+
+    <!-- 3 -->
+    <section class="scene" data-step="3" data-status="done" data-m="M2" data-short="Attacker" hidden>
+      <h2>Attacker model</h2>
+      <p class="lead">The eavesdropper taps the fiber output, just before the handover. A real tap leaves a footprint on the signal. The fidelity α is how much of that footprint the attacker manages to hide.</p>
+      <div class="fig"><svg id="s3" viewBox="0 0 880 360" role="img" aria-label="Tap at the fiber output with three footprint parts that disappear as alpha rises"></svg></div>
+      <p class="figcap">Constellation effects are enlarged so they are visible; the real sizes are a 10% power drop, noise 30 dB below the signal and a 0.03 echo.</p>
+      <div class="alpha">
+        <div class="alpha-top">
+          <label for="alpha-slider">Attacker fidelity α</label>
+          <output id="alpha-out" for="alpha-slider">0.00</output>
+          <span class="badge" id="alpha-badge">Identical to normal</span>
+          <button class="btn" id="alpha-replay" type="button" style="margin-left:auto">Replay sweep</button>
+        </div>
+        <input type="range" id="alpha-slider" min="0" max="1" step="0.01" value="0" aria-describedby="alpha-help">
+        <div class="segs" id="alpha-segs" aria-hidden="true">
+          <div><b>0 → 0.5</b>restore power</div>
+          <div><b>0.5 → 0.75</b>match the noise</div>
+          <div><b>0.75 → 1</b>remove the echo</div>
+        </div>
+        <span id="alpha-help" class="figcap" style="margin:0">Drag the slider to set α yourself. Each part fades linearly over its own range, in order.</span>
+      </div>
+      <ul class="facts">
+        <li class="atk"><b>Mean:</b> the tap removes 10% of the optical power. The handover has a fixed gain set from the untapped link, so this shows as a power drop.</li>
+        <li class="atk"><b>Variance:</b> insertion noise at 30 dB SNR relative to the tapped signal.</li>
+        <li class="atk"><b>Higher-order shape:</b> a one-symbol echo with relative amplitude 0.03.</li>
+        <li>At α = 1 the attacked signal is statistically the same as normal, so no detector should beat chance there.</li>
+      </ul>
+      <div class="produces"><b>Produces</b><span><code>src/mimicguard/attacker.py</code>. Footprint sizes chosen by the calibration scan <code>experiments/m2_footprint_check.py --scan</code> → <code>results/m2_footprint/scan.json</code>.</span></div>
+    </section>
+
+    <!-- 4 -->
+    <section class="scene" data-step="4" data-status="done" data-m="M3" data-short="Dataset" hidden>
+      <h2>Features and dataset</h2>
+      <p class="lead">Each 256-symbol window becomes six numbers. These feature vectors are all that any detector will see.</p>
+      <div class="figs2">
+        <div><div class="fig"><svg id="s4a" viewBox="0 0 520 400" role="img" aria-label="Window to six features; 50 realisations split 30, 10, 10; test stream of 200 windows with attack from window 100"></svg></div></div>
+        <div>
+          <div class="fig"><svg id="s4b" viewBox="0 0 420 400" role="img" aria-label="Best single-feature AUC against alpha for five grid cells"></svg></div>
+          <div class="keyrow" id="s4key" style="margin-top:8px"></div>
+        </div>
+      </div>
+      <p class="figcap">Right: the footprint check. For each α, the best AUC any single feature reaches when separating attacked windows from the normal windows before onset (seed 0, 10 test streams). Nothing is trained here. Data: <code>results/m2_footprint/auc.json</code>.</p>
+      <ul class="facts">
+        <li>No fading, 20 dB: best AUC 1.00, 1.00, 0.89, 0.74, 0.51 across α. Detectability steps down as each footprint part is hidden.</li>
+        <li class="atk">Fading hides the power drop (Rayleigh power AUC 0.53 even at α = 0); amplitude variance carries most of the signal there.</li>
+        <li class="atk">Rayleigh at 5 dB is near chance at every α: a candidate regime where every detector fails. <span class="lbl">INFERRED</span></li>
+        <li>At α = 1 every feature sits within about 0.03 of 0.5 in every cell.</li>
+        <li><b>Fix 1:</b> absolute pilot phase gave AUC 0.64 at α = 1 because laser phase noise makes it drift over time. Replaced by the window-to-window phase change, now at chance.</li>
+        <li><b>Fix 2:</b> footprint sizes calibrated (noise 25 / 30 / 35 dB × echo 0.02 / 0.03 / 0.05); 30 dB and 0.03 give the clean step-down above.</li>
+      </ul>
+      <div class="produces"><b>Produces</b><span><code>src/mimicguard/features.py</code>, <code>dataset.py</code>. Check: <code>experiments/m2_footprint_check.py</code> → <code>results/m2_footprint/auc.json</code>.</span></div>
+    </section>
+
+    <!-- 5 -->
+    <section class="scene" data-step="5" data-status="next" data-m="M4a" data-short="Classical" hidden>
+      <h2>Classical detectors</h2>
+      <p class="lead">Six standard anomaly detectors learn from normal windows only. Each gets one alarm threshold, set so that 1% of normal validation windows trigger it.</p>
+      <div class="fig"><svg id="s5" viewBox="0 0 880 330" role="img" aria-label="Normal training windows feed six detectors; threshold set at 1 percent false alarms on validation scores"></svg></div>
+      <p class="figcap">Score histogram is schematic; no detector has been run yet.</p>
+      <ul class="facts">
+        <li>Energy and CUSUM work on the power feature over time; PCA residual, one-class SVM, Isolation Forest and LOF work on the six-feature vector.</li>
+        <li>Training uses the 30 train realisations, normal data only. The attacker is never seen during training.</li>
+        <li>Threshold: the 99th percentile of each detector's scores on the 10 normal validation realisations.</li>
+      </ul>
+      <div class="produces"><b>Produces</b><span>Planned: detector code in <code>src/mimicguard/</code>, a run script in <code>experiments/</code>, trained models, thresholds and test scores in <code>results/</code>.</span></div>
+    </section>
+
+    <!-- 6 -->
+    <section class="scene" data-step="6" data-status="planned" data-m="M5" data-short="Metrics" hidden>
+      <h2>Evaluation</h2>
+      <p class="lead">One fixed set of measurements for every detector, grid cell and seed, plus two baselines that show whether a number means anything.</p>
+      <div class="fig"><svg id="s6" viewBox="0 0 880 320" role="img" aria-label="Schematic ROC curve, detection delay after onset, and spread over 10 seeds"></svg></div>
+      <p class="figcap">All three panels are schematic; no results exist yet.</p>
+      <ul class="facts">
+        <li><b>AUC:</b> how well scores separate attacked from normal windows, over all thresholds.</li>
+        <li><b>Detection rate at 1% false alarms:</b> the share of attacked windows flagged with the fixed threshold.</li>
+        <li><b>Delay:</b> windows from attack onset (window 100) to the first alarm.</li>
+        <li><b>Seeds:</b> mean and spread over 10 seeds; paired tests compare detectors on the same seeds.</li>
+        <li><b>Baselines:</b> random scores (AUC 0.5) and a plain power threshold.</li>
+      </ul>
+      <div class="produces"><b>Produces</b><span>Planned: metrics code in <code>src/mimicguard/</code>; one metrics table per cell, detector and seed in <code>results/</code>.</span></div>
+    </section>
+
+    <!-- 7 -->
+    <section class="scene" data-step="7" data-status="planned" data-m="Sweep" data-short="Sweep 1" hidden>
+      <h2>First full sweep: classical detectors</h2>
+      <p class="lead">The six classical detectors and two baselines run over the whole grid first, so the reference results are fixed before the autoencoder exists.</p>
+      <div class="fig"><svg id="s7" viewBox="0 0 880 300" role="img" aria-label="Sweep over 105 grid cells for six classical detectors and two baselines"></svg></div>
+      <p class="figcap">Shows progress through the grid only; cell colours carry no results.</p>
+      <ul class="facts">
+        <li>105 cells × 10 seeds, each with train, validation and test data generated from the frozen config.</li>
+        <li>Every detector sees the same data and uses the same 1% false-alarm rule.</li>
+      </ul>
+      <div class="produces"><b>Produces</b><span>Planned: a sweep script in <code>experiments/</code>; the full classical results table in <code>results/</code>.</span></div>
+    </section>
+
+    <!-- 8 -->
+    <section class="scene" data-step="8" data-status="planned" data-m="M4b" data-short="Autoencoder" hidden>
+      <h2>Autoencoder</h2>
+      <p class="lead">An autoencoder learns to squeeze the six features through a small bottleneck and rebuild them. It only ever sees normal windows, so windows it cannot rebuild well are suspicious.</p>
+      <div class="fig"><svg id="s8" viewBox="0 0 880 330" role="img" aria-label="Autoencoder: six features in, small latent layer, six features out; reconstruction error is the anomaly score"></svg></div>
+      <p class="figcap">Schematic. Layer sizes and feature values are illustrative; the latent size is one of the ablations.</p>
+      <ul class="facts">
+        <li>Trained on normal train windows; threshold set the same way as the classical detectors (1% false alarms on validation).</li>
+        <li>Anomaly score = reconstruction error between the input features and the rebuilt ones.</li>
+      </ul>
+      <div class="produces"><b>Produces</b><span>Planned: autoencoder code in <code>src/mimicguard/</code>, a training script in <code>experiments/</code>, trained models and validation scores in <code>results/</code>.</span></div>
+    </section>
+
+    <!-- 9 -->
+    <section class="scene" data-step="9" data-status="planned" data-m="Sweep" data-short="Sweep 2" hidden>
+      <h2>Full sweep with the autoencoder</h2>
+      <p class="lead">The same grid, the same seeds and the same threshold rule, now with the autoencoder added beside the classical detectors.</p>
+      <div class="fig"><svg id="s9" viewBox="0 0 880 300" role="img" aria-label="Sweep over 105 grid cells with the autoencoder added"></svg></div>
+      <p class="figcap">Shows progress through the grid only; cell colours carry no results.</p>
+      <ul class="facts">
+        <li>Paired comparisons are possible because every detector sees exactly the same windows.</li>
+      </ul>
+      <div class="produces"><b>Produces</b><span>Planned: the results table from step 7 extended with the autoencoder, in <code>results/</code>.</span></div>
+    </section>
+
+    <!-- 10 -->
+    <section class="scene" data-step="10" data-status="planned" data-m="Decision" data-short="Go/no-go" hidden>
+      <h2>Go / no-go</h2>
+      <p class="lead">A planned checkpoint: compare the autoencoder with the best classical detector, cell by cell. The paper has a result either way.</p>
+      <div class="fig"><svg id="s10" viewBox="0 0 880 330" role="img" aria-label="Decision: does the autoencoder beat classical detectors anywhere; both answers lead to a regime map"></svg></div>
+      <ul class="facts">
+        <li>If yes: report where it wins, by how much, and against which footprint part.</li>
+        <li>If no: report that simple detectors are enough where anything works.</li>
+        <li>Both outcomes map where simple detectors are enough and where all of them fail. The footprint check already points at Rayleigh 5 dB as a fail region. <span class="lbl">INFERRED</span></li>
+      </ul>
+      <div class="produces"><b>Produces</b><span>Planned: a recorded decision in <code>vault/Decisions.md</code> and a comparison table in <code>results/</code>.</span></div>
+    </section>
+
+    <!-- 11 -->
+    <section class="scene" data-step="11" data-status="planned" data-m="Robustness" data-short="Ablations" hidden>
+      <h2>Ablations</h2>
+      <p class="lead">Check that the conclusions survive when design choices change.</p>
+      <div class="cards" id="s11"></div>
+      <div class="produces"><b>Produces</b><span>Planned: ablation configs and run scripts in <code>experiments/</code>; one table per ablation in <code>results/</code>.</span></div>
+    </section>
+
+    <!-- 12 -->
+    <section class="scene" data-step="12" data-status="planned" data-m="Paper" data-short="Figures" hidden>
+      <h2>Final figures</h2>
+      <p class="lead">The paper's main figures, drawn from the sweep results. The frames below are empty because no detector results exist yet.</p>
+      <div class="cards" id="s12"></div>
+      <div class="produces"><b>Produces</b><span>Planned: a figure script in <code>experiments/</code>; figures in <code>results/</code> for the manuscript in <code>paper/</code>.</span></div>
+    </section>
+
+  </main>
+
+  <div class="transport">
+    <div class="in">
+      <button class="btn" id="prev" type="button" aria-label="Previous step">← Prev</button>
+      <button class="btn primary" id="play" type="button" aria-pressed="false">▶ Autoplay</button>
+      <button class="btn" id="next" type="button" aria-label="Next step">Next →</button>
+      <div class="dwell" aria-hidden="true"><i id="dwell"></i></div>
+      <span class="count" id="count">1 / 12</span>
+    </div>
+  </div>
+
+  <footer>Simulation study only: every number on this page comes from simulated data in <code>results/</code>, and no real-world measurement is claimed. Model parameters are typical values or assumptions still to be cited. Keys: ← and → step through; space toggles autoplay.</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+const NS = "http://www.w3.org/2000/svg";
+const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function el(tag, attrs, parent){ const e = document.createElementNS(NS, tag); if (attrs) for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+function txt(parent, x, y, s, cls, anchor, extra){ const t = el("text", Object.assign({x:x, y:y, class:cls||"t", "text-anchor":anchor||"start"}, extra||{}), parent); t.textContent = s; return t; }
+const clamp = (v,a,b)=>Math.min(Math.max(v,a),b);
+const ease = x=>{ x = clamp(x,0,1); return 1-Math.pow(1-x,3); };
+const seg = (t,a,b)=>ease((t-a)/(b-a));
+const lerp = (a,b,u)=>a+(b-a)*u;
+function rng(seed){ let a = seed>>>0; return function(){ a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a>>>15, 1 | a); t = t + Math.imul(t ^ t>>>7, 61 | t) ^ t; return ((t ^ t>>>14)>>>0)/4294967296; }; }
+let R = rng(7);
+function gauss(){ let u=0,v=0; while(!u) u=R(); while(!v) v=R(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+const QPSK = [[1,1],[-1,1],[-1,-1],[1,-1]].map(p=>[p[0]/Math.SQRT2, p[1]/Math.SQRT2]);
+function arrow(parent, x1,y1,x2,y2, cls){ el("line",{x1:x1,y1:y1,x2:x2,y2:y2,class:cls||"wire"},parent); const a=Math.atan2(y2-y1,x2-x1), s=7; el("path",{d:`M${x2},${y2} L${x2-s*Math.cos(a-0.45)},${y2-s*Math.sin(a-0.45)} L${x2-s*Math.cos(a+0.45)},${y2-s*Math.sin(a+0.45)} Z`, fill:"var(--muted)"},parent); }
+function box(parent,x,y,w,h,cls,r){ return el("rect",{x:x,y:y,width:w,height:h,rx:r==null?8:r,class:cls||"box"},parent); }
+function drawPath(p, u){ p.style.strokeDashoffset = String(1-u); }
+function makeDrawable(p){ p.setAttribute("pathLength","1"); p.style.strokeDasharray="1"; p.style.strokeDashoffset="1"; return p; }
+
+/* constellation inset: returns {g, pts, set(fn)} */
+function constellation(parent, x, y, size, title, n){
+  const g = el("g",{transform:`translate(${x},${y})`},parent);
+  box(g,0,0,size,size,"box",8);
+  el("line",{x1:size/2,y1:8,x2:size/2,y2:size-8,class:"gridl"},g);
+  el("line",{x1:8,y1:size/2,x2:size-8,y2:size/2,class:"gridl"},g);
+  if (title) txt(g,size/2,size+16,title,"tm","middle");
+  const pts=[]; for(let i=0;i<n;i++) pts.push(el("circle",{r:2.6,cx:size/2,cy:size/2,fill:"var(--sig)","fill-opacity":0.8},g));
+  const sc = size*0.3;
+  return {g:g, pts:pts, place(arr, color){ for(let i=0;i<pts.length;i++){ const p=arr[i%arr.length]; pts[i].setAttribute("cx",(size/2+clamp(p[0],-1.55,1.55)*sc).toFixed(1)); pts[i].setAttribute("cy",(size/2-clamp(p[1],-1.55,1.55)*sc).toFixed(1)); if(color) pts[i].setAttribute("fill",color);} } };
+}
+
+/* grid of SNR x fading cells with 5 alpha slivers */
+const SNR = [0,5,10,15,20,25,30], FAD = ["No fading","Rician K=5","Rayleigh"];
+const AOP = [1,.72,.48,.28,.12];
+function grid(parent, x0, y0, cw, ch, gap){
+  const slivers=[], cells=[];
+  txt(parent, x0 + (SNR.length*(cw+gap)-gap)/2, y0-34, "SNR at the wireless receiver (dB)", "tm", "middle");
+  SNR.forEach((s,c)=>txt(parent, x0+c*(cw+gap)+cw/2, y0-12, String(s), "t mono", "middle"));
+  FAD.forEach((f,r)=>{
+    txt(parent, x0-10, y0+r*(ch+gap)+ch/2+5, f, "t", "end");
+    SNR.forEach((s,c)=>{
+      const cx=x0+c*(cw+gap), cy=y0+r*(ch+gap);
+      const cell = el("rect",{x:cx,y:cy,width:cw,height:ch,rx:5,fill:"var(--sunk)",stroke:"var(--line)"},parent);
+      cells.push(cell);
+      const sw=(cw-10)/5;
+      for(let a=0;a<5;a++) slivers.push(el("rect",{x:cx+5+a*sw+0.8,y:cy+6,width:sw-1.6,height:ch-12,rx:2,fill:"var(--atk)",opacity:0},parent));
+    });
+  });
+  return {slivers:slivers, cells:cells};
+}
+
+/* ================= scene builders ================= */
+const scenes = {};
+
+/* ---- 1. design ---- */
+scenes[1] = (function(){
+  const s = document.getElementById("s1");
+  const x0=150,y0=78,cw=58,ch=50,gap=7;
+  const W = SNR.length*(cw+gap)-gap, H = FAD.length*(ch+gap)-gap;
+  const seedG = el("g",{},s);
+  const seeds=[]; for(let k=9;k>=1;k--) seeds.push(el("rect",{x:x0+k*3.2,y:y0-k*3.2,width:W,height:H,rx:6,fill:"var(--surface)",stroke:"var(--line)",opacity:0},seedG));
+  const gr = grid(s,x0,y0,cw,ch,gap);
+  const seedLbl = txt(s,x0+W+4,y0-38,"× 10 seeds","tb","end",{opacity:0});
+  // alpha legend
+  const ly = y0+H+30;
+  txt(s,x0-10,ly+12,"α per cell","tm","end");
+  const lab=["0","0.25","0.5","0.75","1"];
+  for(let a=0;a<5;a++){ el("rect",{x:x0+a*62,y:ly,width:16,height:16,rx:3,fill:"var(--atk)",opacity:AOP[a]},s); txt(s,x0+a*62+22,ly+13,lab[a],"t mono"); }
+  txt(s,x0+5*62+4,ly+13,"full footprint → fully hidden","tm");
+  const tot = txt(s,x0+W/2,ly+48,"7 × 3 × 5 = 105 cells  ·  × 10 seeds = 1,050 runs","tb","middle",{opacity:0});
+  // config card
+  const cx=640, cy=34;
+  box(s,cx,cy,228,262,"box-ink",10);
+  txt(s,cx+14,cy+24,"configs/base.yaml","tb mono",null,{"font-size":"13"});
+  el("line",{x1:cx+14,y1:cy+34,x2:cx+214,y2:cy+34,class:"gridl"},s);
+  const L = [["snr_db:","0…30, step 5"],["fading:","none, rician,"],["","rayleigh (K=5)"],["alpha:","0 .25 .5 .75 1"],["seeds:","10"],["window:","256 symbols"],["pilots:","32"],["features:","6 per window"],["split:","60 / 20 / 20"],["","by realisation"]];
+  const lines = L.map((l,i)=>{ const g=el("g",{opacity:0},s); txt(g,cx+14,cy+58+i*21.5,l[0],"tm mono",null,{"font-size":"12.5"}); txt(g,cx+86,cy+58+i*21.5,l[1],"t mono",null,{"font-size":"12.5"}); return g; });
+  const lock = el("g",{opacity:0,transform:`translate(${cx+196},${cy+12})`},s);
+  el("rect",{x:0,y:8,width:16,height:12,rx:2,fill:"var(--done)"},lock);
+  el("path",{d:"M3,8 V5 a5,5 0 0 1 10,0 V8",fill:"none",stroke:"var(--done)","stroke-width":2},lock);
+  return { tick(t){
+    gr.slivers.forEach((r,i)=>r.setAttribute("opacity",(seg(t,0.2+i*0.014,0.5+i*0.014)*AOP[i%5]).toFixed(3)));
+    seeds.forEach((r,k)=>r.setAttribute("opacity",(seg(t,1.9+(8-k)*0.09,2.2+(8-k)*0.09)*0.9).toFixed(3)));
+    seedLbl.setAttribute("opacity",seg(t,2.6,3).toFixed(3));
+    tot.setAttribute("opacity",seg(t,3.0,3.5).toFixed(3));
+    lines.forEach((g,i)=>g.setAttribute("opacity",seg(t,0.3+i*0.22,0.6+i*0.22).toFixed(3)));
+    lock.setAttribute("opacity",seg(t,2.8,3.2).toFixed(3));
+  }};
+})();
+
+/* ---- 2. channel ---- */
+scenes[2] = (function(){
+  const s = document.getElementById("s2");
+  const Y=78;
+  const B = [
+    {x:8,w:108,t:"Transmitter",sub:"QPSK, 10 GBd",tags:["random QPSK","symbols"]},
+    {x:156,w:250,t:"Fiber · 20 km",sub:"",tags:["0.2 dB/km → 4 dB loss","5% dispersion left over","laser phase noise, 100 kHz","amplifier noise, SNR 30 dB"]},
+    {x:444,w:112,t:"Handover",sub:"fixed gain",tags:["gain restores","normal power"]},
+    {x:594,w:138,t:"Wireless",sub:"",tags:["new fade every","256-symbol window","noise at chosen SNR"]},
+    {x:768,w:106,t:"Receiver",sub:"",tags:["32 pilots →","channel estimate","→ equalise","→ decide"]}
+  ];
+  // wire
+  el("line",{x1:62,y1:Y,x2:820,y2:Y,class:"wire"},s);
+  B.forEach((b,i)=>{
+    box(s,b.x,Y-40,b.w,80,"box-ink",10);
+    txt(s,b.x+b.w/2,Y-17,b.t,"tb","middle");
+    if(b.sub) txt(s,b.x+b.w/2,Y+28,b.sub,"tm","middle");
+    b.tags.forEach((tg,j)=>txt(s,b.x+b.w/2,Y+62+j*17,tg,"tm","middle"));
+  });
+  // fiber coil
+  const coil=[]; for(let k=0;k<=60;k++){ const x=176+k*3.5; coil.push(`${k?"L":"M"}${x},${Y+18+Math.sin(k/2.2)*7}`); }
+  el("path",{d:coil.join(" "),fill:"none",stroke:"var(--sig)","stroke-width":2,"stroke-opacity":0.55},s);
+  // antennas
+  [[610,Y-2],[716,Y-2]].forEach(a=>{ el("path",{d:`M${a[0]},${a[1]+22} V${a[1]+8} M${a[0]-6},${a[1]+2} L${a[0]},${a[1]+8} L${a[0]+6},${a[1]+2}`,fill:"none",stroke:"var(--ink)","stroke-width":1.6},s); });
+  const waves = el("g",{},s);
+  const wv = [0,1,2].map(k=>el("path",{d:"",fill:"none",stroke:"var(--sig)","stroke-width":1.5},waves));
+  // window bar inside receiver
+  const wb = el("g",{transform:`translate(${776},${Y+16})`},s);
+  el("rect",{x:0,y:0,width:90,height:8,rx:2,fill:"var(--sunk)",stroke:"var(--line)"},wb);
+  el("rect",{x:0,y:0,width:90*32/256,height:8,rx:2,fill:"var(--sig)"},wb);
+  // moving symbols
+  const dots=[]; for(let k=0;k<16;k++) dots.push(el("circle",{r:6,fill:"var(--sig)"},s));
+  const fadeVals=[]; const R2=rng(11); for(let k=0;k<64;k++) fadeVals.push(0.45+R2()*0.8);
+  // constellations
+  const cy=210, sz=100;
+  const C = [constellation(s,12,cy,sz,"sent",48), constellation(s,231,cy,sz,"fiber output (4 dB lower)",48), constellation(s,613,cy,sz,"before equaliser",48), constellation(s,771,cy,sz,"after equaliser",48)];
+  // small arrows between insets
+  arrow(s,122,cy+50,222,cy+50); arrow(s,341,cy+50,604,cy+50); arrow(s,723,cy+50,762,cy+50);
+  txt(s,472,cy+42,"handover, then fading + noise","tm","middle");
+  C[0].place(QPSK.concat(QPSK));
+  let last=-1, phase=0;
+  const checks = document.querySelectorAll("#checks .track i");
+  // BER chart
+  const sb = document.getElementById("s2b");
+  const BER = {"none":[[0,0.159,0.159,0.165],[2.5,0.0912,0.0912,0.0966],[5,0.0377,0.0377,0.042],[7.5,0.00886,0.00886,0.0112],[10,0.000783,0.000783,0.00143],[12.5,1.24e-05,1.34e-05,6.95e-05],[15,9.36e-09,0,1.12e-06],[17.5,3.22e-14,0,1.12e-07],[20,7.62e-24,0,0],[22.5,7.22e-41,0,0],[25,4.8e-71,0,0],[27.5,1.3e-124,0,0],[30,8.98e-220,0,0]],"rician":[[0,0.178,0.177,0.184],[2.5,0.115,0.115,0.121],[5,0.0632,0.0633,0.0676],[7.5,0.0288,0.029,0.0318],[10,0.0112,0.0113,0.0127],[12.5,0.00405,0.00391,0.00451],[15,0.00151,0.00144,0.00164],[17.5,0.00062,0.00054,0.000609],[20,0.000281,0.000343,0.000377],[22.5,0.000138,0.000134,0.000146],[25,7.14e-05,7.61e-05,8.07e-05],[27.5,3.83e-05,5.66e-05,5.52e-05],[30,2.09e-05,4.58e-06,3.91e-06]],"rayleigh":[[0,0.211,0.212,0.22],[2.5,0.157,0.156,0.162],[5,0.109,0.11,0.115],[7.5,0.0706,0.0708,0.0744],[10,0.0436,0.0429,0.0455],[12.5,0.0259,0.0253,0.0269],[15,0.0151,0.0149,0.0159],[17.5,0.00866,0.00877,0.00934],[20,0.00493,0.00488,0.00517],[22.5,0.00279,0.00285,0.00305],[25,0.00157,0.00163,0.00174],[27.5,0.000887,0.000826,0.000879],[30,0.000499,0.000568,0.000604]]};
+  const names = {none:"No fading",rician:"Rician, K = 5",rayleigh:"Rayleigh"};
+  const pw=230, top=26, bot=200; const lyMin=-7, lyMax=0;
+  const yOf = v=>lerp(bot,top,(Math.log10(v)-lyMin)/(lyMax-lyMin));
+  const theoryPaths=[], marks=[];
+  Object.keys(BER).forEach((k,i)=>{
+    const ox = 64+i*280; const xOf = d=>ox+d/30*pw;
+    txt(sb,ox+pw/2,16,names[k],"tb","middle",{"font-size":"14"});
+    for(let e=-7;e<=0;e+=1){ const y=yOf(Math.pow(10,e)); el("line",{x1:ox,y1:y,x2:ox+pw,y2:y,class:"gridl"},sb); if(i===0 && e%2!==0) txt(sb,ox-6,y+4,"1e"+e,"tm mono","end",{"font-size":"11"}); }
+    el("path",{d:`M${ox},${top} V${bot} H${ox+pw}`,class:"axis"},sb);
+    [0,10,20,30].forEach(d=>txt(sb,xOf(d),bot+16,String(d),"tm mono","middle",{"font-size":"11"}));
+    txt(sb,ox+pw/2,bot+34,"SNR (dB)","tm","middle");
+    const cut = BER[k].findIndex(p=>p[1]<1e-7);
+    let d=""; BER[k].forEach((p,j)=>{ if(cut>=0 && j>cut) return; const y=yOf(Math.max(p[1],1e-7)); d += (j?"L":"M")+xOf(p[0]).toFixed(1)+","+y.toFixed(1)+" "; });
+    theoryPaths.push(makeDrawable(el("path",{d:d,fill:"none",stroke:"var(--ink)","stroke-width":1.6},sb)));
+    BER[k].forEach((p,j)=>{
+      const g = el("g",{opacity:0},sb); let any=false;
+      if(p[2]>0){ el("circle",{cx:xOf(p[0]),cy:yOf(p[2]),r:4.2,fill:"none",stroke:"var(--sig)","stroke-width":1.6},g); any=true; }
+      if(p[3]>0){ const x=xOf(p[0]), y=yOf(p[3]); el("path",{d:`M${x-3.5},${y-3.5} L${x+3.5},${y+3.5} M${x-3.5},${y+3.5} L${x+3.5},${y-3.5}`,stroke:"var(--atk)","stroke-width":1.6},g); any=true; }
+      if(any) marks.push({g:g,j:j});
+    });
+  });
+  // chart legend
+  const lg = el("g",{transform:"translate(64,248)"},sb);
+  el("line",{x1:0,y1:-4,x2:22,y2:-4,stroke:"var(--ink)","stroke-width":1.6},lg); txt(lg,28,0,"theory","tm");
+  el("circle",{cx:100,cy:-4,r:4.2,fill:"none",stroke:"var(--sig)","stroke-width":1.6},lg); txt(lg,110,0,"ideal fiber, perfect channel knowledge","tm");
+  el("path",{d:"M376,-7.5 L383,-0.5 M376,-0.5 L383,-7.5",stroke:"var(--atk)","stroke-width":1.6},lg); txt(lg,390,0,"full link, pilot-based receiver","tm");
+  return {
+    enter(){ checks.forEach(c=>c.style.width="0"); setTimeout(()=>checks.forEach(c=>c.style.width=c.dataset.w+"%"), reduce?0:500); },
+    tick(t){
+      const sp=0.085;
+      dots.forEach((d,k)=>{
+        const u=((t*sp)+k/16)%1, x=lerp(62,820,u); let r=6, y=Y, op=1;
+        const pass = Math.floor((t*sp)+k/16);
+        if(x>156 && x<406){ const f=(x-156)/250; r=6-1.8*f; y=Y+Math.sin(x/9+k)*2*f; }
+        else if(x>=406 && x<556){ r=4.2+1.8*clamp((x-444)/40,0,1); }
+        else if(x>=556 && x<768){ const h=fadeVals[(pass*16+k)%64]; r=6*clamp(h,0.4,1.2); y=Y+Math.sin(x/5+k*3)*3.5; op=0.55+0.45*clamp(h,0,1); }
+        d.setAttribute("cx",x.toFixed(1)); d.setAttribute("cy",y.toFixed(1)); d.setAttribute("r",r.toFixed(2)); d.setAttribute("opacity",op.toFixed(2));
+      });
+      wv.forEach((p,k)=>{ const ph=((t*1.2)+k/3)%1, rr=6+ph*30; p.setAttribute("d",`M${663-rr*0.2},${Y-rr*0.5+4} A${rr},${rr} 0 0 1 ${663-rr*0.2},${Y+rr*0.5+4}`); p.setAttribute("transform",`translate(${ph*-30},0)`); p.setAttribute("opacity",(0.7*(1-ph)).toFixed(2)); });
+      const step = Math.floor(t*5);
+      if(step!==last){ last=step; R = rng(1000+step);
+        phase = 0.35*Math.sin(t*0.7)+0.15*Math.sin(t*1.9);
+        const blk = Math.floor(t/1.6), Rb=rng(77+blk), hm=0.45+Rb()*0.85, hp=(Rb()-0.5)*2.4;
+        const a=[], b=[], c=[];
+        for(let i=0;i<48;i++){ const q=QPSK[Math.floor(R()*4)];
+          const ca=Math.cos(phase), sa=Math.sin(phase), g=0.63;
+          a.push([g*(q[0]*ca-q[1]*sa)+0.035*gauss(), g*(q[0]*sa+q[1]*ca)+0.035*gauss()]);
+          const cb=Math.cos(hp), sbb=Math.sin(hp), n1=0.11*gauss(), n2=0.11*gauss();
+          b.push([hm*(q[0]*cb-q[1]*sbb)+n1, hm*(q[0]*sbb+q[1]*cb)+n2]);
+          c.push([q[0]+n1/hm, q[1]+n2/hm]);
+        }
+        C[1].place(a); C[2].place(b); C[3].place(c);
+      }
+      theoryPaths.forEach((p,i)=>drawPath(p,seg(t,0.3+i*0.25,1.8+i*0.25)));
+      marks.forEach(m=>m.g.setAttribute("opacity",seg(t,0.8+m.j*0.09,1.1+m.j*0.09).toFixed(3)));
+    }
+  };
+})();
+
+/* ---- 3. attacker ---- */
+scenes[3] = (function(){
+  const s = document.getElementById("s3");
+  const Y=62;
+  el("line",{x1:150,y1:Y,x2:700,y2:Y,class:"wire"},s);
+  const mdots=[0,1,2,3,4].map(()=>el("circle",{r:4.5,fill:"var(--sig)"},s));
+  const bx=[{x:12,w:150,t:"Fiber · 20 km"},{x:356,w:120,t:"Handover"},{x:516,w:116,t:"Wireless"},{x:672,w:110,t:"Receiver"}];
+  bx.forEach(b=>{ box(s,b.x,Y-26,b.w,52,"box-ink",9); txt(s,b.x+b.w/2,Y+5,b.t,"tb","middle"); });
+  // tap
+  const tx=258;
+  el("circle",{cx:tx,cy:Y,r:10,fill:"var(--atk-soft)",stroke:"var(--atk)","stroke-width":2},s);
+  txt(s,tx,Y-18,"tap","t","middle",{"font-weight":"600",fill:"var(--atk)"});
+  const branch = el("path",{d:`M${tx},${Y+10} V${Y+70} H${tx+30}`,fill:"none",stroke:"var(--atk)","stroke-width":2,"stroke-dasharray":"5 4"},s);
+  box(s,tx+30,Y+52,148,38,"box",8).setAttribute("stroke","var(--atk)");
+  txt(s,tx+104,Y+76,"eavesdropper","t","middle",{fill:"var(--atk)","font-weight":"600"});
+  txt(s,tx-20,Y+118,"tap point: fiber output, before the handover","tm","start");
+  const bdots=[0,1,2].map(()=>el("circle",{r:3.5,fill:"var(--atk)"},s));
+  // constellations
+  const cy=196, sz=138;
+  const Cn = constellation(s,14,cy,sz,"normal",64);
+  const Ca = constellation(s,176,cy,sz,"",64);
+  const caLbl = txt(s,176+sz/2,cy+sz+16,"after the tap, α = 0.00","tm","middle");
+  Ca.pts.forEach(p=>p.setAttribute("fill","var(--atk)"));
+  // meters
+  const mx=350, mw=490;
+  const rows=[{k:"Mean",d:"power drop 10%",r:"0 → 0.5"},{k:"Variance",d:"insertion noise, SNR 30 dB",r:"0.5 → 0.75"},{k:"Shape",d:"one-symbol echo, 0.03",r:"0.75 → 1"}];
+  txt(s,mx,cy+4,"Footprint still visible","tb");
+  const meters = rows.map((r,i)=>{
+    const y=cy+30+i*46;
+    txt(s,mx,y,r.k,"t",null,{"font-weight":"600"}); txt(s,mx+82,y,r.d,"tm");
+    txt(s,mx+mw,y,"hidden over α "+r.r,"tm mono","end",{"font-size":"11.5"});
+    el("rect",{x:mx,y:y+7,width:mw,height:14,rx:4,fill:"var(--sunk)"},s);
+    const f = el("rect",{x:mx,y:y+7,width:mw,height:14,rx:4,fill:"var(--atk)"},s);
+    const v = txt(s,mx+6,y+18.5,"100%","mono",null,{"font-size":"11.5",fill:"var(--surface)","font-weight":"600"});
+    return {f:f,v:v};
+  });
+  const slider=document.getElementById("alpha-slider"), out=document.getElementById("alpha-out"), badge=document.getElementById("alpha-badge"), segsEls=document.querySelectorAll("#alpha-segs div");
+  let manual=false, alpha=0, tStart=0, lastStep=-1, lastAlpha=-1;
+  slider.addEventListener("input",()=>{ manual=true; alpha=parseFloat(slider.value); render(true); });
+  document.getElementById("alpha-replay").addEventListener("click",()=>{ manual=false; tStart=-1; });
+  const R3=rng(5);
+  const syms=[]; for(let i=0;i<65;i++) syms.push(QPSK[Math.floor(R3()*4)]);
+  function render(force){
+    const rm=clamp(alpha/0.5,0,1), rv=clamp((alpha-0.5)/0.25,0,1), rh=clamp((alpha-0.75)/0.25,0,1);
+    const rem=[1-rm,1-rv,1-rh];
+    meters.forEach((m,i)=>{ m.f.setAttribute("width",(mw*rem[i]).toFixed(1)); m.v.textContent=Math.round(rem[i]*100)+"%"; m.v.setAttribute("fill", rem[i]>0.12?"var(--surface)":"var(--muted)"); m.v.setAttribute("x", rem[i]>0.12? mx+6 : mx+mw*rem[i]+6); });
+    out.value = alpha.toFixed(2); out.textContent = alpha.toFixed(2); slider.value = alpha;
+    caLbl.textContent = "after the tap, α = "+alpha.toFixed(2);
+    badge.style.opacity = alpha>=0.995 ? 1 : 0;
+    segsEls[0].classList.toggle("on", alpha>0 && alpha<=0.5); segsEls[1].classList.toggle("on", alpha>0.5 && alpha<=0.75); segsEls[2].classList.toggle("on", alpha>0.75 && alpha<1);
+    const stp = Math.floor(performance.now()/180);
+    if(force || stp!==lastStep || alpha!==lastAlpha){ lastStep=stp; lastAlpha=alpha; R=rng(300+stp);
+      const n=[], a=[]; const sc=1-0.28*rem[0], sg=0.17*rem[1], e=0.32*rem[2];
+      for(let i=1;i<65;i++){ const q=syms[(i+stp)%65], p=syms[(i+stp+64)%65]; const b0=0.045*gauss(), b1=0.045*gauss();
+        n.push([q[0]+b0,q[1]+b1]);
+        a.push([sc*(q[0]+e*p[0])+b0+sg*gauss(), sc*(q[1]+e*p[1])+b1+sg*gauss()]); }
+      Cn.place(n); Ca.place(a);
+    }
+  }
+  return {
+    enter(){ manual=false; tStart=-1; },
+    tick(t){
+      if(tStart<0) tStart=t;
+      const tt=t-tStart;
+      if(!manual){ const c=tt%13; alpha = c<1.5?0 : c<10.5 ? Math.round((c-1.5)/9*100)/100 : 1; if(reduce) alpha=0; }
+      render(false);
+      bdots.forEach((d,k)=>{ const u=((t*0.5)+k/3)%1; const L1=70, L2=30, L=u*(L1+L2); if(L<L1){ d.setAttribute("cx",tx); d.setAttribute("cy",Y+10+L); } else { d.setAttribute("cx",tx+(L-L1)); d.setAttribute("cy",Y+80); } d.setAttribute("opacity", (alpha<0.995?1:0.9).toFixed(2)); });
+      mdots.forEach((d,k)=>{ const u=((t*0.12)+k/5)%1; d.setAttribute("cx",lerp(162,672,u)); d.setAttribute("cy",Y); const rr = u*510+162 > tx ? 4.5*(1-0.12*(1-clamp(alpha/0.5,0,1))) : 4.5; d.setAttribute("r",rr.toFixed(2)); });
+    }
+  };
+})();
+
+/* ---- 4. dataset ---- */
+scenes[4] = (function(){
+  const s=document.getElementById("s4a");
+  // window strip
+  txt(s,20,26,"One window = 256 symbols","tb");
+  const ws = el("g",{transform:"translate(20,38)"},s);
+  for(let i=0;i<64;i++) el("rect",{x:i*3.2,y:0,width:2.4,height:26,fill:i<8?"var(--sig)":"var(--line)"},ws);
+  txt(s,20,82,"first 32 = pilots","tm");
+  const wcur = el("rect",{x:0,y:-4,width:4,height:34,fill:"var(--ink)",opacity:0.8},ws);
+  arrow(s,232,51,268,51);
+  const F=["power","EVM","pilot magnitude","pilot phase change","amplitude variance","amplitude kurtosis"];
+  const chips = F.map((f,i)=>{ const g=el("g",{transform:`translate(278,${14+i*25})`},s); const r=el("rect",{x:0,y:0,width:224,height:21,rx:5,fill:"var(--sunk)",stroke:"var(--line)"},g); txt(g,10,15,(i+1)+"  "+f,"t",null,{"font-size":"13"}); return {g:g,r:r}; });
+  // realisations
+  const ry=190;
+  txt(s,20,ry,"50 channel realisations, split by realisation","tb");
+  const sq=[]; for(let i=0;i<50;i++){ const c = i<30?"var(--sig)": i<40?"var(--c3)":"var(--ink)"; sq.push(el("rect",{x:20+i*9.6,y:ry+12,width:7.6,height:24,rx:2,fill:c,opacity:0},s)); }
+  const brk=(a,b,lab,sub)=>{ const x1=20+a*9.6, x2=20+b*9.6-2; el("path",{d:`M${x1},${ry+44} v5 H${x2} v-5`,fill:"none",stroke:"var(--muted)"},s); txt(s,(x1+x2)/2,ry+64,lab,"t","middle",{"font-size":"13","font-weight":"600"}); txt(s,(x1+x2)/2,ry+80,sub,"tm","middle"); };
+  brk(0,30,"30 train","normal only"); brk(30,40,"10 val.","normal only"); brk(40,50,"10 test","normal + attack");
+  // test stream
+  const ty=310;
+  txt(s,20,ty,"Each test stream: 200 windows","tb");
+  const tw=[]; for(let i=0;i<200;i++) tw.push(el("rect",{x:20+i*2.4,y:ty+12,width:2,height:28,fill:i<100?"var(--sig)":"var(--atk)",opacity:0.3},s));
+  el("line",{x1:20+100*2.4-0.2,y1:ty+6,x2:20+100*2.4-0.2,y2:ty+48,stroke:"var(--ink)","stroke-width":1.5},s);
+  txt(s,20,ty+62,"windows 0–99 normal","tm"); txt(s,500,ty+62,"attacked from window 100","tm","end",{fill:"var(--atk)"});
+  txt(s,260,ty+80,"onset","tm mono","middle");
+  // chart
+  const c=document.getElementById("s4b");
+  const X0=56,X1=400,Yt=34,Yb=330, yv=v=>lerp(Yb,Yt,(v-0.45)/(1.02-0.45)), xv=a=>lerp(X0,X1,a);
+  txt(c,X0,18,"Best single-feature AUC","tb");
+  [0.5,0.6,0.7,0.8,0.9,1.0].forEach(v=>{ el("line",{x1:X0,y1:yv(v),x2:X1,y2:yv(v),class:"gridl"},c); txt(c,X0-8,yv(v)+4,v.toFixed(1),"tm mono","end",{"font-size":"11.5"}); });
+  el("line",{x1:X0,y1:yv(0.5),x2:X1,y2:yv(0.5),stroke:"var(--muted)","stroke-dasharray":"4 4"},c);
+  txt(c,X1-4,yv(0.5)+16,"chance","tm","end");
+  el("path",{d:`M${X0},${Yt} V${Yb} H${X1}`,class:"axis"},c);
+  [0,0.25,0.5,0.75,1].forEach(a=>txt(c,xv(a),Yb+18,String(a),"tm mono","middle",{"font-size":"11.5"}));
+  txt(c,(X0+X1)/2,Yb+40,"attacker fidelity α","tm","middle");
+  const S=[
+    {n:"No fading, 20 dB",v:[1.00,1.00,0.89,0.74,0.51],c:"var(--sig)",w:3.2},
+    {n:"No fading, 5 dB",v:[0.92,0.76,0.51,0.51,0.52],c:"var(--c2)",w:1.8},
+    {n:"Rician, 20 dB",v:[0.77,0.78,0.80,0.67,0.52],c:"var(--c3)",w:1.8},
+    {n:"Rayleigh, 20 dB",v:[0.66,0.67,0.68,0.61,0.51],c:"var(--c4)",w:1.8},
+    {n:"Rayleigh, 5 dB",v:[0.53,0.51,0.50,0.50,0.50],c:"var(--c5)",w:1.8}];
+  const A=[0,0.25,0.5,0.75,1];
+  const lines=[], pts=[];
+  S.slice().reverse().forEach((se)=>{
+    const d=se.v.map((v,i)=>(i?"L":"M")+xv(A[i]).toFixed(1)+","+yv(v).toFixed(1)).join(" ");
+    lines.push({p:makeDrawable(el("path",{d:d,fill:"none",stroke:se.c,"stroke-width":se.w,"stroke-linejoin":"round"},c)),i:S.indexOf(se)});
+    se.v.forEach((v,i)=>pts.push({e:el("circle",{cx:xv(A[i]),cy:yv(v),r:se.w>2?4.5:3.2,fill:se.c,opacity:0},c),i:S.indexOf(se),j:i}));
+  });
+  const refLbl = txt(c,xv(0.5)+8,yv(0.89)-8,"0.89","t mono",null,{"font-size":"12",opacity:0});
+  const refLbl2 = txt(c,xv(0.75)+8,yv(0.74)-8,"0.74","t mono",null,{"font-size":"12",opacity:0});
+  const key=document.getElementById("s4key");
+  S.forEach(se=>{ const sp=document.createElement("span"); sp.innerHTML=`<i class="sw" style="background:${se.c};height:${se.w>2?5:3}px"></i>`; sp.appendChild(document.createTextNode(se.n)); key.appendChild(sp); });
+  return { tick(t){
+    const k=Math.floor(t*1.1)%7;
+    chips.forEach((ch,i)=>{ const on = i===k-1 || (k===0); ch.r.setAttribute("fill", on?"var(--sig-soft)":"var(--sunk)"); ch.r.setAttribute("stroke", on?"var(--sig)":"var(--line)"); ch.g.setAttribute("opacity",seg(t,0.1+i*0.12,0.4+i*0.12).toFixed(3)); });
+    wcur.setAttribute("x",((t*60)%205).toFixed(1));
+    sq.forEach((r,i)=>r.setAttribute("opacity",seg(t,0.4+i*0.03,0.6+i*0.03).toFixed(3)));
+    const cur=Math.floor(((t-1)*40)%260);
+    tw.forEach((r,i)=>r.setAttribute("opacity", (t<1?0.3: i<=cur?0.95:0.3)));
+    lines.forEach(l=>drawPath(l.p,seg(t,0.6+l.i*0.35,2.2+l.i*0.35)));
+    pts.forEach(p=>p.e.setAttribute("opacity",seg(t,0.6+p.i*0.35+p.j*0.3,0.8+p.i*0.35+p.j*0.3).toFixed(3)));
+    refLbl.setAttribute("opacity",seg(t,2.2,2.6)); refLbl2.setAttribute("opacity",seg(t,2.4,2.8));
+  }};
+})();
+
+/* ---- 5. classical detectors ---- */
+scenes[5] = (function(){
+  const s=document.getElementById("s5");
+  // training stack
+  for(let k=3;k>=0;k--) box(s,14+k*5,120-k*5,104,70,"box",6);
+  txt(s,66,150,"normal","t","middle",{"font-weight":"600"}); txt(s,66,168,"train windows","tm","middle");
+  const D=[["Energy","window power vs","normal level"],["CUSUM","running sum of","small shifts"],["PCA residual","distance from main","normal directions"],["One-class SVM","boundary drawn","around normal"],["Isolation Forest","how fast random","splits isolate it"],["LOF","density vs its","nearest neighbours"]];
+  const dx=170, dy=40, bw=136, bh=86, gx=12, gy=18;
+  const boxes=[], flows=[];
+  D.forEach((d,i)=>{ const c=i%3, r=Math.floor(i/3), x=dx+c*(bw+gx), y=dy+r*(bh+gy)+20;
+    const b=box(s,x,y,bw,bh,"box",8); boxes.push(b);
+    txt(s,x+bw/2,y+26,d[0],"tb","middle",{"font-size":"14"}); txt(s,x+bw/2,y+50,d[1],"tm","middle"); txt(s,x+bw/2,y+66,d[2],"tm","middle"); });
+  txt(s,dx,30,"each trained on normal data only","tm");
+  for(let k=0;k<6;k++) flows.push(el("circle",{r:4,fill:"var(--sig)"},s));
+  arrow(s,dx+3*(bw+gx)-gx+6,160,dx+3*(bw+gx)+24,160);
+  // histogram
+  const hx=640, hy=250, hw=226, hh=170;
+  txt(s,hx,52,"validation scores (normal only)","tm");
+  el("path",{d:`M${hx},${hy-hh} V${hy} H${hx+hw}`,class:"axis"},s);
+  txt(s,hx+hw,hy+18,"anomaly score →","tm","end");
+  const nb=20, pdf=[]; for(let i=0;i<nb;i++){ const x=(i+0.5)/nb*9; pdf.push(x*x*Math.exp(-x)); }
+  const mx=Math.max.apply(null,pdf); const tot=pdf.reduce((a,b)=>a+b,0);
+  let cum=0, q99=nb; for(let i=0;i<nb;i++){ cum+=pdf[i]/tot; if(cum>=0.99){ q99=i+1; break; } }
+  const bars=pdf.map((v,i)=>el("rect",{x:hx+4+i*(hw-8)/nb,y:hy,width:(hw-8)/nb-2,height:0,fill:"var(--sig)",opacity:0.75},s));
+  const thx = hx+4+q99*(hw-8)/nb;
+  const shade=el("rect",{x:thx,y:hy-hh,width:hx+hw-thx,height:hh,fill:"var(--atk-soft)",opacity:0},s);
+  const th=el("line",{x1:hx,y1:hy-hh,x2:hx,y2:hy,stroke:"var(--atk)","stroke-width":2.5},s);
+  const thl=txt(s,thx,hy-hh-8,"threshold","t","middle",{fill:"var(--atk)","font-weight":"600",opacity:0});
+  const fl=txt(s,thx-8,hy-hh+44,"1% of normal","tm","end",{opacity:0});
+  const fl2=txt(s,thx-8,hy-hh+60,"windows alarm","tm","end",{opacity:0});
+  s.insertBefore(shade, bars[0]);
+  return { tick(t){
+    bars.forEach((b,i)=>{ const h=pdf[i]/mx*(hh-30)*seg(t,0.3+i*0.05,1.2+i*0.05); b.setAttribute("y",(hy-h).toFixed(1)); b.setAttribute("height",h.toFixed(1)); });
+    const x=lerp(hx+20,thx,seg(t,1.8,3.2)); th.setAttribute("x1",x); th.setAttribute("x2",x);
+    shade.setAttribute("opacity",(seg(t,3.1,3.6)*0.9).toFixed(3)); thl.setAttribute("opacity",seg(t,3.1,3.5)); thl.setAttribute("x",x);
+    fl.setAttribute("opacity",seg(t,3.4,3.8)); fl2.setAttribute("opacity",seg(t,3.4,3.8));
+    const act=Math.floor(t/0.7)%6;
+    boxes.forEach((b,i)=>{ b.setAttribute("stroke", i===act?"var(--sig)":"var(--line)"); b.setAttribute("stroke-width", i===act?2.2:1.2); });
+    flows.forEach((f,k)=>{ const u=((t*0.9)+k/6)%1; const i=act; const c=i%3, r=Math.floor(i/3); const tx=dx+c*(bw+gx)+bw/2, ty=dy+r*(bh+gy)+20+bh/2; const sx=124, sy=155; f.setAttribute("cx",lerp(sx,tx-bw/2-6,u)); f.setAttribute("cy",lerp(sy,ty,u)); f.setAttribute("opacity",(1-u).toFixed(2)); });
+  }};
+})();
+
+/* ---- 6. evaluation ---- */
+scenes[6] = (function(){
+  const s=document.getElementById("s6");
+  // ROC
+  const ax=50, ay=40, aw=210, ah=210;
+  txt(s,ax,24,"AUC; detection at 1% FA","tb",null,{"font-size":"14"});
+  el("rect",{x:ax,y:ay,width:aw,height:ah,fill:"none",stroke:"var(--line)"},s);
+  el("line",{x1:ax,y1:ay+ah,x2:ax+aw,y2:ay,stroke:"var(--muted)","stroke-dasharray":"4 4"},s);
+  txt(s,ax+aw*0.62,ay+ah*0.52,"random","tm",null,{transform:`rotate(-45 ${ax+aw*0.62} ${ay+ah*0.52})`});
+  let d=`M${ax},${ay+ah}`, fill=`M${ax},${ay+ah}`; for(let i=0;i<=40;i++){ const x=i/40, y=Math.pow(x,0.22); d+=` L${(ax+x*aw).toFixed(1)},${(ay+ah-y*ah).toFixed(1)}`; } fill=d+` L${ax+aw},${ay+ah} Z`;
+  const area=el("path",{d:fill,fill:"var(--sig-soft)",opacity:0},s);
+  const roc=makeDrawable(el("path",{d:d,fill:"none",stroke:"var(--sig)","stroke-width":2.4},s));
+  const fx=ax+0.01*aw*3; // drawn wider than to scale
+  const fpr=el("line",{x1:fx,y1:ay,x2:fx,y2:ay+ah,stroke:"var(--atk)","stroke-width":1.5,"stroke-dasharray":"3 3",opacity:0},s);
+  const fdot=el("circle",{cx:fx,cy:ay+ah-Math.pow(0.03,0.22)*ah,r:5,fill:"var(--atk)",opacity:0},s);
+  const flab=txt(s,fx+8,ay+ah-Math.pow(0.03,0.22)*ah+18,"detection rate at 1% FA","tm",null,{opacity:0,fill:"var(--atk)"});
+  const alab=txt(s,ax+aw*0.55,ay+ah*0.8,"AUC = shaded area","tm",null,{opacity:0});
+  txt(s,ax+aw/2,ay+ah+18,"false alarm rate","tm","middle"); txt(s,ax-10,ay+ah/2,"detection rate","tm","middle",{transform:`rotate(-90 ${ax-10} ${ay+ah/2})`});
+  // delay
+  const bx=320, by=40, bw=260, bh=210;
+  txt(s,bx,24,"Delay after onset","tb",null,{"font-size":"14"});
+  el("path",{d:`M${bx},${by} V${by+bh} H${bx+bw}`,class:"axis"},s);
+  const xw=w=>bx+(w-80)/60*bw; const onx=xw(100);
+  el("rect",{x:onx,y:by,width:bx+bw-onx,height:bh,fill:"var(--atk-soft)",opacity:0.55},s);
+  el("line",{x1:onx,y1:by,x2:onx,y2:by+bh,stroke:"var(--atk)","stroke-width":1.5},s);
+  txt(s,onx+4,by+14,"attack starts","tm",null,{fill:"var(--atk)"});
+  const thY=by+90; el("line",{x1:bx,y1:thY,x2:bx+bw,y2:thY,stroke:"var(--ink)","stroke-dasharray":"5 4"},s); txt(s,bx+4,thY-6,"threshold","tm");
+  const R6=rng(3); let sd="", alarmW=0;
+  for(let w=80;w<=140;w++){ let v=0.25+0.08*R6(); if(w>=100) v+=Math.min(0.5,(w-100)*0.06); const y=by+bh-v*bh*0.85; sd+=(w===80?"M":"L")+xw(w).toFixed(1)+","+y.toFixed(1)+" "; if(!alarmW && y<thY) alarmW=w; }
+  const score=makeDrawable(el("path",{d:sd,fill:"none",stroke:"var(--sig)","stroke-width":2},s));
+  const ax2=xw(alarmW);
+  const alarm=el("g",{opacity:0},s); el("circle",{cx:ax2,cy:thY,r:6,fill:"none",stroke:"var(--atk)","stroke-width":2.2},alarm); txt(alarm,ax2+8,thY+22,"first alarm","tm",null,{fill:"var(--atk)"});
+  const dl=el("g",{opacity:0},s); el("line",{x1:onx,y1:by+bh-26,x2:ax2,y2:by+bh-26,stroke:"var(--ink)","stroke-width":1.6},dl); el("path",{d:`M${onx},${by+bh-32} v12 M${ax2},${by+bh-32} v12`,stroke:"var(--ink)","stroke-width":1.6},dl); txt(dl,(onx+ax2)/2,by+bh-34,"delay","t","middle",{"font-size":"13"});
+  [80,100,120,140].forEach(w=>txt(s,xw(w),by+bh+16,String(w),"tm mono","middle",{"font-size":"11"}));
+  txt(s,bx+bw/2,by+bh+34,"window","tm","middle");
+  // seeds
+  const cx=640, cw=220;
+  txt(s,cx,24,"10 seeds, paired","tb",null,{"font-size":"14"});
+  el("path",{d:`M${cx},${by} V${by+bh} H${cx+cw}`,class:"axis"},s);
+  const groups=[{x:cx+60,m:0.55,l:"detector A",c:"var(--sig)"},{x:cx+160,m:0.68,l:"detector B",c:"var(--c3)"}];
+  const R7=rng(9); const sdots=[]; const offs=[]; for(let k=0;k<10;k++) offs.push((R7()-0.5)*0.12);
+  groups.forEach((g,gi)=>{ txt(s,g.x,by+bh+16,g.l,"tm","middle"); for(let k=0;k<10;k++){ const v=g.m+offs[k]+(R7()-0.5)*0.03; sdots.push({e:el("circle",{cx:g.x+((k%5)-2)*6,cy:by+bh-v*bh,r:4,fill:g.c,opacity:0},s),k:k+gi*10}); }
+    const mb=el("line",{x1:g.x-24,x2:g.x+24,y1:by+bh-g.m*bh,y2:by+bh-g.m*bh,stroke:"var(--ink)","stroke-width":2.4,opacity:0},s); sdots.push({e:mb,k:22}); });
+  const pair=el("g",{opacity:0},s); el("path",{d:`M${cx+60},${by+30} v-10 H${cx+160} v10`,fill:"none",stroke:"var(--ink)"},pair); txt(pair,cx+110,by+14,"paired test","tm","middle");
+  return { tick(t){
+    drawPath(roc,seg(t,0.2,1.6)); area.setAttribute("opacity",(seg(t,1.4,2)*0.9).toFixed(3)); alab.setAttribute("opacity",seg(t,1.6,2));
+    fpr.setAttribute("opacity",seg(t,2,2.4)); fdot.setAttribute("opacity",seg(t,2.2,2.5)); flab.setAttribute("opacity",seg(t,2.3,2.7));
+    drawPath(score,seg(t,0.8,3)); alarm.setAttribute("opacity",seg(t,3,3.3)); dl.setAttribute("opacity",seg(t,3.3,3.7));
+    sdots.forEach(d=>d.e.setAttribute("opacity",seg(t,1+d.k*0.08,1.2+d.k*0.08).toFixed(3))); pair.setAttribute("opacity",seg(t,3.2,3.6));
+  }};
+})();
+
+/* ---- 7 & 9. sweeps ---- */
+function sweep(id, withAE){
+  const s=document.getElementById(id);
+  const gr=grid(s,130,74,52,46,6);
+  const scan=el("rect",{width:52,height:46,rx:5,fill:"none",stroke:"var(--ink)","stroke-width":2.4,opacity:0},s);
+  const lx=560;
+  txt(s,lx,30,"detectors × 105 cells × 10 seeds","tm");
+  const names=["Energy","CUSUM","PCA residual","One-class SVM","Isolation Forest","LOF","Random (baseline)","Power threshold (baseline)"];
+  if(withAE) names.splice(6,0,"Autoencoder");
+  const bars=names.map((n,i)=>{ const y=50+i*(withAE?26:28); const ae=n==="Autoencoder";
+    txt(s,lx,y+12,n,"t",null,{"font-size":"13","font-weight":ae?"700":"400",fill:ae?"var(--sig)":(n.indexOf("baseline")>0?"var(--muted)":"var(--ink)")});
+    el("rect",{x:lx+178,y:y+2,width:130,height:12,rx:3,fill:"var(--sunk)"},s);
+    return {f:el("rect",{x:lx+178,y:y+2,width:0,height:12,rx:3,fill:ae?"var(--sig)":"var(--muted)"},s), ae:ae}; });
+  const cnt=txt(s,130+ (7*58-6)/2,74+3*52+26,"0 / 105 cells","t mono","middle");
+  return { tick(t){
+    const n=Math.min(105,Math.max(0,Math.floor((t-0.4)*11)));
+    // fill order: column by column (SNR), rows within
+    const cellsDone=Math.min(21,Math.floor(n/5));
+    gr.cells.forEach((c,ci)=>{ const rr=Math.floor(ci/7), cc=ci%7, order=cc*3+rr; const done = order<cellsDone; c.setAttribute("fill", done?"var(--sig-soft)":"var(--sunk)"); });
+    gr.slivers.forEach((r,i)=>{ const ci=Math.floor(i/5), rr=Math.floor(ci/7), cc=ci%7, order=cc*3+rr; const k=order*5+(i%5); r.setAttribute("opacity", k<n? (withAE?0.85:0.6):0); r.setAttribute("fill", withAE?"var(--sig)":"var(--muted)"); });
+    if(n<105){ const ord=Math.min(20,Math.floor(n/5)), cc=Math.floor(ord/3), rr=ord%3; scan.setAttribute("x",130+cc*58); scan.setAttribute("y",74+rr*52); scan.setAttribute("opacity",1); } else scan.setAttribute("opacity",0);
+    cnt.textContent = n+" / 105 cells";
+    bars.forEach((b,i)=>b.f.setAttribute("width",(130*clamp(n/105,0,1)).toFixed(1)));
+  }};
+}
+scenes[7]=sweep("s7",false);
+scenes[9]=sweep("s9",true);
+
+/* ---- 8. autoencoder ---- */
+scenes[8] = (function(){
+  const s=document.getElementById("s8");
+  const F=["power","EVM","pilot magnitude","pilot phase change","amp. variance","amp. kurtosis"];
+  const top=58, sp=36;
+  const modeLbl=txt(s,20,26,"normal window","tb",null,{fill:"var(--sig)"});
+  F.forEach((f,i)=>txt(s,150,top+i*sp+5,f,"tm","end"));
+  const inB=F.map((f,i)=>el("rect",{x:158,y:top+i*sp-7,height:14,width:0,rx:3,fill:"var(--sig)"},s));
+  const L=[{x:290,n:6},{x:370,n:4},{x:450,n:2},{x:530,n:4},{x:610,n:6}];
+  const nodePos=L.map(l=>{ const arr=[]; const h=(l.n-1)*sp; for(let i=0;i<l.n;i++) arr.push([l.x, top+ (5*sp-h)/2 + i*sp]); return arr; });
+  const conns=[];
+  for(let a=0;a<L.length-1;a++) nodePos[a].forEach(p=>nodePos[a+1].forEach(q=>conns.push(el("line",{x1:p[0],y1:p[1],x2:q[0],y2:q[1],stroke:"var(--line)","stroke-width":1.2,"stroke-dasharray":"3 9"},s))));
+  nodePos.forEach((arr,a)=>arr.forEach(p=>el("circle",{cx:p[0],cy:p[1],r:a===2?11:8,fill:a===2?"var(--sig-soft)":"var(--surface)",stroke:a===2?"var(--sig)":"var(--ink)","stroke-width":1.5},s)));
+  txt(s,330,top+5*sp+40,"encoder","tm","middle"); txt(s,450,top+5*sp+40,"latent","t","middle",{"font-weight":"600"}); txt(s,570,top+5*sp+40,"decoder","tm","middle");
+  [[230,top+2.5*sp,280,top+2.5*sp]].forEach(a=>{});
+  const outB=F.map((f,i)=>el("rect",{x:640,y:top+i*sp-7,height:14,width:0,rx:3,fill:"var(--c3)"},s));
+  const ghost=F.map((f,i)=>el("rect",{x:640,y:top+i*sp-7,height:14,width:0,rx:3,fill:"none",stroke:"var(--ink)","stroke-dasharray":"3 2"},s));
+  txt(s,640,top-24,"rebuilt","tm"); txt(s,158,top-24,"input","tm");
+  // error
+  const ex=770; txt(s,ex,top+20,"reconstruction","tm"); txt(s,ex,top+36,"error = score","tm");
+  el("rect",{x:ex,y:top+56,width:96,height:150,rx:6,fill:"var(--sunk)",stroke:"var(--line)"},s);
+  const eb=el("rect",{x:ex+24,width:48,y:top+206,height:0,rx:4,fill:"var(--sig)"},s);
+  const thy=top+206-150*0.35; el("line",{x1:ex-6,x2:ex+102,y1:thy,y2:thy,stroke:"var(--atk)","stroke-width":2,"stroke-dasharray":"5 3"},s);
+  txt(s,ex+48,top+252,"dashed: threshold","tm","middle",{fill:"var(--atk)","font-size":"11.5"});
+  const verdict=txt(s,ex+48,top+232,"no alarm","t","middle",{"font-weight":"600"});
+  const N=[.60,.42,.55,.30,.50,.45], Nr=[.58,.44,.54,.31,.52,.44];
+  const A=[.50,.66,.52,.36,.80,.72], Ar=[.57,.46,.54,.32,.55,.47];
+  let curIn=N.slice(), curOut=Nr.slice();
+  return { tick(t){
+    const mode=Math.floor(t/4.5)%2, u=seg(t%4.5,0,0.8);
+    const tin=mode?A:N, tout=mode?Ar:Nr, fin=mode?N:A, fout=mode?Nr:Ar;
+    let err=0;
+    F.forEach((f,i)=>{ const vi=lerp(fin[i],tin[i],u), vo=lerp(fout[i],tout[i],u); const g=seg(t,0.2,1);
+      inB[i].setAttribute("width",(vi*110*g).toFixed(1)); outB[i].setAttribute("width",(vo*110*g).toFixed(1)); ghost[i].setAttribute("width",(vi*110*g).toFixed(1)); err+=(vi-vo)*(vi-vo); });
+    inB.forEach(b=>b.setAttribute("fill",mode?"var(--atk)":"var(--sig)"));
+    modeLbl.textContent = mode?"attacked window":"normal window"; modeLbl.setAttribute("fill",mode?"var(--atk)":"var(--sig)");
+    const h=clamp(err/0.16,0,1)*150*seg(t,0.6,1.4); eb.setAttribute("y",(top+206-h).toFixed(1)); eb.setAttribute("height",h.toFixed(1));
+    const alarm = h>150*0.35; eb.setAttribute("fill",alarm?"var(--atk)":"var(--sig)"); verdict.textContent=alarm?"alarm":"no alarm"; verdict.setAttribute("fill",alarm?"var(--atk)":"var(--ink)");
+    const off=(-t*24).toFixed(1); conns.forEach(c=>c.style.strokeDashoffset=off);
+  }};
+})();
+
+/* ---- 10. go / no-go ---- */
+scenes[10] = (function(){
+  const s=document.getElementById("s10");
+  box(s,14,128,160,76,"box-ink",10); txt(s,94,160,"Results of","t","middle"); txt(s,94,180,"both sweeps","t","middle");
+  const dc=[340,166];
+  const p0=makeDrawable(el("path",{d:`M174,166 H${dc[0]-110}`,fill:"none",stroke:"var(--muted)","stroke-width":2},s));
+  el("path",{d:`M${dc[0]-110},166 L${dc[0]},96 L${dc[0]+110},166 L${dc[0]},236 Z`,fill:"var(--next-soft)",stroke:"var(--next)","stroke-width":1.6},s);
+  txt(s,dc[0],150,"Does the","t","middle"); txt(s,dc[0],170,"autoencoder beat","t","middle",{"font-weight":"600"}); txt(s,dc[0],190,"classical anywhere?","t","middle");
+  const pY=makeDrawable(el("path",{d:`M${dc[0]},96 V60 H500`,fill:"none",stroke:"var(--done)","stroke-width":2},s));
+  const pN=makeDrawable(el("path",{d:`M${dc[0]},236 V272 H500`,fill:"none",stroke:"var(--atk)","stroke-width":2},s));
+  const yes=el("g",{opacity:0},s); box(yes,500,24,226,72,"box",10); txt(yes,348,52,"yes","t",null,{fill:"var(--done)","font-weight":"700"}); txt(yes,613,54,"where and by how much","t","middle"); txt(yes,613,74,"the autoencoder helps","t","middle");
+  const no=el("g",{opacity:0},s); box(no,500,236,226,72,"box",10); txt(no,348,290,"no","t",null,{fill:"var(--atk)","font-weight":"700"}); txt(no,613,266,"classical detectors","t","middle"); txt(no,613,286,"are enough","t","middle");
+  const pF1=makeDrawable(el("path",{d:"M726,60 H760 V140 H772",fill:"none",stroke:"var(--muted)","stroke-width":2},s));
+  const pF2=makeDrawable(el("path",{d:"M726,272 H760 V192 H772",fill:"none",stroke:"var(--muted)","stroke-width":2},s));
+  const fin=el("g",{opacity:0},s); box(fin,772,112,100,108,"box-ink",10); txt(fin,822,138,"Regime","tb","middle"); txt(fin,822,156,"map","tb","middle");
+  [["enough","var(--sig)"],["AE helps","var(--done)"],["all fail","var(--atk)"]].forEach((r,i)=>{ el("rect",{x:784,y:168+i*16,width:10,height:10,rx:2,fill:r[1]},fin); txt(fin,800,177+i*16,r[0],"tm",null,{"font-size":"11.5"}); });
+  const tok=el("circle",{r:6,fill:"var(--ink)"},s);
+  return { tick(t){
+    drawPath(p0,seg(t,0.2,0.9)); drawPath(pY,seg(t,1.1,1.9)); drawPath(pN,seg(t,1.1,1.9));
+    yes.setAttribute("opacity",seg(t,1.8,2.2)); no.setAttribute("opacity",seg(t,1.8,2.2));
+    drawPath(pF1,seg(t,2.4,3)); drawPath(pF2,seg(t,2.4,3)); fin.setAttribute("opacity",seg(t,2.9,3.3));
+    const c=(t%4)/4; let x,y; if(c<0.4){ x=lerp(174,dc[0]-110,c/0.4); y=166; } else { const u=(c-0.4)/0.6; x=dc[0]-110+u*110; y=166; tok.setAttribute("r",6*(1-u)); }
+    tok.setAttribute("cx",x); tok.setAttribute("cy",y); if(c<0.4) tok.setAttribute("r",6);
+  }};
+})();
+
+/* ---- 11. ablations ---- */
+scenes[11] = (function(){
+  const host=document.getElementById("s11");
+  function card(title, desc){ const d=document.createElement("div"); d.className="card"; const sv=document.createElementNS(NS,"svg"); sv.setAttribute("viewBox","0 0 200 110"); sv.setAttribute("aria-hidden","true"); d.appendChild(sv); const h=document.createElement("h3"); h.textContent=title; d.appendChild(h); const p=document.createElement("p"); p.textContent=desc; d.appendChild(p); host.appendChild(d); return sv; }
+  // latent size
+  const a=card("Latent size","Is the result tied to one bottleneck width?");
+  const side=[30,170].map(x=>{ for(let i=0;i<6;i++) el("circle",{cx:x,cy:14+i*16,r:5,fill:"var(--surface)",stroke:"var(--ink)"},a); });
+  const lat=[]; for(let i=0;i<8;i++) lat.push(el("circle",{cx:100,cy:0,r:4.5,fill:"var(--sig-soft)",stroke:"var(--sig)","stroke-width":1.4},a));
+  const latT=txt(a,100,108,"latent = 2","tm mono","middle",{"font-size":"11"});
+  // features
+  const b=card("Feature set","Drop features to see which ones carry the detection.");
+  const FN=["power","EVM","pilot mag.","phase chg.","amp. var.","kurtosis"];
+  const chips=FN.map((f,i)=>{ const x=8+(i%2)*96, y=8+Math.floor(i/2)*32; const r=el("rect",{x:x,y:y,width:88,height:24,rx:5,fill:"var(--sig-soft)",stroke:"var(--sig)"},b); const tt=txt(b,x+44,y+16,f,"t","middle",{"font-size":"12"}); return {r:r,t:tt}; });
+  const sets=[[1,1,1,1,1,1],[0,1,1,1,1,1],[1,1,1,1,0,1],[1,0,0,1,1,1]];
+  // footprint
+  const c=card("Footprint sizes","Vary noise and echo around the calibrated 30 dB and 0.03.");
+  const ns=["25","30","35"], es=["0.02","0.03","0.05"]; const cells=[];
+  ns.forEach((n,i)=>{ txt(c,40,30+i*26,n+" dB","tm mono","end",{"font-size":"10.5"}); es.forEach((e,j)=>{ cells.push(el("rect",{x:48+j*48,y:16+i*26,width:42,height:20,rx:3,fill:"var(--sunk)",stroke:(i===1&&j===1)?"var(--ink)":"var(--line)","stroke-width":(i===1&&j===1)?2:1},c)); if(i===0) txt(c,69+j*48,104,e,"tm mono","middle",{"font-size":"10.5"}); }); });
+  // handover
+  const d=card("Handover gain","Fixed gain shows the tap as a power drop; an AGC re-normalises power and may hide it.");
+  const sw=el("rect",{x:10,y:12,width:84,height:26,rx:13,fill:"var(--sunk)",stroke:"var(--line)"},d);
+  const knob=el("circle",{cx:25,cy:25,r:10,fill:"var(--ink)"},d);
+  const mode=txt(d,104,30,"fixed gain","t",null,{"font-size":"13","font-weight":"600"});
+  txt(d,10,62,"received power","tm",null,{"font-size":"11"});
+  el("rect",{x:10,y:70,width:180,height:16,rx:3,fill:"var(--sunk)"},d);
+  const pw=el("rect",{x:10,y:70,width:162,height:16,rx:3,fill:"var(--atk)"},d);
+  el("line",{x1:190,y1:66,x2:190,y2:90,stroke:"var(--ink)","stroke-dasharray":"2 2"},d); txt(d,190,104,"normal","tm","end",{"font-size":"10.5"});
+  return { tick(t){
+    const k=[2,4,8][Math.floor(t/2)%3]; lat.forEach((n,i)=>{ const on=i<k; n.setAttribute("opacity",on?1:0); n.setAttribute("cy",(55-(k-1)*12/2*1+i*12).toFixed(1)); }); latT.textContent="latent = "+k;
+    const st=sets[Math.floor(t/2)%4]; chips.forEach((ch,i)=>{ ch.r.setAttribute("fill",st[i]?"var(--sig-soft)":"var(--surface)"); ch.r.setAttribute("stroke",st[i]?"var(--sig)":"var(--line)"); ch.t.setAttribute("opacity",st[i]?1:0.4); });
+    const hi=Math.floor(t/0.8)%9; cells.forEach((r,i)=>r.setAttribute("fill",i===hi?"var(--atk-soft)":"var(--sunk)"));
+    const agc=Math.floor(t/2.5)%2===1; const u=seg((t%2.5),0,0.5);
+    knob.setAttribute("cx", agc? lerp(25,79,u) : lerp(79,25,u)); mode.textContent=agc?"AGC":"fixed gain";
+    pw.setAttribute("width", agc? lerp(162,180,u) : lerp(180,162,u)); pw.setAttribute("fill",agc?"var(--sig)":"var(--atk)");
+  }};
+})();
+
+/* ---- 12. figures ---- */
+scenes[12] = (function(){
+  const host=document.getElementById("s12");
+  const anim=[];
+  function card(title, desc, draw){ const d=document.createElement("div"); d.className="card"; const sv=document.createElementNS(NS,"svg"); sv.setAttribute("viewBox","0 0 200 140"); sv.setAttribute("aria-hidden","true"); d.appendChild(sv); const h=document.createElement("h3"); h.textContent=title; d.appendChild(h); const p=document.createElement("p"); p.textContent=desc; d.appendChild(p); host.appendChild(d); draw(sv); }
+  function axes(sv, xl, xt, yl){ const ax=makeDrawable(el("path",{d:"M34,10 V110 H192",fill:"none",stroke:"var(--muted)","stroke-width":1.4},sv)); anim.push(u=>drawPath(ax,u)); xt.forEach((v,i)=>txt(sv,34+i*(158/(xt.length-1)),124,v,"tm mono","middle",{"font-size":"10"})); txt(sv,113,138,xl,"tm","middle",{"font-size":"10.5"}); txt(sv,12,60,yl,"tm","middle",{"font-size":"10.5",transform:"rotate(-90 12 60)"}); const w=txt(sv,113,62,"awaiting data","tm","middle",{"font-size":"12"}); anim.push((u,t)=>w.setAttribute("opacity",(0.35+0.35*Math.sin(t*2.2)).toFixed(2))); }
+  card("Detection vs SNR","One line per detector, per fading type.",sv=>axes(sv,"SNR (dB)",["0","10","20","30"],"detection"));
+  card("Detection vs α","How fast each detector loses the attacker as fidelity rises.",sv=>axes(sv,"attacker fidelity α",["0","0.5","1"],"detection"));
+  card("Regime map","Each cell: simple detectors enough, autoencoder helps, or all fail.",sv=>{
+    const cells=[]; ["none","Rician","Rayl."].forEach((f,r)=>{ txt(sv,40,26+r*30,f,"tm","end",{"font-size":"10"}); for(let c=0;c<7;c++) cells.push(el("rect",{x:46+c*21,y:12+r*30,width:18,height:24,rx:3,fill:"var(--sunk)",stroke:"var(--line)",opacity:0},sv)); });
+    ["0","15","30"].forEach((v,i)=>txt(sv,55+i*63,118,v,"tm mono","middle",{"font-size":"10"})); txt(sv,120,134,"SNR (dB)","tm","middle",{"font-size":"10.5"});
+    anim.push((u,t)=>cells.forEach((c,i)=>c.setAttribute("opacity",seg(t,0.3+i*0.05,0.5+i*0.05).toFixed(2)))); });
+  card("Detection delay","Windows from onset to first alarm, by condition.",sv=>axes(sv,"condition",["","",""],"windows"));
+  return { tick(t){ const u=seg(t,0.2,1.4); anim.forEach(f=>f(u,t)); } };
+})();
+
+/* ================= stepper ================= */
+const sections=[].slice.call(document.querySelectorAll(".scene"));
+const N=sections.length;
+const rail=document.getElementById("rail");
+const statusTxt={done:"DONE",next:"NEXT",planned:""};
+sections.forEach((sec,i)=>{
+  const st=sec.dataset.status;
+  // scene header
+  const head=document.createElement("div"); head.className="scene-head";
+  head.innerHTML=`<span class="stepno">Step ${i+1} of ${N}</span><span class="mile">${sec.dataset.m}</span><span class="pill ${st}">${st==="planned"?"planned":st}</span>`;
+  sec.insertBefore(head, sec.firstChild);
+  const li=document.createElement("li");
+  const b=document.createElement("button"); b.type="button"; b.dataset.status=st;
+  b.setAttribute("aria-label",`Step ${i+1}: ${sec.querySelector("h2").textContent} (${st})`);
+  b.innerHTML=`<span class="bar"></span><span class="num"><span>${i+1}</span><span class="tag">${statusTxt[st]}</span></span><span class="lab">${sec.dataset.short}</span>`;
+  b.addEventListener("click",()=>{ stopPlay(); go(i); });
+  li.appendChild(b); rail.appendChild(li);
+});
+const railBtns=[].slice.call(rail.querySelectorAll("button"));
+let cur=0, t0=performance.now(), playing=false, playT0=0;
+const DWELL=15000;
+const prevB=document.getElementById("prev"), nextB=document.getElementById("next"), playB=document.getElementById("play"), dwell=document.getElementById("dwell"), count=document.getElementById("count");
+function go(i){
+  i=(i+N)%N; cur=i;
+  sections.forEach((s,k)=>s.hidden = k!==i);
+  railBtns.forEach((b,k)=>{ if(k===i) b.setAttribute("aria-current","step"); else b.removeAttribute("aria-current"); });
+  count.textContent=(i+1)+" / "+N;
+  prevB.disabled = i===0 && !playing; nextB.disabled = i===N-1 && !playing;
+  t0=performance.now(); playT0=t0;
+  const sc=scenes[i+1]; if(sc && sc.enter) sc.enter();
+  if(reduce && sc) sc.tick(40);
+  try{ if(location.hash!=="#step-"+(i+1)) history.replaceState(null,"","#step-"+(i+1)); }catch(e){}
+}
+function startPlay(){ playing=true; playB.setAttribute("aria-pressed","true"); playB.textContent="❚❚ Pause"; playT0=performance.now(); prevB.disabled=false; nextB.disabled=false; }
+function stopPlay(){ playing=false; playB.setAttribute("aria-pressed","false"); playB.textContent="▶ Autoplay"; dwell.style.width="0"; prevB.disabled = cur===0; nextB.disabled = cur===N-1; }
+prevB.addEventListener("click",()=>{ stopPlay(); go(cur-1); });
+nextB.addEventListener("click",()=>{ stopPlay(); go(cur+1); });
+playB.addEventListener("click",()=>{ if(playing) stopPlay(); else { if(cur===N-1) go(0); startPlay(); } });
+document.addEventListener("keydown",e=>{
+  const tag=(e.target && e.target.tagName)||""; if(tag==="INPUT"||tag==="TEXTAREA") return;
+  if(e.key==="ArrowRight"){ stopPlay(); go(cur+1); e.preventDefault(); }
+  else if(e.key==="ArrowLeft"){ stopPlay(); go(cur-1); e.preventDefault(); }
+  else if(e.key===" " && tag!=="BUTTON"){ playB.click(); e.preventDefault(); }
+});
+function frame(now){
+  const t=(now-t0)/1000;
+  const sc=scenes[cur+1];
+  if(sc && !reduce) sc.tick(t);
+  if(reduce && cur+1===3 && sc) sc.tick(40);
+  if(playing){ const u=(now-playT0)/DWELL; dwell.style.width=(Math.min(u,1)*100).toFixed(1)+"%"; if(u>=1){ if(cur===N-1) stopPlay(); else { go(cur+1); } } }
+  requestAnimationFrame(frame);
+}
+function fromHash(){ const m=/^#step-(\d+)$/.exec(location.hash||""); if(m){ const k=parseInt(m[1],10); if(k>=1&&k<=N) return k-1; } return 0; }
+window.addEventListener("hashchange",()=>{ const k=fromHash(); if(k!==cur) go(k); });
+// render every scene once at rest so nothing is blank if inspected
+for(let k=1;k<=N;k++){ try{ scenes[k] && scenes[k].tick(40); }catch(e){} }
+go(fromHash());
+requestAnimationFrame(frame);
+})();
+</script>

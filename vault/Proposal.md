@@ -13,5 +13,6 @@ Summary of the project proposal. Hub: [[00 - Project Context]]. Source files: `d
 - Method: [[Experiment Plan]]. Prior art behind the argument: [[Prior Art Verdict]], [[Literature Index]].
 - Period: November 2026 to April 2027; paper submission December 2026 (dates relayed second-hand, re-check per [[Audit - Venues]]). See [[Timeline]].
 - Budget (estimates, BDT): cloud compute 7,500; storage 6,500; similarity-check service 2,000; registration 15,000 (to be confirmed); travel 12,000; printing 1,500; total 44,500. UNVERIFIED
+- Reader-friendly overview (12 pages, figures, workbench modules M0-M5, data items D1-D5): `docs/proposal/overview/MimicGuard_Project_Overview.pdf`, rebuilt by `make_figures.py` then `build_overview.py` in that folder.
 - Planned outputs: one 4-6 page paper, open-source code and configs after review.
 - The proposal's reference list holds DOIs for papers that are only partly read; see [[Literature Index]] for read depth before citing any of them.

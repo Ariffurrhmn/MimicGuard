@@ -1,7 +1,7 @@
 ---
 tags: [claims, risks]
 created: 2026-11-06
-updated: 2026-11-08
+updated: 2026-11-15
 ---
 
 Hub: [[00 - Project Context]]. Claims ledger and kill criteria. See also [[Risks]] and [[Experiment Plan]]. Original text follows unchanged.
@@ -10,7 +10,7 @@ Hub: [[00 - Project Context]]. Claims ledger and kill criteria. See also [[Risks
 
 | ID | Claim (draft) | Evidence needed | Would be falsified by | Status |
 |---|---|---|---|---|
-| C1 | No prior work studies mimic-eavesdropper detection at a fiber-wireless handover | Deeper search incl. Xplore/arXiv/Scholar | Any paper doing it | PARTLY CHECKED 2026-11-06: not found via Consensus, web, arXiv. Xplore/Scholar not searched. Components all exist separately (see 01). Do not write "first". Safe wording: "to the best of our knowledge, we did not find..." |
+| C1 | No prior work studies mimic-eavesdropper detection at a fiber-wireless handover | Deeper search incl. Xplore/arXiv/Scholar | Any paper doing it | PARTLY CHECKED 2026-11-06: not found via Consensus, web, arXiv. Xplore/Scholar not searched. Components all exist separately (see 01). Do not write "first". Safe wording: "to the best of our knowledge, we did not find..." UPDATED 2026-11-15: IEEE Xplore (18 queries incl. QPAIN-tagged records), OpenAlex (5) and extended web search found no paper doing PHY eavesdropper detection on a joint fiber+wireless link, mimicking or not. Neighbours: fiber-only detectors (Qin 2026, Sadighi 2025/2026, Li 2025), wireless-only AE spoofing detectors (Chen 2025 MRIS-SAD), FiWi security at protocol level only (Tsompanoglou 2023). C1 HOLDS in hedged form only. Google Scholar still unsearched (CAPTCHA). Hyphenated Xplore queries returned zero, possibly a syntax effect. Keep the "we did not find" wording, and name the search date and databases in the paper. |
 | C0 | AE vs classical detector comparison is itself a contribution | n/a | Abdelli 2022 already benchmarks AE vs OCSVM/IF/LOF for fiber | FALSE as a standalone claim |
 | C2 | AE trained on normal data detects the mimic attacker above chance | Results across seeds | AUC ~0.5 at moderate alpha | NOT RUN |
 | C3 | AE beats classical baselines | Same-feature, same-tuning comparison | Simple baseline equal or better | NOT RUN |

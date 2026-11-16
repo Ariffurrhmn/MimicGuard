@@ -1,0 +1,284 @@
+{
+  "bits_per_point": 8960000,
+  "curves": {
+    "none": [
+      {
+        "snr_db": 0.0,
+        "theory": 0.15865525393145707,
+        "ideal_perfect_csi": 0.15880837053571428,
+        "theory_given_fades": 0.1586552539314571,
+        "full_pilot_csi": 0.16450424107142858
+      },
+      {
+        "snr_db": 2.5,
+        "theory": 0.09118037349115199,
+        "ideal_perfect_csi": 0.09118359375,
+        "theory_given_fades": 0.091180373491152,
+        "full_pilot_csi": 0.09663616071428571
+      },
+      {
+        "snr_db": 5.0,
+        "theory": 0.03767898814746343,
+        "ideal_perfect_csi": 0.037675111607142854,
+        "theory_given_fades": 0.03767898814746342,
+        "full_pilot_csi": 0.041964620535714287
+      },
+      {
+        "snr_db": 7.5,
+        "theory": 0.008861051096347865,
+        "ideal_perfect_csi": 0.008858370535714286,
+        "theory_given_fades": 0.008861051096347867,
+        "full_pilot_csi": 0.011235714285714286
+      },
+      {
+        "snr_db": 10.0,
+        "theory": 0.000782701129001274,
+        "ideal_perfect_csi": 0.0007831473214285715,
+        "theory_given_fades": 0.0007827011290012742,
+        "full_pilot_csi": 0.0014339285714285715
+      },
+      {
+        "snr_db": 12.5,
+        "theory": 1.2380617585204576e-05,
+        "ideal_perfect_csi": 1.3392857142857142e-05,
+        "theory_given_fades": 1.2380617585204578e-05,
+        "full_pilot_csi": 6.953125e-05
+      },
+      {
+        "snr_db": 15.0,
+        "theory": 9.361039990685109e-09,
+        "ideal_perfect_csi": 0.0,
+        "theory_given_fades": 9.361039990685112e-09,
+        "full_pilot_csi": 1.1160714285714287e-06
+      },
+      {
+        "snr_db": 17.5,
+        "theory": 3.216746943617327e-14,
+        "ideal_perfect_csi": 0.0,
+        "theory_given_fades": 3.216746943617328e-14,
+        "full_pilot_csi": 1.1160714285714285e-07
+      },
+      {
+        "snr_db": 20.0,
+        "theory": 7.619853024160583e-24,
+        "ideal_perfect_csi": 0.0,
+        "theory_given_fades": 7.61985302416058e-24,
+        "full_pilot_csi": 0.0
+      },
+      {
+        "snr_db": 22.5,
+        "theory": 7.221950598373876e-41,
+        "ideal_perfect_csi": 0.0,
+        "theory_given_fades": 7.221950598373876e-41,
+        "full_pilot_csi": 0.0
+      },
+      {
+        "snr_db": 25.0,
+        "theory": 4.803529862225948e-71,
+        "ideal_perfect_csi": 0.0,
+        "theory_given_fades": 4.803529862225948e-71,
+        "full_pilot_csi": 0.0
+      },
+      {
+        "snr_db": 27.5,
+        "theory": 1.3009899280642591e-124,
+        "ideal_perfect_csi": 0.0,
+        "theory_given_fades": 1.3009899280642587e-124,
+        "full_pilot_csi": 0.0
+      },
+      {
+        "snr_db": 30.0,
+        "theory": 8.979163924004652e-220,
+        "ideal_perfect_csi": 0.0,
+        "theory_given_fades": 8.979163924004655e-220,
+        "full_pilot_csi": 0.0
+      }
+    ],
+    "rician": [
+      {
+        "snr_db": 0.0,
+        "theory": 0.17767271866999282,
+        "ideal_perfect_csi": 0.17731685267857142,
+        "theory_given_fades": 0.17751659035055378,
+        "full_pilot_csi": 0.1835299107142857
+      },
+      {
+        "snr_db": 2.5,
+        "theory": 0.11523201230273745,
+        "ideal_perfect_csi": 0.11505256696428572,
+        "theory_given_fades": 0.11511527305738621,
+        "full_pilot_csi": 0.12057566964285714
+      },
+      {
+        "snr_db": 5.0,
+        "theory": 0.06318024945073682,
+        "ideal_perfect_csi": 0.063334375,
+        "theory_given_fades": 0.06326552043535501,
+        "full_pilot_csi": 0.06759854910714286
+      },
+      {
+        "snr_db": 7.5,
+        "theory": 0.02875005873083639,
+        "ideal_perfect_csi": 0.02904330357142857,
+        "theory_given_fades": 0.028994355527137316,
+        "full_pilot_csi": 0.03180033482142857
+      },
+      {
+        "snr_db": 10.0,
+        "theory": 0.01118744751445294,
+        "ideal_perfect_csi": 0.011289620535714286,
+        "theory_given_fades": 0.011315428757997273,
+        "full_pilot_csi": 0.012688504464285714
+      },
+      {
+        "snr_db": 12.5,
+        "theory": 0.004054989510054582,
+        "ideal_perfect_csi": 0.003909598214285714,
+        "theory_given_fades": 0.0039037241420098886,
+        "full_pilot_csi": 0.004506361607142857
+      },
+      {
+        "snr_db": 15.0,
+        "theory": 0.0015144766800030299,
+        "ideal_perfect_csi": 0.0014376116071428571,
+        "theory_given_fades": 0.0014283779250568974,
+        "full_pilot_csi": 0.0016353794642857142
+      },
+      {
+        "snr_db": 17.5,
+        "theory": 0.000620013123117172,
+        "ideal_perfect_csi": 0.0005402901785714286,
+        "theory_given_fades": 0.0005423578903114231,
+        "full_pilot_csi": 0.00060859375
+      },
+      {
+        "snr_db": 20.0,
+        "theory": 0.0002807462159555632,
+        "ideal_perfect_csi": 0.0003426339285714286,
+        "theory_given_fades": 0.0003436234681738493,
+        "full_pilot_csi": 0.00037667410714285716
+      },
+      {
+        "snr_db": 22.5,
+        "theory": 0.0001377626962717479,
+        "ideal_perfect_csi": 0.000134375,
+        "theory_given_fades": 0.00012887073625741235,
+        "full_pilot_csi": 0.00014631696428571428
+      },
+      {
+        "snr_db": 25.0,
+        "theory": 7.139494303487457e-05,
+        "ideal_perfect_csi": 7.611607142857143e-05,
+        "theory_given_fades": 7.612051193797753e-05,
+        "full_pilot_csi": 8.069196428571428e-05
+      },
+      {
+        "snr_db": 27.5,
+        "theory": 3.8282333637389706e-05,
+        "ideal_perfect_csi": 5.658482142857143e-05,
+        "theory_given_fades": 5.660592490321539e-05,
+        "full_pilot_csi": 5.5245535714285714e-05
+      },
+      {
+        "snr_db": 30.0,
+        "theory": 2.09478554348517e-05,
+        "ideal_perfect_csi": 4.5758928571428575e-06,
+        "theory_given_fades": 3.4803324788165874e-06,
+        "full_pilot_csi": 3.90625e-06
+      }
+    ],
+    "rayleigh": [
+      {
+        "snr_db": 0.0,
+        "theory": 0.21132486540518713,
+        "ideal_perfect_csi": 0.21242622767857142,
+        "theory_given_fades": 0.21226747124904327,
+        "full_pilot_csi": 0.21951350446428572
+      },
+      {
+        "snr_db": 2.5,
+        "theory": 0.15697721507621598,
+        "ideal_perfect_csi": 0.15585602678571428,
+        "theory_given_fades": 0.1557612935234499,
+        "full_pilot_csi": 0.16201015625
+      },
+      {
+        "snr_db": 5.0,
+        "theory": 0.10866443003567677,
+        "ideal_perfect_csi": 0.10984564732142857,
+        "theory_given_fades": 0.10979211738210945,
+        "full_pilot_csi": 0.11518828125
+      },
+      {
+        "snr_db": 7.5,
+        "theory": 0.07056714041637024,
+        "ideal_perfect_csi": 0.07077455357142858,
+        "theory_given_fades": 0.07082413461789998,
+        "full_pilot_csi": 0.07441819196428572
+      },
+      {
+        "snr_db": 10.0,
+        "theory": 0.04356453541236155,
+        "ideal_perfect_csi": 0.04291651785714286,
+        "theory_given_fades": 0.04300690082107957,
+        "full_pilot_csi": 0.04549732142857143
+      },
+      {
+        "snr_db": 12.5,
+        "theory": 0.025947775450321064,
+        "ideal_perfect_csi": 0.0253203125,
+        "theory_given_fades": 0.02531959253164166,
+        "full_pilot_csi": 0.02685033482142857
+      },
+      {
+        "snr_db": 15.0,
+        "theory": 0.015098846967749435,
+        "ideal_perfect_csi": 0.014870089285714285,
+        "theory_given_fades": 0.01489161648248118,
+        "full_pilot_csi": 0.015870870535714284
+      },
+      {
+        "snr_db": 17.5,
+        "theory": 0.008661043523240819,
+        "ideal_perfect_csi": 0.008769642857142858,
+        "theory_given_fades": 0.008775765662095062,
+        "full_pilot_csi": 0.009335825892857143
+      },
+      {
+        "snr_db": 20.0,
+        "theory": 0.004926228511662856,
+        "ideal_perfect_csi": 0.004884709821428571,
+        "theory_given_fades": 0.004858136951018015,
+        "full_pilot_csi": 0.005172544642857143
+      },
+      {
+        "snr_db": 22.5,
+        "theory": 0.002788209662843044,
+        "ideal_perfect_csi": 0.002850111607142857,
+        "theory_given_fades": 0.0028505076106944095,
+        "full_pilot_csi": 0.003053348214285714
+      },
+      {
+        "snr_db": 25.0,
+        "theory": 0.0015736781410429224,
+        "ideal_perfect_csi": 0.001632924107142857,
+        "theory_given_fades": 0.0016199282898785548,
+        "full_pilot_csi": 0.0017372767857142858
+      },
+      {
+        "snr_db": 27.5,
+        "theory": 0.0008867750042357292,
+        "ideal_perfect_csi": 0.0008255580357142857,
+        "theory_given_fades": 0.0008137145933385102,
+        "full_pilot_csi": 0.0008794642857142857
+      },
+      {
+        "snr_db": 30.0,
+        "theory": 0.0004992512478164679,
+        "ideal_perfect_csi": 0.0005675223214285715,
+        "theory_given_fades": 0.000571202947510716,
+        "full_pilot_csi": 0.0006035714285714286
+      }
+    ]
+  }
+}

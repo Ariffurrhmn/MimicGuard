@@ -1,0 +1,17 @@
+{
+  "none": {
+    "max_rel_dev_vs_conditional_theory": 0.08176002131446469,
+    "max_rel_dev_vs_unconditional_theory": 0.08176002131446491,
+    "points_checked": 6
+  },
+  "rician": {
+    "max_rel_dev_vs_conditional_theory": 0.042711510017240606,
+    "max_rel_dev_vs_unconditional_theory": 0.47809227004139565,
+    "points_checked": 12
+  },
+  "rayleigh": {
+    "max_rel_dev_vs_conditional_theory": 0.014554786743081749,
+    "max_rel_dev_vs_unconditional_theory": 0.1367469263435892,
+    "points_checked": 13
+  }
+}

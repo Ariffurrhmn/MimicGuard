@@ -1,0 +1,11 @@
+{
+  "run": "m2_footprint",
+  "created": "2026-11-15T14:37:25",
+  "env": {
+    "python": "3.14.6",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "numpy": "2.5.2",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1"
+  }
+}

@@ -2,7 +2,7 @@
 
 Unsupervised autoencoder detection of a channel-mimicking eavesdropper on a two-segment fiber-wireless link, benchmarked against classical detectors as the attacker's imitation fidelity varies (simulation study).
 
-Target: QPAIN 2027, Track 02 (dates and formats unchecked; status: proposal written, no code yet).
+Target: QPAIN 2027, Track 02 (dates and formats unchecked; status: design frozen, channel simulator built and checked).
 
 ## Layout
 
@@ -17,3 +17,13 @@ Target: QPAIN 2027, Track 02 (dates and formats unchecked; status: proposal writ
 | `results/` | Metrics, tables, figures |
 | `paper/` | Manuscript source |
 | `external/` | Git-ignored clone of a separate venue-toolkit repo |
+
+## Running
+
+```bash
+pip install -e .[dev]
+python -m pytest
+python experiments/m1_sanity.py
+```
+
+Configs live in `experiments/configs/` (`base.yaml` is the frozen design); each run writes its config and environment to `results/<run>/`.

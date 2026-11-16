@@ -1,0 +1,66 @@
+seed: 0
+signal:
+  symbol_rate_baud: 10000000000.0
+  window_symbols: 256
+  pilot_symbols: 32
+fiber:
+  enabled: true
+  length_km: 20.0
+  attenuation_db_per_km: 0.2
+  dispersion_ps_nm_km: 17.0
+  wavelength_nm: 1550.0
+  residual_dispersion_fraction: 0.05
+  snr_db: 30.0
+  noise_enabled: true
+  laser_linewidth_hz: 100000.0
+handover:
+  mode: fixed_gain
+wireless:
+  fading: rayleigh
+  rician_k: 5.0
+  snr_db: 20.0
+receiver:
+  csi: pilot
+grid:
+  snr_db:
+  - 0
+  - 5
+  - 10
+  - 15
+  - 20
+  - 25
+  - 30
+  fading:
+  - none
+  - rician
+  - rayleigh
+  alpha:
+  - 0.0
+  - 0.25
+  - 0.5
+  - 0.75
+  - 1.0
+  seeds: 10
+attacker:
+  tap_fraction: 0.1
+split:
+  realisations: 50
+  train: 0.6
+  val: 0.2
+  test: 0.2
+m1_sanity:
+  windows: 20000
+  snr_db:
+  - 0.0
+  - 2.5
+  - 5.0
+  - 7.5
+  - 10.0
+  - 12.5
+  - 15.0
+  - 17.5
+  - 20.0
+  - 22.5
+  - 25.0
+  - 27.5
+  - 30.0

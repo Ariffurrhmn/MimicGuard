@@ -1,0 +1,212 @@
+{
+  "none_20dB": {
+    "0.0": {
+      "power": 1.0,
+      "evm": 0.6907,
+      "pilot_mag": 0.9971,
+      "pilot_dphase": 0.5103,
+      "amp_var": 0.8578,
+      "amp_kurt": 0.5008
+    },
+    "0.25": {
+      "power": 1.0,
+      "evm": 0.6645,
+      "pilot_mag": 0.926,
+      "pilot_dphase": 0.5104,
+      "amp_var": 0.8767,
+      "amp_kurt": 0.5007
+    },
+    "0.5": {
+      "power": 0.5222,
+      "evm": 0.6366,
+      "pilot_mag": 0.5288,
+      "pilot_dphase": 0.5104,
+      "amp_var": 0.8941,
+      "amp_kurt": 0.5006
+    },
+    "0.75": {
+      "power": 0.5166,
+      "evm": 0.5748,
+      "pilot_mag": 0.5148,
+      "pilot_dphase": 0.5108,
+      "amp_var": 0.7365,
+      "amp_kurt": 0.5147
+    },
+    "1.0": {
+      "power": 0.5053,
+      "evm": 0.5108,
+      "pilot_mag": 0.5144,
+      "pilot_dphase": 0.5106,
+      "amp_var": 0.5005,
+      "amp_kurt": 0.5087
+    }
+  },
+  "none_5dB": {
+    "0.0": {
+      "power": 0.9171,
+      "evm": 0.6307,
+      "pilot_mag": 0.6922,
+      "pilot_dphase": 0.5053,
+      "amp_var": 0.5367,
+      "amp_kurt": 0.531
+    },
+    "0.25": {
+      "power": 0.7617,
+      "evm": 0.5656,
+      "pilot_mag": 0.5964,
+      "pilot_dphase": 0.5054,
+      "amp_var": 0.5113,
+      "amp_kurt": 0.5208
+    },
+    "0.5": {
+      "power": 0.5101,
+      "evm": 0.5037,
+      "pilot_mag": 0.5084,
+      "pilot_dphase": 0.5053,
+      "amp_var": 0.5129,
+      "amp_kurt": 0.5102
+    },
+    "0.75": {
+      "power": 0.5094,
+      "evm": 0.5097,
+      "pilot_mag": 0.511,
+      "pilot_dphase": 0.5054,
+      "amp_var": 0.5041,
+      "amp_kurt": 0.5111
+    },
+    "1.0": {
+      "power": 0.5079,
+      "evm": 0.519,
+      "pilot_mag": 0.5163,
+      "pilot_dphase": 0.5053,
+      "amp_var": 0.5045,
+      "amp_kurt": 0.5094
+    }
+  },
+  "rician_20dB": {
+    "0.0": {
+      "power": 0.5647,
+      "evm": 0.5866,
+      "pilot_mag": 0.5658,
+      "pilot_dphase": 0.5044,
+      "amp_var": 0.7654,
+      "amp_kurt": 0.5083
+    },
+    "0.25": {
+      "power": 0.5402,
+      "evm": 0.5705,
+      "pilot_mag": 0.5415,
+      "pilot_dphase": 0.5044,
+      "amp_var": 0.7803,
+      "amp_kurt": 0.5079
+    },
+    "0.5": {
+      "power": 0.5154,
+      "evm": 0.5546,
+      "pilot_mag": 0.5166,
+      "pilot_dphase": 0.5044,
+      "amp_var": 0.7949,
+      "amp_kurt": 0.5075
+    },
+    "0.75": {
+      "power": 0.5154,
+      "evm": 0.5252,
+      "pilot_mag": 0.5161,
+      "pilot_dphase": 0.5044,
+      "amp_var": 0.6732,
+      "amp_kurt": 0.518
+    },
+    "1.0": {
+      "power": 0.5152,
+      "evm": 0.5025,
+      "pilot_mag": 0.5148,
+      "pilot_dphase": 0.5045,
+      "amp_var": 0.5064,
+      "amp_kurt": 0.5169
+    }
+  },
+  "rayleigh_20dB": {
+    "0.0": {
+      "power": 0.5256,
+      "evm": 0.562,
+      "pilot_mag": 0.5261,
+      "pilot_dphase": 0.5055,
+      "amp_var": 0.664,
+      "amp_kurt": 0.5015
+    },
+    "0.25": {
+      "power": 0.5129,
+      "evm": 0.5524,
+      "pilot_mag": 0.5133,
+      "pilot_dphase": 0.5055,
+      "amp_var": 0.674,
+      "amp_kurt": 0.5014
+    },
+    "0.5": {
+      "power": 0.5,
+      "evm": 0.5425,
+      "pilot_mag": 0.5005,
+      "pilot_dphase": 0.5055,
+      "amp_var": 0.684,
+      "amp_kurt": 0.5013
+    },
+    "0.75": {
+      "power": 0.5001,
+      "evm": 0.5264,
+      "pilot_mag": 0.5002,
+      "pilot_dphase": 0.5065,
+      "amp_var": 0.6124,
+      "amp_kurt": 0.5011
+    },
+    "1.0": {
+      "power": 0.5002,
+      "evm": 0.5117,
+      "pilot_mag": 0.5004,
+      "pilot_dphase": 0.5065,
+      "amp_var": 0.5027,
+      "amp_kurt": 0.5028
+    }
+  },
+  "rayleigh_5dB": {
+    "0.0": {
+      "power": 0.5256,
+      "evm": 0.5244,
+      "pilot_mag": 0.5235,
+      "pilot_dphase": 0.5035,
+      "amp_var": 0.517,
+      "amp_kurt": 0.5004
+    },
+    "0.25": {
+      "power": 0.5131,
+      "evm": 0.5121,
+      "pilot_mag": 0.5109,
+      "pilot_dphase": 0.5044,
+      "amp_var": 0.5061,
+      "amp_kurt": 0.5003
+    },
+    "0.5": {
+      "power": 0.5003,
+      "evm": 0.5001,
+      "pilot_mag": 0.5017,
+      "pilot_dphase": 0.5044,
+      "amp_var": 0.5046,
+      "amp_kurt": 0.5014
+    },
+    "0.75": {
+      "power": 0.5003,
+      "evm": 0.5011,
+      "pilot_mag": 0.5021,
+      "pilot_dphase": 0.5045,
+      "amp_var": 0.5009,
+      "amp_kurt": 0.5014
+    },
+    "1.0": {
+      "power": 0.5002,
+      "evm": 0.5027,
+      "pilot_mag": 0.5028,
+      "pilot_dphase": 0.5044,
+      "amp_var": 0.5038,
+      "amp_kurt": 0.5013
+    }
+  }
+}
