@@ -30,3 +30,15 @@ Older runs (not v2): `kaggle_full/`, `kaggle_v2/`, `kaggle_v3/` (the draft paper
 | PCA with 3 vs 4 components | rows `pca` (code default, k=3) and `pca_L4` (k=4) in `v2_fixed_arl_kaggle/parsed_from_log/pd_p0.05.csv` and `auc_p0.05.csv` |
 
 Rule: a number in the proposal or paper must point to one of these files, or be marked as not yet reproduced.
+
+## Follow-up runs (R3-R8), filed 2026-11-19
+| Question | File |
+|---|---|
+| Raw-IQ conv-AE and oracle at alpha 0.75, three fadings x SNR 15/20/25 | `v2_followups_kaggle/r3_r6/r3_rows.csv`, `r3_short_horizon.csv`, per-stream arrays `r3/*.npz` |
+| Raw conv-AE variants (latent size, lr, epochs) | `v2_followups_kaggle/r3_r6/r6_rows.csv` |
+| CUSUM slack k sweep (0.1 to 2) | `v2_followups_kaggle/r5/r5_rows.csv` |
+| On-off attacker, duty 1.0 to 0.1 | `v2_followups_kaggle/r8a/r8a_rows.csv` |
+| Calibration shift (SNR +-3 dB, fading type) | `v2_followups_kaggle/r8b/r8b_rows.csv` |
+| Correlated fading rho 0.9 / 0.99, five seeds | `v2_followups/r4/r4_rows.csv` |
+| AE with 300 training windows | `v2_followups/r7/r7_rows.csv` (written when the run finishes) |
+| Console logs of the Kaggle runs | the notebook logs in Downloads (not copied) |

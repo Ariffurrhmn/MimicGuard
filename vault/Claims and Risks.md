@@ -4,7 +4,7 @@ created: 2026-11-06
 updated: 2026-11-15
 ---
 
-Hub: [[00 - Project Context]]. Claims ledger and kill criteria. See also [[Risks]] and [[Experiment Plan]]. Original text follows unchanged.
+Hub: [[00 - Project Context]]. Claims ledger and kill criteria. See also [[Risks]] and [[Experiment Plan]]. Original text follows unchanged. **Superseded in part 2026-11-19: the claims the v2 results support, and those to cut, are in `docs/proposal/MimicGuard_Proposal_v2.md` section G.**
 
 # Claims ledger and kill criteria
 

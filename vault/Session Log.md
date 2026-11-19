@@ -1,12 +1,70 @@
 ---
 tags: [log]
 created: 2026-11-08
-updated: 2026-11-15
+updated: 2026-11-19
 ---
 
 # Session Log
 
 Newest first. Hub: [[00 - Project Context]]. Entry template: [[Session Entry]]. Rules: [[Vault Conventions]].
+
+## 2026-11-19 - Follow-up runs R3-R8 read (proposal G6)
+- Done: filed the Kaggle zips (`results/v2_followups_kaggle/{r3_r6,r5,r8a,r8b}/`) and the local R4/R7 runs (`results/v2_followups/`); added S9-S14 to proposal section G6 and rows to `results/V2_RESULTS_INDEX.md`. Kaggle logs match the CSV tables.
+- Result (VERIFIED against the tables): CUSUM k = 0.5 is not best, lower k is better for LOF/OC-SVM/PCA and the AE wrapper hurts under fading (S9); slow fading (rho 0.99) cuts every unsupervised detector, wrapped oracle stays at 1.00 (S10); raw conv-AE is at the false-alarm floor in all cells and five variants, raw oracle Pd 1.00 (S11); on-off attacker lowers Pd for all, oracle-wrapped holds to duty 0.25 (S12); a 3 dB SNR or fading-type shift breaks every fixed threshold, oracle included, no AE robustness advantage (S13); AE with 300 training windows gains a lot without fading but still trails wrapped LOF/OC-SVM there (S14).
+- INFERRED only: raw conv-AE variants give near-identical AUC, so the score may not depend on the architecture. Not tested: k below 0.1, size-matched LOF/OC-SVM at 300 windows.
+- Next: owner decides on optional extras (k grid below 0.1, size-matched baselines, more seeds for R3/R6). Nothing committed; section G, vault and result files are uncommitted. Paper text untouched.
+
+## 2026-11-19 - v2 results read; claims decided (proposal section G)
+- Done: read all four v2 result folders (index: `results/V2_RESULTS_INDEX.md`), recomputed per-detector headroom, delay (CADD) gaps, false-alarm audit counts and the correlated-fading baseline; added section G (supported claims S1-S8, hypothesis outcomes, paper claims to cut or rewrite, weaknesses, remaining experiments R1-R8) to `docs/proposal/MimicGuard_Proposal_v2.md`.
+- Result (VERIFIED against files): the AE-vs-classical sign depends on fading, wrapper and false-alarm level (replicated across `v2_nb2_local` and `v2_rawiq`); sigma_A^2 dominance holds for additive-energy footprints and reverses under phase jitter; the AE CUSUM wrapper can lower Pd; the six-feature supervised oracle is far above every unsupervised detector at 15 dB and above most at 20 dB (wrapped OC-SVM reaches it at 20 dB), so the gap is mainly supervision; a feature-compression gap shows only in delay (raw oracle CADD 0 to 3 windows vs 1 to 22) because Pd is saturated; false-alarm audit: 24 of 270 intervals miss the target (not 13).
+- Corrections to the brief's numbers: per-cell-best headroom overstates (a different detector per cell); per-detector gaps are in G1 S6. H1 (parity = feature bottleneck) is not supported as stated. R1 done (p = 0.01 bootstrap, Bonferroni-level intervals; `results/v2_nb2_local/ae_vs_others_bootstrap_p001_and_bonf.csv`): at 20 dB AE loses to wrapped classical detectors without fading and under Rayleigh; at 15 dB everything is at the floor. The two later runs are not an independent replication: they probably share test streams for seeds 0-2 (INFERRED from stream seeding).
+- Not claimed: anything about raw-IQ unsupervised detection (one default conv-AE failed); equivalence at 25 dB (saturation).
+- Next: R2 (local, minutes) needs no approval; R3 to R8 (Kaggle) wait for the owner. Commit hazard: this entry and the hub edit sit in files that already held the owner's uncommitted edits; do not commit them blindly. `main.tex` untouched. Nothing committed; owner's earlier uncommitted edits still pending a decision.
+
+## 2026-11-19 - v2 Kaggle notebooks (footprint swap, fixed-ARL protocol, raw-IQ headroom)
+- Done: `src/mimicguard/v2/` (footprint variants, data generation, stream-level fixed-ARL protocol, bootstrap, feature oracle, raw-IQ conv models), optional AR(1) fading in `channel.py` (default unchanged), `tests/test_v2.py` (10 pass), three notebooks built by `notebooks/build_v2_notebooks.py`, run guide `notebooks/KAGGLE_V2_README.md`.
+- Check: all three drivers ran end to end at tiny sizes on a local CPU; those numbers carry no meaning. No Kaggle run yet. Time estimates are from single-core local timing (one AE fit took 80 s).
+- Next: owner runs notebook 1 (smoke, then medium), then 2, then 3 on a GPU; results zips come back under `results/`.
+
+## 2026-11-19 - Audit of the draft paper and proposal v2
+- Done: audited `paper/main.tex` against `results/` and `src/`; read the Consensus review in `Review/`. Wrote `docs/proposal/MimicGuard_Proposal_v2.md` (audit, framing choice, experiment plan, KEEP/CUT/ADD/REDO table, corrected references 3-8).
+- Result (VERIFIED against result files): Table I reproduces. The abstract's "over 0.95" is one cell (pooled 0.71 to 0.80-0.83); "no AE advantage" is contradicted cell by cell (seed-paired, 20 dB, alpha 0.5: AE beats LOF by 0.07 and OC-SVM by 0.09 under Rician, p = 0.002); wrapped detectors run at realised FAR 0.033-0.043 under Rayleigh, not 0.01; "26 configurations x 7 SNR x 10 seeds" mixes two runs; tuning example 0.79 should read 0.82; Fig 4b mixes SNR sets. Code vs text: PCA default k = 3, power CUSUM two-sided, pilot phase step is between windows, per-window i.i.d. fading.
+- Also: the review folder holds no human reviewer comments, and the Consensus review cites this paper as evidence for its own gap ratings (circular).
+- Chosen framing (proposal): methodology paper with gap-to-optimal and a stream-level fixed-ARL protocol; learned attacker as stress test; real data not available.
+- Next: E0 timing, E3 footprint-swap artifact test (about 1 Kaggle hour), E1 fixed-ARL protocol, then E2 oracle gap. `main.tex` untouched.
+
+## 2026-11-16 - IEEE conference paper (Option B benchmark) drafted, compiled and packaged
+- Done: generated full 6-page IEEE conference paper in `paper/main.tex` and compiled to `paper/main.pdf` using Tectonic.
+- Generated publication figures via `paper/generate_figures.py`: Fig 1 (system/threat architecture), Fig 2 (AUC vs alpha sweep), Fig 3 (temporal context & CUSUM aggregation gain across model families), Fig 4 (feature ablations and window length sensitivity).
+- Packaging: assembled complete submission package into `MimicGuard_IEEE_Paper.zip` (and `paper/MimicGuard_IEEE_Paper.zip`), containing `main.tex`, `main.pdf`, `refs.bib`, `IEEEtran.cls`, all vector/PNG figures, and `README.md`. Double-blind compliant for QPAIN 2027 Track 02.
+- Framing adopted: Option B (empirical benchmark demonstrating model parity between Autoencoders and classical PCA/LOF baselines, dominance of temporal aggregation, and criticality of amplitude variance).
+
+## 2026-11-16 - Status report and decision to stop the autoencoder claim
+- Done: wrote `docs/status/MimicGuard_Status_Report.pdf` (3 pages, built by `docs/status/build_status_report.py`) for the research group. Owner's decision: do not pursue the autoencoder claim further, since there is no meaningful gain over simpler detectors ([[Decisions]] row still to be added by the owner if confirmed).
+- Options listed in the report: stop; negative-result benchmark; richer input or harder attacker; optimal-detector reference. Selective reporting of favourable conditions was advised against.
+
+## 2026-11-16 - Kaggle v3: improving the autoencoder (fair comparison)
+- Done: built `Context` (stack last 4 windows), `Tuned` (hyper-parameter choice on a synthetic anomaly made from normal validation data only), `DenoisingAE`, OC-SVM gamma option; 56 tests pass. Ran as a separate Kaggle notebook (`notebooks/mimicguard_kaggle_ae_improve.ipynb`, 5 seeds, 3 fadings, SNR 10/20/30, 26 detectors, 21 min). Results in `results/kaggle_v3/`.
+- Result: the autoencoder improved by seeing context (about +0.03 mean AUC over alpha 0.25-0.75 across all 9 conditions: 0.711 to 0.743) but every other learned detector improved as much or more with the same input (LOF 0.721 to 0.761, OC-SVM 0.695 to 0.746, PCA 0.698 to 0.731). With context plus CUSUM: OC-SVM 0.830, LOF 0.822, AE 0.795, PCA 0.780. The autoencoder does not lead in any family. Denoising AE equals the plain AE (0.742 vs 0.743 with context).
+- Tuning: the synthetic-check selection is unreliable. It helps sometimes (PCA tuned at Rayleigh 30 dB: 0.95 vs 0.81) and hurts badly elsewhere (AE tuned at Rayleigh 20 dB: 0.60 vs 0.70; PCA ctx4 tuned at Rician 20 dB: 0.61 vs 0.79). Net: no consistent gain. Report as a negative finding about selection without attack data (matches the risk in [[Claims and Risks]]).
+- Caveats: 5 seeds; 3 SNR levels; false-alarm rates 0.009-0.018 against 0.01; the mean over alpha 0.25-0.75 pools conditions that are at chance with those that are not; no paired tests yet on these variants.
+- Reading: with these six features and this attacker the model class matters little; temporal context and aggregation matter most. An improved autoencoder is not a justified headline claim.
+
+## 2026-11-16 - Kaggle v2: temporal detectors, ablations, robustness
+- Done: second Kaggle run (about 55 min in total). Main sweep (10 seeds, 210 cells, 13 detectors incl. CUSUM-wrapped versions), ablations (5 seeds, 10-30 dB), AGC and window 128/512 robustness (5 seeds). 48 tests passed there. Tables and figures in `results/kaggle_v2/`.
+- Result 1 (fairness): the CUSUM win at 5 dB was a temporal-memory effect. With CUSUM on top, every learned detector reaches AUC 0.94-0.99 at alpha 0 and 5 dB (no fading) and beats plain CUSUM there (0.996) only in part; at no fading 20 dB alpha 0.5 the wrapped detectors reach 0.94-0.98 against 0.67-0.71 unwrapped. The autoencoder is still not better than LOF, OC-SVM or Isolation Forest wrapped or not (ae_cusum 0.946 vs lof_cusum 0.975 at alpha 0.5).
+- Result 2: under Rayleigh 20 dB the temporal wrapper lifts AE, LOF and OC-SVM from about 0.70 to 0.97 (alpha <= 0.5), but PCA only to 0.78 and Isolation Forest to 0.78; plain CUSUM and energy stay at chance. Under Rician 10 dB and Rayleigh/Rician 5 dB all detectors stay near chance.
+- Result 3 (ablations, 5 seeds): amp_var is the critical feature at alpha 0.5 (dropping it takes AE and PCA to chance); power matters at alpha 0-0.25 without fading (AE falls to 0.89 / 0.70). Under Rayleigh, removing amp_var pushes AUC below 0.5. Latent size 2-6 changes AE AUC by up to 0.06 with no monotone trend (Rayleigh: L3 best at 0.71, L6 0.64). PCA with 4 components is as good as or better than the AE.
+- Result 4 (robustness): AGC hides the power drop, so alpha 0-0.5 give identical scores; AE/PCA still detect (0.64-0.67 no fading), and the CUSUM-wrapped versions reach 0.91. Longer windows help a lot (512: AE 0.74, PCA 0.78, LOF 0.84 at alpha 0.5, no fading); 128 hurts.
+- Caveats: the CUSUM-wrapped detectors have a test false-alarm rate of 0.016-0.023 against the 0.01 target (correlated stream scores, only 10 validation streams), so their Pd and AUC-at-threshold advantage is slightly flattered; AUC is unaffected by the threshold. Delay is the median among detected streams only. Ablation seeds are 0-4 only. No paired tests run on the new variants.
+- Reading: the paper's honest story is a benchmark: detection depends on temporal aggregation, window length and one variance feature far more than on the model class; the autoencoder is competitive but not better than a 4-component PCA or LOF.
+- Next: owner decides on framing/contribution (Option A in [[Contribution Options]] fits); possible follow-ups: calibrate the wrapped detectors' threshold on more validation streams, paired tests for the main claims.
+
+## 2026-11-16 - First full sweep (Kaggle, frozen grid)
+- Done: ran the notebook on Kaggle (CPU, torch 2.11 autoencoder backend): 210 cells, 10 seeds, 8 detectors, 793 s for the sweep. 45 unit tests passed there. Summary tables and figures in `results/kaggle_full/` (per-cell files not kept).
+- Result (mean over 10 seeds, 1% FAR, empirical test FAR 0.011-0.013 for all): no fading, 20 dB: AUC about 1.0 at alpha 0 and 0.25, 0.67-0.71 at 0.5, 0.55-0.57 at 0.75, chance at 1. Autoencoder is not clearly better than PCA, LOF, OC-SVM or Isolation Forest there (differences 0.00-0.02, mixed sign); it beats CUSUM and energy at alpha 0.5-0.75 by 0.07-0.16. Under Rician/Rayleigh at 20 dB the autoencoder and PCA lead (AUC 0.70-0.76 at alpha <= 0.5) and CUSUM/energy fall to chance. At 5 dB with no fading CUSUM is best (AUC 0.996 at alpha 0), the autoencoder worst. Rician/Rayleigh at 5 dB: every detector near chance.
+- Reading: supports RQ1 and RQ3 shape; RQ2 only partly (autoencoder ties the other learned detectors, loses to CUSUM at low SNR without fading). Caveat: AUC pools the 100 post-onset windows; paired p-values treat cells as independent (n = 70 per row). Not yet checked: why CUSUM is best at 5 dB (sequential statistic uses the whole stream), delay metric, ablations.
+- Next: read delay/Pd tables, add latent-size and feature ablations, decide how to frame the "autoencoder is not better" result in [[Claims and Risks]].
 
 ## 2026-11-16 - M4 detectors, M5 evaluation, Kaggle notebook
 - Done: `src/mimicguard/detectors.py` (random, energy, CUSUM, PCA residual, OC-SVM, Isolation Forest, LOF, autoencoder; thresholds from a 1% false-alarm quantile on validation scores), `evaluate.py` (AUC, Pd, test false-alarm rate, detection delay), `report.py` (tables, paired Wilcoxon, figures), `experiments/run_sweep.py` (resumable, one JSON per cell), `tests/test_m4_detectors.py`. Notebook builder `notebooks/build_kaggle_notebook.py` writes `notebooks/mimicguard_kaggle.ipynb` with the code embedded (no upload needed).

@@ -1,7 +1,7 @@
 ---
 tags: [hub, context]
 created: 2026-11-08
-updated: 2026-11-16
+updated: 2026-11-19
 ---
 
 # 00 - Project Context
@@ -33,6 +33,9 @@ The project name and goal line were not supplied explicitly at setup; they were 
 - Done: proposal PDF/DOCX, prior-art pass (see [[Prior Art Verdict]]), experiment design draft, plain-language overview PDF with workbench module diagram (`docs/proposal/overview/`, see [[Session Log]] 2026-11-11), experiment design frozen 2026-11-15 ([[Experiment Plan]]), M0 setup and M1 channel simulator with passing sanity check ([[M1 Sanity Results]]), M2 attacker and M3 features/dataset with footprint check ([[M2 Footprint Check]]).
 - M4 detectors, M5 evaluation and a self-contained Kaggle notebook (`notebooks/mimicguard_kaggle.ipynb`) built 2026-11-16; only a local smoke run so far ([[Session Log]]).
 - Not done: Google Scholar search (blocked by CAPTCHA; Xplore and OpenAlex done 2026-11-15, C1 holds in hedged form), the full sweep and any reportable detection results, ablations.
+- 2026-11-19: draft paper audited against result files; several headline claims do not match (see [[Session Log]]). Proposal v2 in `docs/proposal/MimicGuard_Proposal_v2.md`; first experiment is the footprint-swap artifact test.
+- 2026-11-19 (later): all v2 notebooks done and read (`results/V2_RESULTS_INDEX.md`). Proposal section G lists the claims the files support, the paper claims to cut or rewrite, and the remaining experiments R1-R8. Headline: no uniform AE-vs-classical winner (sign depends on fading, wrapper, false-alarm level); sigma_A^2 dominance is footprint-dependent; supervision gap to the label-using oracle (large at 15 dB; at 20 dB wrapped OC-SVM matches it); raw-IQ unsupervised detection is not established; 5 seeds, simulation only. Paper text still unchanged.
+- 2026-11-19 (follow-ups): R3-R8 done (proposal G6, S9-S14). The CUSUM slack default is not optimal, AE training size matters, raw-IQ unsupervised model fails in all tested settings, and no detector survives a 3 dB calibration shift. See [[Session Log]].
 - Next actions: top of [[Session Log]] and [[Open Questions]].
 - Novelty status: moderate-low; framed as integration and evaluation, not a new method ([[Prior Art Verdict]]).
 - Contribution options (2026-11-12): deferred on 2026-11-15; the original plan stands ([[Decisions]], [[Contribution Options]]).
