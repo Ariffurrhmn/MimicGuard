@@ -43,3 +43,14 @@ def test_global_policy_picks_one_config_per_family_and_p():
     tune = _fake([100], rng, best)
     ch = r14.select(tune, "global")
     assert len(ch) == len(r14.FAMILIES) * 2
+
+
+def test_label_free_selection_uses_only_synthetic_columns():
+    rng = np.random.default_rng(2)
+    test = _fake([200], rng, {("none", 20.0): "lof"})
+    test["syn_pd"] = np.where(test.wrap == "k=0.01", 0.9, 0.1)
+    test["syn_auc"] = 0.5
+    ch = r14.select_label_free(test, "lf_global")
+    assert (ch.wrap == "k=0.01").all()
+    tab = r14.selection_table(test, test)
+    assert {"global", "lf_global", "lf_cell", "lf_unit", "random", "hindsight"} <= set(tab.policy)

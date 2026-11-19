@@ -42,3 +42,6 @@ Rule: a number in the proposal or paper must point to one of these files, or be 
 | Correlated fading rho 0.9 / 0.99, five seeds | `v2_followups/r4/r4_rows.csv` |
 | AE with 300 training windows | `v2_followups/r7/r7_rows.csv` (written when the run finishes) |
 | Console logs of the Kaggle runs | the notebook logs in Downloads (not copied) |
+
+| Tuned detectors on held-out seeds, tested on fresh seeds (R14) | `v2_r14_kaggle/r14_test_rows.csv`, `r14_tune_rows.csv`, `r14_selected_configs.csv`, `r14_ranking_summary.csv`, `r14_pairwise_flips.csv`, `r14_oracle_gap.csv`, `r14_selected_test_table.csv`; log `notebook-8.log` |
+| Label-free tuning, wider slack grid, tuned oracle (R15/R16) | `v2_r15_kaggle/results_r15/r15_selection_table.csv`, `r15_ranking_summary.csv`, `r15_selected_configs.csv`, `r15_test_rows.csv`, `r15_tune_rows.csv`; run zip `mimicguard_v2_r15_results.zip` |

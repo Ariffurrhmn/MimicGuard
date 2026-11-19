@@ -95,3 +95,66 @@ Objections that stand, ranked:
 Reviewer's pick: **B, with its last clause made cell-dependent** (the ordering instability survives every file; A's third clause is exposed to objections 2 and 3; C depends on R9). I agree: **B is now the recommended sentence**, reworded as: *At a fixed stream-level false-alarm budget no unsupervised detector, the autoencoder included, is reliably best at catching a channel-mimicking eavesdropper, and its gap to a labelled detector is large in some channels and absent in others.* A and C stay as options if R9 and a shift sweep come out well.
 
 Reviewer's single most valuable experiment, adopted as **R14**: rerun the headline comparison with each detector's hyperparameters (CUSUM k down to 0.01, PCA k, AE training size, OC-SVM and LOF parameters) tuned on held-out seeds and tested on fresh seed offsets (this absorbs R11 and R13), then compute the R10 rank-instability number. If the rankings still flip, claim 2 is a finding, not an artefact of tuning; if they do not, the central claim is gone and it is better to know now. Cost: about 2 to 3 h on Kaggle CPU [ESTIMATE]. Also a shift sweep (R9b: 0.25, 0.5, 1, 2, 3 dB in both directions, about 40 min CPU [ESTIMATE]) if sentence A or C is kept.
+
+## 9. R14 result (2026-11-19): the story changes again
+
+Files: `results/v2_r14_kaggle/` (`r14_test_rows.csv`, `r14_tune_rows.csv`, `r14_selected_configs.csv`, `r14_ranking_summary.csv`, `r14_pairwise_flips.csv`, `r14_oracle_gap.csv`, log `notebook-8.log`). Tuning seeds 100-104, test seeds 200-204, four cells, p = 0.05 unless stated, 5 seeds. The realised false alarm of every policy is 0.04-0.065 at p = 0.05 and 0.003-0.016 at p = 0.01, so the comparison is at a fixed operating point.
+
+**VERIFIED from the files**
+- **With code defaults the rankings flip.** `default_plain` and `default_cusum` each have 3 of 10 detector pairs that change order across the four cells; the plain-default winners differ (AE in some cells, LOF in others). Example, plain defaults at p = 0.05, no fading 20 dB: AE 0.39, LOF 0.82, OC-SVM 0.74; Rayleigh 20 dB: AE 1.00, LOF 0.58.
+- **After tuning, no pair flips at p = 0.05** (0 of 10 pairs under both `global` and `per_cell` policies; at p = 0.01 one pair each). The tuned AE is first or tied for first in all four cells. Three of the four cells are saturated (all families within 0.05 of the top in 3 cells), so a ranking cannot flip there.
+- **Tuning is the large effect, not the detector family.** Tuned global policy, no fading 20 dB: PCA 0.05 (default plain) to 1.00; iForest 0.42 to 1.00; LOF 0.82 to 1.00. Within-family tuning mostly picks a CUSUM slack of 0.01 (27 of 40 per-cell choices; 0.25 in 11; 0.1 in 2). **The best slack is again at the lowest edge of the grid**, so the true optimum may be lower still.
+- **The only cell with room is Rayleigh 15 dB.** Tuned and wrapped, p = 0.05: AE 0.99, LOF 0.82, OC-SVM 0.67, iForest 0.45, PCA 0.33. Per seed the AE beats every other family in all five test seeds (smallest margin +0.14, versus LOF). At p = 0.01 the picture is noisy: AE 0.69 (seeds 0.30 to 0.94), OC-SVM 0.45, LOF 0.33; the AE is below LOF or OC-SVM in some seeds.
+- **Trivial baselines do not match.** Energy and the original power CUSUM stay at 0.04-0.12 (p = 0.05) in every cell (`r14_test_rows.csv`, rows `energy`, `cusum`).
+- **The label-using gap disappears.** Best tuned unsupervised Pd is equal to or above the (untuned, k = 0.5) wrapped oracle in three cells, 0.006 below in the fourth (`r14_oracle_gap.csv`).
+
+**What the result does to the earlier claims**
+- Sentence B ("no unsupervised detector is reliably best") is not supported once the detectors are tuned. Do not use it.
+- The AE-versus-classical deficit without fading (S2, S14) was largely the default CUSUM slack (0.5) and the training size, not the architecture.
+- Claim 2 of section 4 survives only in this narrower form: *rankings under default settings are unstable; under tuning they are not.* That is a statement about benchmarking practice, close to what the general ranking-instability papers already say (section 3), so it is not a headline on its own.
+
+**Caveats that must stay attached**
+1. **Selection used attack data.** The tuned detectors are semi-supervised in effect (26 configurations x 7 slack choices chosen on labelled tuning seeds). The matching of the oracle is therefore after labelled model selection and says nothing about a defender without attack data. The code has a label-free selection (`_tuned`, a synthetic-anomaly check on normal validation data) that this run did not use.
+2. **The slack is at the grid edge again** (0.01). With a near-zero slack the CUSUM is nearly a running sum of the standardised score; this suits an attack that is on for all 100 windows after onset. R8a already showed that the accumulation advantage shrinks for an on-off attacker, so the result may not hold there.
+3. **Three of four cells are saturated**; the evidence for any difference between families rests on one cell at p = 0.05 and is seed-noisy at p = 0.01. Four cells, one attacker strength (alpha 0.5), one footprint class.
+4. **The oracle was not tuned** (k = 0.5, default configuration), so "tuned unsupervised equals the oracle" compares a tuned detector with an untuned one.
+5. The per-cell policy is optimistic by design; the global policy is the one a defender could follow.
+
+### Revised candidate sentences (owner decides; none is settled)
+
+- **D (supported by the files now).** *Which label-free detector looks best at catching a channel-mimicking eavesdropper is mostly decided by two untuned choices, the accumulation slack and the training size: with defaults the rankings flip from channel to channel, and once these are tuned every detector family reaches the labelled detector's detection rate at 20 dB and only the hardest channel separates them, in the autoencoder's favour.* Soft points: tuning used attack labels; the hard-channel evidence is one cell.
+- **E (needs R15 and R9b below).** *The same tuning needs attack labels, and without them (a synthetic-anomaly check) it recovers only part of the gain; the tuned operating point also breaks under a 3 dB channel shift.* Both clauses are untested.
+- **F (fallback, a benchmarking-practice paper).** *In a simulated fiber-wireless link the order of unsupervised detectors is set by untuned defaults, not by the detectors; a protocol with a fixed stream-level false-alarm rate and tuned baselines removes the differences.* Closest to the known ranking-instability work; weakest on novelty.
+
+### New experiments suggested by R14 (nothing launched)
+
+| # | Experiment | Why | Cost |
+|---|---|---|---|
+| R15 | Select configuration and slack with the label-free synthetic-anomaly check on normal validation data (as in `Tuned`, extended to a sequential check for the slack), then test on the same fresh seeds | Decides sentence E: does tuning survive without attack labels? Turns the caveat into a result | about 1.5 to 3 h CPU [ESTIMATE]; the detector fits repeat |
+| R16 | Extend the slack grid below 0.01 (0, 0.0025, 0.005) and tune the oracle the same way | Removes the grid-edge and the untuned-oracle caveats | about 1 h CPU [ESTIMATE] |
+| R9b | Calibration shift (+-3 dB, fading type) for the tuned configurations of R14 | Tests whether the tuned, accumulating detectors keep false-alarm control; a near-zero slack may make them more fragile | about 40 min CPU [ESTIMATE] |
+| R17 | R14 at an on-off attacker (duty 0.25) and at alpha 0.3 | Unsaturates more cells; checks that tuning does not just exploit a persistent attack | about 2 h CPU [ESTIMATE] |
+
+## 10. R15/R16 result (2026-11-19): label-free tuning works; sentence E's first clause is refuted
+
+Files: `results/v2_r15_kaggle/results_r15/` (`r15_selection_table.csv`, `r15_ranking_summary.csv`, `r15_selected_configs.csv`, `r15_test_rows.csv`, `r15_tune_rows.csv`). Same seeds and cells as R14 (tune 100-104, test 200-204), slack grid extended to 0, label-free selection by a synthetic anomaly on normal check streams. Realised false alarm of every policy 0.044-0.070 at p = 0.05.
+
+**VERIFIED from the files**
+- **Label-free selection recovers essentially all of the labelled gain for four of five families.** At p = 0.05, AE, LOF, OC-SVM and iForest reach the labelled (`global`) Pd within 0.01 in every cell under `lf_global`, `lf_cell` and `lf_unit` (OC-SVM at Rayleigh 15 dB: 0.68 label-free, 0.68 `global`, 0.78 hindsight). Uninformed `random` is clearly worse (e.g. LOF Rayleigh 15 dB 0.48 vs 0.84; AE 0.95 vs 0.99).
+- **PCA is the exception.** `lf_global` picks a bad PCA configuration (Pd 0.09-0.15 in three cells where `global` reaches 0.35-1.00); `lf_cell` and `lf_unit` partly repair this (0.10-1.00). The synthetic anomaly (two shifted features) does not look like the eavesdropper's footprint, which suits detectors whose directions it cannot exploit.
+- **Mean Pd over families and cells (p = 0.05):** random 0.783, lf_global 0.790, lf_unit 0.847, lf_cell 0.861, labelled global 0.893, hindsight 0.923; (p = 0.01): 0.620, 0.710, 0.784, 0.798, 0.790, 0.804. Most of the label-free shortfall is PCA.
+- **The slack optimum is 0.0 (the plain running sum) everywhere it was chosen** (all 30 selected configurations at p = 0.05 under `global`, `lf_global` and `lf_cell` are k = 0.0), so the grid edge is now the CUSUM's degenerate limit and the "slack" parameter is not what is being tuned. At that value the statistic is a cumulative sum of the standardised score.
+- **Rankings.** No pair flips at p = 0.05 under any tuned or label-free policy; `random` flips 1 of 10 pairs at p = 0.05 and 4 of 10 at p = 0.01. The AE is sole winner under every tuned and label-free policy. Rayleigh 15 dB, p = 0.05: AE 0.99, LOF 0.84, OC-SVM 0.68, iForest 0.47, PCA 0.15-0.35 (label-free). At p = 0.01 the label-free AE (0.92) is above its labelled-global value (0.79).
+- **R16: the tuned oracle is saturated.** The oracle with any slack from 0 to 0.25 has Pd 1.00 in every cell and 0.996 at k = 0.5, so a gap to the label-using detector remains only in the hardest cell (AE 0.99 vs oracle 1.00 at p = 0.05; LOF 0.84; others lower). The earlier "unsupervised equals the oracle" statement holds for the AE and holds up against the tuned oracle.
+
+**Caveats that stay attached**
+1. The conclusion depends on one family of persistent attack (alpha 0.5, always on after onset) and four cells, three of them saturated; Rayleigh 15 dB carries the separation.
+2. The synthetic anomaly is a design choice; a poor choice hurts PCA. Nothing here says it is the best generic anomaly.
+3. Slack 0.0 is what a persistent attack rewards; R8a (on-off attacker) already showed the accumulation advantage shrinks, so R17 is the check that matters before any claim of general detection.
+4. Calibration shift (R9b) is untested for the tuned detectors; the fixed-threshold weakness from R8b is expected physics and unaddressed.
+5. Simulation only, 5 seeds.
+
+### Where the story stands
+- **E first clause is refuted**: a label-free check recovers the gain for 4 of 5 families, so the "needs attack labels" story is not supported. E should be dropped or replaced by the PCA observation.
+- **D is supported with the stronger form**: *with defaults the rankings flip; tuned with no attack labels, every family except PCA reaches the labelled detector and only the hardest channel separates them, in the autoencoder's favour.* Same soft points as before (one separating cell, persistent attack).
+- **F remains the fallback.** The outstanding checks, in value order: R17 (on-off attacker and weaker alpha; unsaturates cells and tests whether slack 0 is exploiting persistence), then R9b.

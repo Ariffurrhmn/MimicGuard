@@ -8,6 +8,18 @@ updated: 2026-11-19
 
 Newest first. Hub: [[00 - Project Context]]. Entry template: [[Session Entry]]. Rules: [[Vault Conventions]].
 
+## 2026-11-19 - R15/R16 built, pushed to Kaggle by token, result read (proposal v3, section 10)
+- Done: built `notebooks/build_v2_r15_notebook.py` and notebook 9; pushed to Kaggle with the CLI, watched status, downloaded `results/v2_r15_kaggle/`; analysed against the CSVs; wrote section 10.
+- Result (VERIFIED): label-free selection (synthetic anomaly on normal streams) matches labelled tuning for AE, LOF, OC-SVM, iForest in all four cells; PCA is the exception; selected slack is 0.0 everywhere; AE sole winner under all tuned/label-free policies, Rayleigh 15 dB p = 0.05 AE 0.99 vs LOF 0.84; tuned oracle saturates at 1.00. Sentence E (first clause) refuted; D stands in a stronger form.
+- Caveats: persistent attack only, one separating cell, synthetic anomaly is a design choice.
+- Next: R17 (on-off attacker, weaker alpha) then R9b; owner decides.
+
+## 2026-11-19 - R14 result read (proposal v3, section 9)
+- Done: filed `results/v2_r14_kaggle/`; analysed it against the CSVs; wrote section 9 of `MimicGuard_Proposal_v3.md`.
+- Result (VERIFIED): with defaults the rankings flip (3 of 10 pairs), after tuning no pair flips at p = 0.05 and the AE is first or tied first in all four cells; three of four cells are saturated, Rayleigh 15 dB is the only separating cell (AE 0.99 vs 0.33-0.82); selected CUSUM slack is 0.01, the lowest in the grid; tuned detectors match the untuned wrapped oracle; energy and power CUSUM stay at 0.04-0.12. Sentence B retracted; D now supported, E needs R15 (label-free tuning) and R9b.
+- Caveats: selection used attack labels (generous), slack at the grid edge, persistent attack only, oracle untuned, one separating cell.
+- Next: owner decides R15/R16/R9b/R17 (costs in section 9). Nothing launched.
+
 ## 2026-11-19 - R14 built (tuned detectors, fresh seeds)
 - Done: `src/mimicguard/v2/r14.py` (grid of hyper-parameters x training size x CUSUM k, selection on tuning seeds 100-104, reading on test seeds 200-204, policies global and per_cell, untuned defaults as reference, ranking-instability tables), `tests/test_r14.py` (2 pass), `notebooks/build_v2_r14_notebook.py` and `mimicguard_v2_08_cpu_r14_tuned_rankings.ipynb`, README section.
 - Check: smoke run locally (two cells, tiny sizes) ran end to end and the notebook analysis cell executed; the tiny numbers carry no meaning. Full run not started: estimated 2.5 to 4 h on Kaggle CPU (not measured).
