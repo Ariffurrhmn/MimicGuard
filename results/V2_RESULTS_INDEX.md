@@ -6,7 +6,7 @@ Every v2 result lives in one folder with a `RUN_INFO.md` (notebook, commit, plat
 |---|---|---|---|---|
 | `v2_footprint/` | E0 timing, E3 footprint swap (matched detectability, leave-one-feature-out) | `mimicguard_v2_01_footprint_swap.ipynb` | Kaggle CPU, full | complete |
 | `v2_fixed_arl_kaggle/` | E1 stream-level fixed false-alarm protocol with feature-space oracle | `mimicguard_v2_02_fixed_arl.ipynb` | Kaggle CPU, full | simulations and analyses A-C done; crashed on a print; only the log was retrieved (tables rebuilt in `parsed_from_log/`) |
-| `v2_nb2_local/` | Rerun of notebook 2 with the print bug fixed | same notebook code, run locally | local PC, CPU | see `RUN_INFO.md` there |
+| `v2_nb2_local/` | Rerun of notebook 2 with the print bug fixed (full CSVs, per-stream arrays, headroom, correlated fading) | same notebook code, run locally | local PC, CPU, full | complete; agrees with the Kaggle run (see `RUN_INFO.md`) |
 | `v2_rawiq/` | E2 raw-IQ models and oracle headroom | `mimicguard_v2_03_rawiq_gpu.ipynb` | Kaggle T4, full | complete |
 
 Older runs (not v2): `kaggle_full/`, `kaggle_v2/`, `kaggle_v3/` (the draft paper's data).
@@ -22,6 +22,10 @@ Older runs (not v2): `kaggle_full/`, `kaggle_v2/`, `kaggle_v3/` (the draft paper
 | Pd, CADD, AUC at fixed stream-level false alarm | `v2_fixed_arl_kaggle/parsed_from_log/pd_p0.05.csv`, `cadd_p0.05.csv`, `auc_p0.05.csv` |
 | AE vs classical, bootstrap intervals and verdicts | `v2_fixed_arl_kaggle/parsed_from_log/ae_vs_others_bootstrap.csv` |
 | Six-feature supervised oracle vs unsupervised detectors | oracle rows in the same files (`oracle_feat`, `oracle_feat_cusum`) |
+| Six-feature oracle gap per cell | `v2_nb2_local/headroom_features.csv` |
+| Correlated fading (rho 0.9, 0.99), Rayleigh 20 dB | `v2_nb2_local/e1_rho_rows.csv` |
+| False-alarm audit with intervals, all detectors | `v2_nb2_local/false_alarm_audit.csv` |
+| Bootstrap AE vs others (CSV) | `v2_nb2_local/ae_vs_others_bootstrap.csv` |
 | Raw-IQ vs six-feature headroom | `v2_rawiq/headroom_summary.csv`, `v2_rawiq/e2_rows.csv` |
 | PCA with 3 vs 4 components | rows `pca` (code default, k=3) and `pca_L4` (k=4) in `v2_fixed_arl_kaggle/parsed_from_log/pd_p0.05.csv` and `auc_p0.05.csv` |
 

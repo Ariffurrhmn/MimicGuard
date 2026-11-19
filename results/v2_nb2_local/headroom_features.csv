@@ -1,0 +1,10 @@
+fading,snr_db,best_unsupervised_pd,best_is,oracle_pd,oracle_cusum_pd,gap_to_oracle
+none,15.0,0.194,iforest_cusum,0.274,0.998,0.804
+none,20.0,1.0,lof_cusum,1.0,1.0,0.0
+none,25.0,1.0,ae_cusum,1.0,1.0,0.0
+rayleigh,15.0,0.792,ae,0.916,1.0,0.20799999999999996
+rayleigh,20.0,1.0,ae,1.0,1.0,0.0
+rayleigh,25.0,1.0,ae,1.0,1.0,0.0
+rician,15.0,0.38,ae_cusum,0.638,0.9960000000000001,0.6160000000000001
+rician,20.0,1.0,ocsvm_cusum,1.0,1.0,0.0
+rician,25.0,1.0,iforest_cusum,1.0,1.0,0.0
