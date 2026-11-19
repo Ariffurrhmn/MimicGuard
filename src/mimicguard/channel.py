@@ -76,15 +76,28 @@ def handover(x: np.ndarray, cfg_handover: dict, nominal_gain: float, window: int
 def fading_coefficients(cfg_wireless: dict, n_windows: int, rng: np.random.Generator) -> np.ndarray:
     """Block-fading coefficient per window, unit mean power."""
     kind = cfg_wireless.get("fading", "none")
+    rho = float(cfg_wireless.get("rho", 0.0))  # optional AR(1) correlation between windows; 0 = independent (default)
     if kind == "none":
         return np.ones(n_windows, dtype=np.complex128)
     if kind == "rayleigh":
-        return cgauss(rng, n_windows, 1.0)
+        return _ar1(cgauss(rng, n_windows, 1.0), rho)
     if kind == "rician":
         k = float(cfg_wireless["rician_k"])
         los_phase = rng.uniform(0, 2 * np.pi)  # fixed per realisation
-        return np.sqrt(k / (k + 1)) * np.exp(1j * los_phase) + cgauss(rng, n_windows, 1.0 / (k + 1))
+        return np.sqrt(k / (k + 1)) * np.exp(1j * los_phase) + _ar1(cgauss(rng, n_windows, 1.0 / (k + 1)), rho)
     raise ValueError(f"unknown fading {kind!r}")
+
+
+def _ar1(w: np.ndarray, rho: float) -> np.ndarray:
+    """AR(1) filter that keeps the marginal power: h_0 = w_0, h_t = rho h_{t-1} + sqrt(1 - rho^2) w_t.
+
+    ``rho = 0`` returns ``w`` unchanged (independent blocks, the default).
+    """
+    if rho <= 0.0:
+        return w
+    from scipy.signal import lfilter
+    a = float(np.sqrt(1.0 - rho * rho))
+    return lfilter([a], [1.0, -rho], w, zi=[w[0] * (1.0 - a)])[0]
 
 
 def wireless(x_win: np.ndarray, h: np.ndarray, snr_db: float, rng: np.random.Generator) -> np.ndarray:
