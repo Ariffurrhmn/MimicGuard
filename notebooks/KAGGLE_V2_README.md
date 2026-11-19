@@ -41,6 +41,19 @@ Run order: 1, then 2, then 3. Notebook 1 can change how the others should be rea
 - Look at: cell 5 (Pd/AUC/realised false alarm per detector) and cell 6 (headroom summary: `learner_gap_features` and `feature_compression_gap`).
 - Outputs: `e2_rows.csv`, `headroom_summary.csv`.
 
+## Follow-up notebooks 4 to 7 (built by `build_v2_followup_notebooks.py`)
+
+All four are independent of each other and of notebooks 1 to 3, so they can run in separate Kaggle sessions at the same time. Internet Off, no token, no dataset. Each has `MODE = "smoke"` (2-5 min, to check it runs) and `"full"`. Runs are resumable.
+
+| Notebook | Accelerator | What | Estimated time (not measured on Kaggle) | Output zip |
+|---|---|---|---|---|
+| `mimicguard_v2_04_gpu_r3_r6.ipynb` | GPU (T4 or P100) | R3: six-feature and raw-IQ detectors and oracles at alpha = 0.75, with Pd within 10/20/50/100 windows; R6: five raw conv-AE variants (all reported, none chosen with attack data) | R3 30-40 min, R6 20-30 min | `mimicguard_v2_r3_r6_results.zip` |
+| `mimicguard_v2_05_cpu_r5_ksweep.ipynb` | CPU | R5: CUSUM slack k in {0.1, 0.25, 0.5, 1, 2} for AE, LOF, OC-SVM, PCA and the oracle | 20-30 min | `mimicguard_v2_r5_results.zip` |
+| `mimicguard_v2_06_cpu_r8a_onoff.ipynb` | CPU | R8a: on-off attacker, duty 100/50/25/10 percent of a 20-window period | 45-60 min | `mimicguard_v2_r8a_results.zip` |
+| `mimicguard_v2_07_cpu_r8b_shift.ipynb` | CPU | R8b: calibrate at the nominal channel, test at SNR +-3 dB and at the other fading type; reports realised false alarm and Pd | 45-60 min | `mimicguard_v2_r8b_results.zip` |
+
+R4 (correlated fading, 5 seeds, Rayleigh and Rician 20 dB) and R7 (AE trained on 300 realisations) use existing drivers and were run on the local PC (`results/v2_followups/run_followups.py`).
+
 ## What the results decide
 
 - Notebook 1: if the dominant feature or the AE-vs-classical sign changes across footprints at matched detectability, the corresponding claims in the draft paper are statements about the attacker model and must be scoped that way. If nothing changes, those findings are more robust than the audit assumed.

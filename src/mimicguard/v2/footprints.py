@@ -30,6 +30,18 @@ def build_attack(spec: dict, cfg_attacker: dict, nominal_power: float, start_sym
     """Return ``attack(x, rng)`` for a footprint spec such as ``{"kind": "echo_only", "scale": 0.05}``
     or ``{"kind": "ladder", "alpha": 0.5}``."""
     kind = spec["kind"]
+    if kind == "onoff":
+        # the ladder attack is active only in some windows: the first ``duty * period`` windows of every ``period`` windows
+        ws, period = int(spec["window_symbols"]), int(spec.get("period", 20))
+        n_on = max(1, int(round(float(spec["duty"]) * period)))
+        inner = make_attack(cfg_attacker, float(spec["alpha"]), nominal_power, start_symbol)
+
+        def attack_onoff(x: np.ndarray, rng: np.random.Generator) -> np.ndarray:
+            y = inner(x, rng)
+            w = (np.arange(len(x)) - start_symbol) // ws
+            return np.where((w >= 0) & ((w % period) < n_on), y, x)
+
+        return attack_onoff
     if kind == "ladder":
         return make_attack(cfg_attacker, float(spec["alpha"]), nominal_power, start_symbol)
     if kind not in SCALE_RANGE:

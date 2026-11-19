@@ -28,6 +28,8 @@ def _one(args):
         os.environ["OMP_NUM_THREADS"] = "1"
     rngs = link_streams(seed, int(r), "fading", fading)
     attack = None
+    if spec is not None and spec.get("kind") == "onoff":
+        spec = {**spec, "window_symbols": cfg["signal"]["window_symbols"]}
     if spec is not None:
         nominal = fiber_power_gain(cfg["fiber"]) if cfg["fiber"].get("enabled", True) else 1.0
         attack = build_attack(spec, cfg["attacker"], nominal, start_symbol=onset * cfg["signal"]["window_symbols"])

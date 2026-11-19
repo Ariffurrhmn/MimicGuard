@@ -189,7 +189,7 @@ class RawConvOracle:
         return torch.cat(out).numpy()
 
 
-def run_e2(base: dict, cells, seeds, out_dir, sizes: dict, n_jobs=1, alpha=0.5, ae_kwargs=None, oracle_kwargs=None) -> pd.DataFrame:
+def run_e2(base: dict, cells, seeds, out_dir, sizes: dict, n_jobs=1, alpha=0.5, ae_kwargs=None, oracle_kwargs=None, save_arrays=False) -> pd.DataFrame:
     """Headroom experiment: unsupervised and supervised detectors on six features vs on raw IQ, same protocol (E1)."""
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
@@ -233,10 +233,14 @@ def run_e2(base: dict, cells, seeds, out_dir, sizes: dict, n_jobs=1, alpha=0.5, 
             entries["raw_conv_oracle"] = e
             for name in list(entries):
                 entries[name + "_cusum"] = add_cusum(entries[name])
-            cell_rows = []
+            cell_rows, arrs = [], {}
             for name, en in entries.items():
-                rs, _ = evaluate_entry(en, data["onset"], (0.01, 0.05))
+                rs, ar = evaluate_entry(en, data["onset"], (0.01, 0.05))
                 cell_rows += [{**r, "seed": seed, "fading": fading, "snr_db": float(snr), "detector": name} for r in rs]
+                for (label, p), (det_, dly) in ar.items():
+                    arrs[f"{name}|{label}|{p}|detect"], arrs[f"{name}|{label}|{p}|delay"] = det_, dly
+            if save_arrays:
+                np.savez_compressed(out / f"{stem}.npz", **arrs)
             _save(jp, cell_rows)
             rows += cell_rows
             print(f"e2 {stem}: {time.time() - t0:.0f}s on {_device()}", flush=True)
