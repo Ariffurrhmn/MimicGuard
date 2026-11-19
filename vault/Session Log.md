@@ -8,10 +8,22 @@ updated: 2026-11-19
 
 Newest first. Hub: [[00 - Project Context]]. Entry template: [[Session Entry]]. Rules: [[Vault Conventions]].
 
+## 2026-11-19 - R14 built (tuned detectors, fresh seeds)
+- Done: `src/mimicguard/v2/r14.py` (grid of hyper-parameters x training size x CUSUM k, selection on tuning seeds 100-104, reading on test seeds 200-204, policies global and per_cell, untuned defaults as reference, ranking-instability tables), `tests/test_r14.py` (2 pass), `notebooks/build_v2_r14_notebook.py` and `mimicguard_v2_08_cpu_r14_tuned_rankings.ipynb`, README section.
+- Check: smoke run locally (two cells, tiny sizes) ran end to end and the notebook analysis cell executed; the tiny numbers carry no meaning. Full run not started: estimated 2.5 to 4 h on Kaggle CPU (not measured).
+- Note: selection uses attack data from the tuning seeds, so tuned detectors are generous bounds, not deployable detectors. Result decides whether claim 2 of proposal v3 (ranking instability) is a finding or a tuning artefact.
+- Next: owner runs notebook 08 (smoke, then full) and sends the zip.
+
+## 2026-11-19 - Proposal v3: story written backwards from the results
+- Done: `docs/proposal/MimicGuard_Proposal_v3.md` (three candidate one-sentence stories, claim back-map to result files, gap list R9-R13 with costs, limits). Consensus pass on ranking instability, threshold calibration under shift and physical-layer detection papers (abstract depth only, all UNVERIFIED until read in full).
+- Result: "rankings are unstable" is already known in general anomaly detection (2026 ranking study, ADBench, time-series evaluation papers), so the contribution is the domain, the stream-level protocol, the supervised-headroom comparison and the calibration-shift test. Recommended sentence A rests on S11, the instability across axes, and S13. Correction found on the way: R7 refit every detector at 300 windows (size-matched); only the AE gains.
+- Opus review: S13, S10, S12 wordings corrected; the review's pick is B (cell-dependent last clause), now recommended; new priority experiment R14 (tune on held-out seeds, test on fresh seeds, then rank-instability number). Sentence A is exposed because S13 is expected physics.
+- Next: owner picks the sentence; R9 (recalibration under shift) decides between sentences A and C. Nothing launched, nothing committed.
+
 ## 2026-11-19 - Follow-up runs R3-R8 read (proposal G6)
 - Done: filed the Kaggle zips (`results/v2_followups_kaggle/{r3_r6,r5,r8a,r8b}/`) and the local R4/R7 runs (`results/v2_followups/`); added S9-S14 to proposal section G6 and rows to `results/V2_RESULTS_INDEX.md`. Kaggle logs match the CSV tables.
 - Result (VERIFIED against the tables): CUSUM k = 0.5 is not best, lower k is better for LOF/OC-SVM/PCA and the AE wrapper hurts under fading (S9); slow fading (rho 0.99) cuts every unsupervised detector, wrapped oracle stays at 1.00 (S10); raw conv-AE is at the false-alarm floor in all cells and five variants, raw oracle Pd 1.00 (S11); on-off attacker lowers Pd for all, oracle-wrapped holds to duty 0.25 (S12); a 3 dB SNR or fading-type shift breaks every fixed threshold, oracle included, no AE robustness advantage (S13); AE with 300 training windows gains a lot without fading but still trails wrapped LOF/OC-SVM there (S14).
-- INFERRED only: raw conv-AE variants give near-identical AUC, so the score may not depend on the architecture. Not tested: k below 0.1, size-matched LOF/OC-SVM at 300 windows.
+- INFERRED only: raw conv-AE variants give near-identical AUC, so the score may not depend on the architecture. Not tested: k below 0.1. Correction: R7 refit every detector at 300 windows, so it is size-matched; classical detectors do not gain, the AE does.
 - Next: owner decides on optional extras (k grid below 0.1, size-matched baselines, more seeds for R3/R6). Nothing committed; section G, vault and result files are uncommitted. Paper text untouched.
 
 ## 2026-11-19 - v2 results read; claims decided (proposal section G)

@@ -52,6 +52,14 @@ All four are independent of each other and of notebooks 1 to 3, so they can run 
 | `mimicguard_v2_06_cpu_r8a_onoff.ipynb` | CPU | R8a: on-off attacker, duty 100/50/25/10 percent of a 20-window period | 45-60 min | `mimicguard_v2_r8a_results.zip` |
 | `mimicguard_v2_07_cpu_r8b_shift.ipynb` | CPU | R8b: calibrate at the nominal channel, test at SNR +-3 dB and at the other fading type; reports realised false alarm and Pd | 45-60 min | `mimicguard_v2_r8b_results.zip` |
 
+## Notebook 8: `mimicguard_v2_08_cpu_r14_tuned_rankings.ipynb` (CPU), built by `build_v2_r14_notebook.py`
+
+- Question: when every detector family is tuned, do the rankings still flip from one channel to the next? PCA, LOF, OC-SVM, iForest and AE each get a grid of hyper-parameters, a training size (100 or 300 streams) and a CUSUM choice (none, or slack k from 0.01 to 0.5). Selection uses the tuning seeds 100-104 (with attack data, which is generous to the unsupervised detectors, so it bounds what tuning can buy); results are read on the fresh seeds 200-204. Four cells: no fading 20 dB, Rician 20 dB, Rayleigh 20 dB, Rayleigh 15 dB.
+- Accelerator: None (CPU). Internet Off. Modes `smoke` (3-6 min) and `full`. Resumable.
+- Estimated time (not measured on Kaggle): 2.5 to 4 h on 4 CPUs (40 units; four autoencoder fits per unit dominate).
+- Look at: the "ranking summary" table (distinct sole winners, Kendall tau between cells, pairs that flip) for the policies `global`, `per_cell`, `default_plain`, `default_cusum`; and the realised false alarm table (should be near 0.05 / 0.01).
+- Output: `mimicguard_v2_r14_results.zip` (all configuration rows `r14_tune_rows.csv`, `r14_test_rows.csv`, selected configurations, ranking tables, oracle gap).
+
 R4 (correlated fading, 5 seeds, Rayleigh and Rician 20 dB) and R7 (AE trained on 300 realisations) use existing drivers and were run on the local PC (`results/v2_followups/run_followups.py`).
 
 ## What the results decide
