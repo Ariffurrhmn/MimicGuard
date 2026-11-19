@@ -225,7 +225,7 @@ for fading, snr in CELLS:
                     "verdict": equivalence_verdict(lo, hi, MARGIN)})
 res = pd.DataFrame(res); res.to_csv(os.path.join(OUT, "ae_vs_others_bootstrap.csv"), index=False)
 print(res.round(3).to_string(index=False))
-print("verdict: 'equivalent' = whole 95% CI inside +/-%.2f; 'different' = CI excludes 0; otherwise 'inconclusive'." % MARGIN)
+print(f"verdict: 'equivalent' = whole 95 pct CI inside +/-{MARGIN}; 'different' = CI excludes 0; otherwise 'inconclusive'.")
 '''
 AN4 = '''
 # ---- 9. Analysis D: headroom. How far is the best unsupervised detector from the supervised oracle? (Pd, p = 0.05) ----

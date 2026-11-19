@@ -1,0 +1,9 @@
+step,seconds
+generate 1 stream x 200 windows (1 core),0.03
+generate 40 streams x 100 windows (1 core),0.46
+generate 40 streams x 100 windows (4 workers),0.26
+fit pca on 10000 windows,0.01
+fit lof on 10000 windows,0.11
+fit ocsvm on 10000 windows,0.31
+fit iforest on 10000 windows,0.41
+fit ae on 10000 windows,8.42
