@@ -1,32 +1,53 @@
 # OS / editor
 .DS_Store
 Thumbs.db
+desktop.ini
 .vscode/
 .idea/
 .obsidian/workspace*.json
+vault/.obsidian/workspace*.json
 
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+*.egg-info/
 .venv/
 venv/
 .ipynb_checkpoints/
+.pytest_cache/
+build/
+dist/
 
-# Data & model artifacts (keep out of git)
+# Secrets (never commit)
+kaggle.json
+.env
+.env.*
+*.pem
+*.key
+
+# Generated data and model artifacts
 data/*
 !data/.gitkeep
 results/checkpoints/
 *.pt
+*.pth
 *.bin
 *.safetensors
+*.kaggle-partial
 
-# LaTeX build
+# Run bundles (their contents are unpacked next to them)
+*.zip
+
+# LaTeX build files (draft_v2/main.pdf is kept on purpose)
 *.aux
 *.log
+!results/**/*.log
 *.out
 *.bbl
 *.blg
 *.synctex.gz
+*.fls
+*.fdb_latexmk
 
 # Separate repo clones (see vault/Repo List.md)
 external/

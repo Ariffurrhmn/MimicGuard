@@ -78,3 +78,29 @@ def plot_all(df: pd.DataFrame, out_dir: str | Path, ref_snr: float = 20.0):
     for a in (alphas[len(alphas) // 2],):
         panel("auc", "snr_db", {"alpha": a}, f"AUC vs SNR (alpha = {a:g})", "auc_vs_snr.png", "AUC")
     return figs
+
+
+def table(df: pd.DataFrame, metric: str = "auc", fading: str | None = None, snr_db: float | None = None,
+          detectors=None, digits: int = 3) -> pd.DataFrame:
+    """Detector x alpha table of the seed-mean of ``metric`` for one condition."""
+    sub = df
+    if fading is not None:
+        sub = sub[sub.fading == fading]
+    if snr_db is not None:
+        sub = sub[np.isclose(sub.snr_db, snr_db)]
+    if detectors is not None:
+        sub = sub[sub.detector.isin(detectors)]
+    return sub.pivot_table(index="detector", columns="alpha", values=metric).round(digits)
+
+
+def compare_seq(df: pd.DataFrame, metric: str = "auc") -> pd.DataFrame:
+    """Each detector vs its CUSUM-wrapped version, mean difference over seeds, per fading x snr (alpha 0.25-0.75)."""
+    rows = []
+    for base in sorted({d[:-6] for d in df.detector.unique() if d.endswith("_cusum") and d != "cusum"}):
+        a = df[(df.detector == base) & df.alpha.between(0.2, 0.8)]
+        b = df[(df.detector == base + "_cusum") & df.alpha.between(0.2, 0.8)]
+        m = a.merge(b, on=["seed", "fading", "snr_db", "alpha"], suffixes=("", "_seq"))
+        m["gain"] = m[metric + "_seq"] - m[metric]
+        g = m.groupby(["fading", "snr_db"])["gain"].mean().rename(base)
+        rows.append(g)
+    return pd.concat(rows, axis=1).round(3) if rows else pd.DataFrame()

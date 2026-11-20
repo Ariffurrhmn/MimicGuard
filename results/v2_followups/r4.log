@@ -1,0 +1,17 @@
+e1 e1_rho90_s4_rayleigh_20: 137s
+e1 e1_rho90_s0_rician_20: 76s
+e1 e1_rho90_s1_rician_20: 65s
+e1 e1_rho90_s2_rician_20: 86s
+e1 e1_rho90_s3_rician_20: 152s
+e1 e1_rho90_s4_rician_20: 152s
+e1 e1_rho99_s0_rayleigh_20: 93s
+e1 e1_rho99_s1_rayleigh_20: 114s
+e1 e1_rho99_s2_rayleigh_20: 148s
+e1 e1_rho99_s3_rayleigh_20: 139s
+e1 e1_rho99_s4_rayleigh_20: 142s
+e1 e1_rho99_s0_rician_20: 110s
+e1 e1_rho99_s1_rician_20: 91s
+e1 e1_rho99_s2_rician_20: 97s
+e1 e1_rho99_s3_rician_20: 93s
+e1 e1_rho99_s4_rician_20: 131s
+DONE r4

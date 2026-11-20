@@ -1,0 +1,137 @@
+11.9s 1 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+11.9s 2 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+11.9s 3 0.00s - to python to disable frozen modules.
+11.9s 4 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+12.6s 5 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+12.6s 6 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+12.6s 7 0.00s - to python to disable frozen modules.
+12.6s 8 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+22.6s 9 python 3.13.16 | numpy 2.1.3 | sklearn 1.6.1 | CPUs 4
+30.7s 10 torch 2.11.0+cu130 | cuda available: True | Tesla T4
+53.5s 11 ..................................................................       [100%]
+53.5s 12 66 passed in 13.75s
+53.5s 13 
+53.6s 14 device: cuda
+53.6s 15 full [('rayleigh', 15), ('rayleigh', 20), ('rayleigh', 25), ('rician', 15), ('rician', 20), ('rician', 25), ('none', 15), ('none', 20), ('none', 25)] [0, 1, 2] {'n_train': 300, 'n_val': 40, 'n_cal': 500, 'n_chk': 500, 'n_test': 100, 'n_otrain': 300, 'H': 100, 'n_test_win': 200, 'onset': 100}
+118.9s 16 e2 e2_s0_rayleigh_15: 65s on cuda
+168.0s 17 e2 e2_s1_rayleigh_15: 49s on cuda
+216.6s 18 e2 e2_s2_rayleigh_15: 49s on cuda
+285.9s 19 e2 e2_s0_rayleigh_20: 69s on cuda
+337.5s 20 e2 e2_s1_rayleigh_20: 52s on cuda
+379.5s 21 e2 e2_s2_rayleigh_20: 42s on cuda
+438.0s 22 e2 e2_s0_rayleigh_25: 58s on cuda
+485.3s 23 e2 e2_s1_rayleigh_25: 47s on cuda
+528.7s 24 e2 e2_s2_rayleigh_25: 43s on cuda
+595.7s 25 e2 e2_s0_rician_15: 67s on cuda
+664.7s 26 e2 e2_s1_rician_15: 69s on cuda
+733.2s 27 e2 e2_s2_rician_15: 69s on cuda
+802.5s 28 e2 e2_s0_rician_20: 69s on cuda
+867.2s 29 e2 e2_s1_rician_20: 65s on cuda
+915.8s 30 e2 e2_s2_rician_20: 49s on cuda
+986.2s 31 e2 e2_s0_rician_25: 70s on cuda
+1051.4s 32 e2 e2_s1_rician_25: 65s on cuda
+1110.6s 33 e2 e2_s2_rician_25: 59s on cuda
+1197.6s 34 e2 e2_s0_none_15: 87s on cuda
+1284.4s 35 e2 e2_s1_none_15: 87s on cuda
+1367.7s 36 e2 e2_s2_none_15: 83s on cuda
+1452.9s 37 e2 e2_s0_none_20: 85s on cuda
+1532.6s 38 e2 e2_s1_none_20: 80s on cuda
+1610.2s 39 e2 e2_s2_none_20: 78s on cuda
+1699.9s 40 e2 e2_s0_none_25: 90s on cuda
+1790.6s 41 e2 e2_s1_none_25: 91s on cuda
+1884.0s 42 e2 e2_s2_none_25: 93s on cuda
+1884.0s 43 756 rows
+1884.1s 44 === pd (p = 0.05) ===
+1884.1s 45 fading                  none               rayleigh               rician
+1884.1s 46 snr_db                  15.0   20.0   25.0     15.0   20.0   25.0   15.0   20.0   25.0
+1884.1s 47 detector
+1884.1s 48 pca_L4                 0.030  0.027  1.000    0.123  1.000  1.000  0.043  0.043  1.000
+1884.1s 49 lof                    0.110  0.893  1.000    0.063  0.240  0.440  0.050  0.567  1.000
+1884.1s 50 ocsvm                  0.100  0.833  1.000    0.130  0.687  0.987  0.050  0.547  1.000
+1884.1s 51 ae                     0.097  0.370  1.000    0.863  1.000  1.000  0.257  1.000  1.000
+1884.1s 52 oracle_feat            0.390  1.000  1.000    0.913  1.000  1.000  0.697  1.000  1.000
+1884.1s 53 raw_conv_ae            0.067  0.067  0.067    0.063  0.050  0.057  0.043  0.043  0.043
+1884.1s 54 raw_conv_oracle        1.000  1.000  1.000    1.000  1.000  1.000  1.000  1.000  1.000
+1884.1s 55 pca_L4_cusum           0.047  0.983  1.000    0.250  1.000  1.000  0.080  0.383  1.000
+1884.1s 56 lof_cusum              0.180  1.000  1.000    0.190  0.800  1.000  0.063  0.877  1.000
+1884.1s 57 ocsvm_cusum            0.147  1.000  1.000    0.250  0.993  1.000  0.100  0.993  1.000
+1884.1s 58 ae_cusum               0.147  0.813  1.000    0.930  0.850  1.000  0.237  0.667  1.000
+1884.1s 59 oracle_feat_cusum      0.997  1.000  1.000    1.000  1.000  1.000  0.990  1.000  1.000
+1884.1s 60 raw_conv_ae_cusum      0.217  0.363  0.713    0.103  0.080  0.093  0.077  0.077  0.070
+1884.1s 61 raw_conv_oracle_cusum  1.000  1.000  1.000    1.000  1.000  1.000  1.000  1.000  1.000
+1884.1s 62 === auc (p = 0.05) ===
+1884.1s 63 fading                  none               rayleigh               rician
+1884.1s 64 snr_db                  15.0   20.0   25.0     15.0   20.0   25.0   15.0   20.0   25.0
+1884.1s 65 detector
+1884.1s 66 pca_L4                 0.540  0.710  0.962    0.563  0.731  0.892  0.481  0.715  0.963
+1884.1s 67 lof                    0.535  0.716  0.986    0.551  0.697  0.861  0.541  0.693  0.931
+1884.1s 68 ocsvm                  0.505  0.680  0.979    0.526  0.636  0.809  0.507  0.664  0.934
+1884.1s 69 ae                     0.521  0.628  0.965    0.558  0.725  0.849  0.544  0.764  0.920
+1884.1s 70 oracle_feat            0.682  0.902  0.999    0.681  0.856  0.965  0.680  0.884  0.990
+1884.1s 71 raw_conv_ae            0.619  0.689  0.740    0.522  0.540  0.568  0.535  0.568  0.606
+1884.1s 72 raw_conv_oracle        0.984  0.999  1.000    0.942  0.988  0.998  0.971  0.997  1.000
+1884.1s 73 pca_L4_cusum           0.547  0.965  0.999    0.703  0.926  0.995  0.526  0.715  0.999
+1884.1s 74 lof_cusum              0.607  0.979  1.000    0.705  0.928  0.992  0.600  0.870  0.997
+1884.1s 75 ocsvm_cusum            0.564  0.972  1.000    0.640  0.964  0.994  0.587  0.970  0.998
+1884.1s 76 ae_cusum               0.602  0.877  0.999    0.876  0.827  0.991  0.559  0.823  0.847
+1884.1s 77 oracle_feat_cusum      0.952  0.997  1.000    0.962  0.996  0.999  0.956  0.997  1.000
+1884.1s 78 raw_conv_ae_cusum      0.689  0.768  0.874    0.525  0.518  0.523  0.525  0.536  0.560
+1884.1s 79 raw_conv_oracle_cusum  0.999  1.000  1.000    0.999  0.999  1.000  0.999  1.000  1.000
+1884.1s 80 === fa_chk (p = 0.05) ===
+1884.1s 81 fading                  none               rayleigh               rician
+1884.1s 82 snr_db                  15.0   20.0   25.0     15.0   20.0   25.0   15.0   20.0   25.0
+1884.1s 83 detector
+1884.1s 84 pca_L4                 0.048  0.039  0.041    0.049  0.040  0.037  0.041  0.038  0.038
+1884.1s 85 lof                    0.051  0.041  0.050    0.049  0.045  0.039  0.046  0.045  0.041
+1884.1s 86 ocsvm                  0.045  0.049  0.046    0.053  0.051  0.042  0.041  0.043  0.046
+1884.1s 87 ae                     0.041  0.041  0.047    0.045  0.039  0.045  0.055  0.059  0.047
+1884.1s 88 oracle_feat            0.053  0.051  0.045    0.053  0.057  0.053  0.049  0.038  0.065
+1884.1s 89 raw_conv_ae            0.056  0.050  0.050    0.051  0.046  0.035  0.041  0.041  0.041
+1884.1s 90 raw_conv_oracle        0.053  0.053  0.057    0.045  0.046  0.050  0.058  0.058  0.044
+1884.1s 91 pca_L4_cusum           0.053  0.054  0.060    0.051  0.041  0.039  0.041  0.034  0.045
+1884.1s 92 lof_cusum              0.046  0.057  0.043    0.051  0.046  0.039  0.042  0.043  0.046
+1884.1s 93 ocsvm_cusum            0.051  0.054  0.057    0.048  0.043  0.041  0.041  0.041  0.042
+1884.1s 94 ae_cusum               0.051  0.037  0.045    0.044  0.030  0.049  0.033  0.032  0.036
+1884.1s 95 oracle_feat_cusum      0.058  0.067  0.055    0.052  0.053  0.048  0.037  0.045  0.055
+1884.1s 96 raw_conv_ae_cusum      0.048  0.053  0.049    0.051  0.043  0.035  0.043  0.037  0.039
+1884.1s 97 raw_conv_oracle_cusum  0.055  0.045  0.048    0.051  0.039  0.038  0.049  0.045  0.047
+1884.1s 98 === pd (p = 0.01) ===
+1884.1s 99 fading                  none               rayleigh               rician
+1884.1s 100 snr_db                  15.0   20.0   25.0     15.0   20.0   25.0   15.0   20.0   25.0
+1884.1s 101 detector
+1884.1s 102 pca_L4                 0.010  0.000  0.983    0.000  0.200  0.897  0.003  0.000  1.000
+1884.1s 103 lof                    0.017  0.523  1.000    0.000  0.000  0.013  0.003  0.003  0.143
+1884.1s 104 ocsvm                  0.023  0.397  1.000    0.003  0.000  0.080  0.003  0.003  0.093
+1884.1s 105 ae                     0.010  0.080  0.997    0.153  0.087  0.523  0.023  0.550  0.340
+1884.1s 106 oracle_feat            0.053  0.963  1.000    0.650  1.000  1.000  0.380  1.000  1.000
+1884.1s 107 raw_conv_ae            0.010  0.013  0.023    0.000  0.000  0.007  0.003  0.003  0.000
+1884.1s 108 raw_conv_oracle        1.000  1.000  1.000    1.000  1.000  1.000  1.000  1.000  1.000
+1884.1s 109 pca_L4_cusum           0.017  0.963  1.000    0.010  0.727  1.000  0.010  0.007  1.000
+1884.1s 110 lof_cusum              0.043  1.000  1.000    0.007  0.330  1.000  0.010  0.547  1.000
+1884.1s 111 ocsvm_cusum            0.047  1.000  1.000    0.130  0.993  1.000  0.010  0.987  1.000
+1884.1s 112 ae_cusum               0.030  0.670  1.000    0.500  0.113  0.680  0.030  0.337  1.000
+1884.1s 113 oracle_feat_cusum      0.990  1.000  1.000    1.000  1.000  1.000  0.980  1.000  1.000
+1884.1s 114 raw_conv_ae_cusum      0.120  0.197  0.503    0.010  0.007  0.020  0.010  0.007  0.003
+1884.1s 115 raw_conv_oracle_cusum  1.000  1.000  1.000    1.000  1.000  1.000  1.000  1.000  1.000
+1884.2s 116 best_unsup_features  raw_conv_ae  oracle_features  oracle_raw_iq  feature_compression_gap  learner_gap_features
+1884.2s 117 fading   snr_db
+1884.2s 118 none     15.0                  0.180        0.217            0.997            1.0                    0.003                 0.817
+1884.2s 119 20.0                  1.000        0.363            1.000            1.0                    0.000                 0.000
+1884.2s 120 25.0                  1.000        0.713            1.000            1.0                    0.000                 0.000
+1884.2s 121 rayleigh 15.0                  0.930        0.103            1.000            1.0                    0.000                 0.070
+1884.2s 122 20.0                  1.000        0.080            1.000            1.0                    0.000                 0.000
+1884.2s 123 25.0                  1.000        0.093            1.000            1.0                    0.000                 0.000
+1884.2s 124 rician   15.0                  0.257        0.077            0.990            1.0                    0.010                 0.733
+1884.2s 125 20.0                  1.000        0.077            1.000            1.0                    0.000                 0.000
+1884.2s 126 25.0                  1.000        0.070            1.000            1.0                    0.000                 0.000
+1884.2s 127 Reading: learner_gap_features = what a better unsupervised learner could still gain on the six features; feature_compression_gap = what the six-feature interface throws away. The raw oracle uses attack labels: a reference, not a candidate.
+1884.2s 128 results archive: /kaggle/working/mimicguard_v2_rawiq_results.zip (0.1 MB)
+1884.2s 129 Download it from the Output tab (after Save Version -> Save & Run All), then send it back.
+1889.6s 130 /usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+1889.6s 131 cells[i][c] = re.sub('\\\\\|', '|', cell)
+1889.8s 132 /usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+1889.8s 133 text = re.sub(r'_', '\_', text) # Escape underscores in display text
+1890.7s 134 [NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+1890.8s 135 [NbConvertApp] Writing 87330 bytes to __notebook__.ipynb
+1893.3s 136 [NbConvertApp] Converting notebook __notebook__.ipynb to html
+1893.9s 137 [NbConvertApp] Writing 380298 bytes to __results__.html

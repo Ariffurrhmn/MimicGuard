@@ -1,0 +1,214 @@
+6.5s 1 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+6.5s 2 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+6.5s 3 0.00s - to python to disable frozen modules.
+6.5s 4 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+7.1s 5 0.00s - Debugger warning: It seems that frozen modules are being used, which may
+7.1s 6 0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off
+7.1s 7 0.00s - to python to disable frozen modules.
+7.1s 8 0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.
+11.3s 9 python 3.13.18 | numpy 2.1.3 | sklearn 1.6.1 | CPUs 4
+13.1s 10 torch 2.11.0+cpu | cuda available: False | CPU only
+26.0s 11 .....................................................................    [100%]
+26.0s 12 69 passed in 9.41s
+26.0s 13 
+26.1s 14 full [('none', 20), ('rician', 20), ('rayleigh', 20), ('rayleigh', 15)] tune [100, 101, 102, 103, 104] test [200, 201, 202, 203, 204] {'n_train': 300, 'n_val': 40, 'n_cal': 500, 'n_chk': 500, 'n_test': 100, 'n_otrain': 100, 'H': 100, 'n_test_win': 200, 'onset': 100}
+26.1s 15 26 configurations x 7 CUSUM choices per cell and seed
+111.6s 16 r14 r14_tune_s100_none_20: 85s
+211.7s 17 r14 r14_tune_s101_none_20: 100s
+309.4s 18 r14 r14_tune_s102_none_20: 98s
+408.1s 19 r14 r14_tune_s103_none_20: 99s
+504.3s 20 r14 r14_tune_s104_none_20: 96s
+567.0s 21 r14 r14_tune_s100_rician_20: 63s
+623.1s 22 r14 r14_tune_s101_rician_20: 56s
+678.1s 23 r14 r14_tune_s102_rician_20: 55s
+738.7s 24 r14 r14_tune_s103_rician_20: 61s
+832.2s 25 r14 r14_tune_s104_rician_20: 94s
+891.2s 26 r14 r14_tune_s100_rayleigh_20: 59s
+944.2s 27 r14 r14_tune_s101_rayleigh_20: 53s
+1031.7s 28 r14 r14_tune_s102_rayleigh_20: 87s
+1085.1s 29 r14 r14_tune_s103_rayleigh_20: 53s
+1138.6s 30 r14 r14_tune_s104_rayleigh_20: 53s
+1214.0s 31 r14 r14_tune_s100_rayleigh_15: 75s
+1272.9s 32 r14 r14_tune_s101_rayleigh_15: 59s
+1336.4s 33 r14 r14_tune_s102_rayleigh_15: 63s
+1389.4s 34 r14 r14_tune_s103_rayleigh_15: 53s
+1441.8s 35 r14 r14_tune_s104_rayleigh_15: 52s
+1535.6s 36 r14 r14_test_s200_none_20: 94s
+1633.9s 37 r14 r14_test_s201_none_20: 98s
+1734.5s 38 r14 r14_test_s202_none_20: 101s
+1837.0s 39 r14 r14_test_s203_none_20: 103s
+1937.8s 40 r14 r14_test_s204_none_20: 101s
+1991.3s 41 r14 r14_test_s200_rician_20: 54s
+2051.6s 42 r14 r14_test_s201_rician_20: 60s
+2113.4s 43 r14 r14_test_s202_rician_20: 62s
+2176.5s 44 r14 r14_test_s203_rician_20: 63s
+2232.7s 45 r14 r14_test_s204_rician_20: 56s
+2294.2s 46 r14 r14_test_s200_rayleigh_20: 62s
+2383.2s 47 r14 r14_test_s201_rayleigh_20: 89s
+2440.5s 48 r14 r14_test_s202_rayleigh_20: 57s
+2492.2s 49 r14 r14_test_s203_rayleigh_20: 52s
+2552.1s 50 r14 r14_test_s204_rayleigh_20: 60s
+2611.2s 51 r14 r14_test_s200_rayleigh_15: 59s
+2667.3s 52 r14 r14_test_s201_rayleigh_15: 56s
+2734.5s 53 r14 r14_test_s202_rayleigh_15: 67s
+2803.5s 54 r14 r14_test_s203_rayleigh_15: 69s
+2869.3s 55 r14 r14_test_s204_rayleigh_15: 66s
+2869.4s 56 7440 7440 rows
+2869.8s 57 === selected configurations (p = 0.05, global policy) ===
+2869.8s 58 family    p                     config   wrap      sel policy fading  snr_db
+2869.8s 59 ae 0.05 ae|hidden=64,latent=3|n300 k=0.01 1.005208 global    NaN     NaN
+2869.8s 60 iforest 0.05              iforest||n300 k=0.01 0.870212 global    NaN     NaN
+2869.8s 61 lof 0.05    lof|n_neighbors=10|n300 k=0.01 0.939035 global    NaN     NaN
+2869.8s 62 ocsvm 0.05  ocsvm|gamma_mult=3.0|n300 k=0.01 0.934924 global    NaN     NaN
+2869.8s 63 pca 0.05    pca|n_components=4|n300 k=0.01 0.800310 global    NaN     NaN
+2869.8s 64 === test Pd by policy (p = 0.05) ===
+2869.8s 65 fading                  none rayleigh        rician
+2869.8s 66 snr_db                  20.0     15.0   20.0   20.0
+2869.8s 67 policy        family
+2869.8s 68 default_cusum ae       0.800    0.854  0.874  1.000
+2869.8s 69 iforest  0.998    0.162  0.570  0.910
+2869.8s 70 lof      1.000    0.206  0.994  0.980
+2869.8s 71 ocsvm    0.994    0.350  1.000  1.000
+2869.8s 72 pca      0.840    0.078  0.190  0.592
+2869.8s 73 default_plain ae       0.394    0.750  1.000  0.860
+2869.8s 74 iforest  0.418    0.052  0.046  0.060
+2869.8s 75 lof      0.816    0.120  0.582  0.562
+2869.8s 76 ocsvm    0.738    0.146  0.910  0.482
+2869.8s 77 pca      0.054    0.066  0.084  0.090
+2869.8s 78 global        ae       0.992    0.990  1.000  1.000
+2869.8s 79 iforest  1.000    0.446  0.978  1.000
+2869.8s 80 lof      1.000    0.820  1.000  1.000
+2869.8s 81 ocsvm    1.000    0.674  1.000  1.000
+2869.8s 82 pca      1.000    0.326  1.000  0.522
+2869.8s 83 per_cell      ae       0.992    0.990  1.000  1.000
+2869.8s 84 iforest  1.000    0.458  0.978  1.000
+2869.8s 85 lof      1.000    0.820  1.000  1.000
+2869.8s 86 ocsvm    1.000    0.674  1.000  1.000
+2869.8s 87 pca      0.998    0.326  1.000  1.000
+2869.8s 88 === realised false alarm on the check streams (p = 0.05); target 0.05 ===
+2869.8s 89 mean    min    max
+2869.8s 90 policy        family
+2869.8s 91 default_cusum ae       0.050  0.045  0.051
+2869.8s 92 iforest  0.047  0.041  0.051
+2869.8s 93 lof      0.056  0.052  0.060
+2869.8s 94 ocsvm    0.053  0.048  0.059
+2869.8s 95 pca      0.055  0.045  0.062
+2869.8s 96 default_plain ae       0.051  0.044  0.057
+2869.8s 97 iforest  0.053  0.049  0.059
+2869.8s 98 lof      0.054  0.048  0.058
+2869.8s 99 ocsvm    0.056  0.046  0.064
+2869.8s 100 pca      0.054  0.047  0.063
+2869.8s 101 global        ae       0.055  0.046  0.062
+2869.8s 102 iforest  0.050  0.045  0.055
+2869.8s 103 lof      0.051  0.046  0.056
+2869.8s 104 ocsvm    0.051  0.044  0.065
+2869.8s 105 pca      0.055  0.048  0.065
+2869.8s 106 per_cell      ae       0.055  0.046  0.062
+2869.8s 107 iforest  0.051  0.045  0.055
+2869.8s 108 lof      0.053  0.046  0.056
+2869.8s 109 ocsvm    0.048  0.040  0.056
+2869.8s 110 pca      0.055  0.050  0.064
+2869.8s 111 === selected configurations (p = 0.01, global policy) ===
+2869.8s 112 family    p                     config   wrap      sel policy fading  snr_db
+2869.8s 113 ae 0.01 ae|hidden=64,latent=3|n300 k=0.01 0.793708 global    NaN     NaN
+2869.8s 114 iforest 0.01              iforest||n300 k=0.01 0.813212 global    NaN     NaN
+2869.8s 115 lof 0.01    lof|n_neighbors=10|n300 k=0.01 0.791535 global    NaN     NaN
+2869.8s 116 ocsvm 0.01  ocsvm|gamma_mult=3.0|n100 k=0.01 0.875953 global    NaN     NaN
+2869.8s 117 pca 0.01    pca|n_components=4|n300 k=0.01 0.630310 global    NaN     NaN
+2869.8s 118 === test Pd by policy (p = 0.01) ===
+2869.8s 119 fading                  none rayleigh        rician
+2869.8s 120 snr_db                  20.0     15.0   20.0   20.0
+2869.8s 121 policy        family
+2869.8s 122 default_cusum ae       0.664    0.144  0.532  0.432
+2869.8s 123 iforest  0.992    0.038  0.296  0.774
+2869.8s 124 lof      0.998    0.030  0.810  0.664
+2869.8s 125 ocsvm    0.974    0.200  1.000  1.000
+2869.8s 126 pca      0.642    0.030  0.020  0.024
+2869.8s 127 default_plain ae       0.056    0.056  0.246  0.108
+2869.8s 128 iforest  0.122    0.008  0.004  0.008
+2869.8s 129 lof      0.366    0.020  0.042  0.018
+2869.8s 130 ocsvm    0.152    0.010  0.080  0.004
+2869.8s 131 pca      0.008    0.020  0.016  0.016
+2869.8s 132 global        ae       0.968    0.688  0.990  0.996
+2869.8s 133 iforest  1.000    0.234  0.926  0.998
+2869.8s 134 lof      1.000    0.332  1.000  0.994
+2869.8s 135 ocsvm    1.000    0.446  1.000  1.000
+2869.8s 136 pca      1.000    0.042  1.000  0.024
+2869.8s 137 per_cell      ae       0.968    0.912  0.994  0.996
+2869.8s 138 iforest  1.000    0.220  0.926  0.998
+2869.8s 139 lof      1.000    0.332  1.000  0.994
+2869.8s 140 ocsvm    1.000    0.446  1.000  1.000
+2869.8s 141 pca      0.996    0.042  1.000  0.078
+2869.8s 142 === realised false alarm on the check streams (p = 0.01); target 0.01 ===
+2869.8s 143 mean    min    max
+2869.8s 144 policy        family
+2869.8s 145 default_cusum ae       0.010  0.006  0.013
+2869.8s 146 iforest  0.008  0.006  0.011
+2869.8s 147 lof      0.009  0.006  0.012
+2869.8s 148 ocsvm    0.011  0.008  0.014
+2869.8s 149 pca      0.010  0.006  0.012
+2869.8s 150 default_plain ae       0.010  0.007  0.014
+2869.8s 151 iforest  0.011  0.007  0.014
+2869.8s 152 lof      0.011  0.007  0.013
+2869.8s 153 ocsvm    0.007  0.003  0.010
+2869.8s 154 pca      0.010  0.007  0.012
+2869.8s 155 global        ae       0.011  0.008  0.014
+2869.8s 156 iforest  0.011  0.007  0.014
+2869.8s 157 lof      0.010  0.008  0.012
+2869.8s 158 ocsvm    0.011  0.009  0.015
+2869.8s 159 pca      0.010  0.006  0.014
+2869.8s 160 per_cell      ae       0.011  0.008  0.013
+2869.8s 161 iforest  0.011  0.007  0.014
+2869.8s 162 lof      0.010  0.008  0.012
+2869.8s 163 ocsvm    0.010  0.009  0.012
+2869.8s 164 pca      0.010  0.006  0.016
+2869.8s 165 === ranking summary: do the rankings still flip? ===
+2869.8s 166 policy    p  cells sole_winners  n_distinct_sole_winners  cells_with_a_tie_for_first  mean_kendall_tau_across_cells  pairs_that_flip  pairs
+2869.8s 167 default_cusum 0.01      4        ocsvm                        1                           1                       0.333333                3     10
+2869.8s 168 default_cusum 0.05      4           ae                        1                           3                       0.363523                3     10
+2869.8s 169 default_plain 0.01      4       ae;lof                        2                           1                       0.226584                3     10
+2869.8s 170 default_plain 0.05      4       ae;lof                        2                           0                       0.466667                3     10
+2869.8s 171 global 0.01      4           ae                        1                           3                      -0.055430                1     10
+2869.8s 172 global 0.05      4           ae                        1                           3                      -0.072295                0     10
+2869.8s 173 per_cell 0.01      4           ae                        1                           3                       0.050635                1     10
+2869.8s 174 per_cell 0.05      4           ae                        1                           3                      -0.060420                0     10
+2869.8s 175 === pairs that flip, tuned policies, p = 0.05 ===
+2869.8s 176 policy    p       a       b  a_wins  b_wins  ties  flips
+2869.8s 177 global 0.05     pca     lof       0       2     2  False
+2869.8s 178 global 0.05     pca   ocsvm       0       2     2  False
+2869.8s 179 global 0.05     pca iforest       0       2     2  False
+2869.8s 180 global 0.05     pca      ae       0       2     2  False
+2869.8s 181 global 0.05     lof   ocsvm       1       0     3  False
+2869.8s 182 global 0.05     lof iforest       1       0     3  False
+2869.8s 183 global 0.05     lof      ae       0       1     3  False
+2869.8s 184 global 0.05   ocsvm iforest       1       0     3  False
+2869.8s 185 global 0.05   ocsvm      ae       0       1     3  False
+2869.8s 186 global 0.05 iforest      ae       0       1     3  False
+2869.8s 187 per_cell 0.05     pca     lof       0       1     3  False
+2869.8s 188 per_cell 0.05     pca   ocsvm       0       1     3  False
+2869.8s 189 per_cell 0.05     pca iforest       0       1     3  False
+2869.8s 190 per_cell 0.05     pca      ae       0       1     3  False
+2869.8s 191 per_cell 0.05     lof   ocsvm       1       0     3  False
+2869.8s 192 per_cell 0.05     lof iforest       1       0     3  False
+2869.8s 193 per_cell 0.05     lof      ae       0       1     3  False
+2869.8s 194 per_cell 0.05   ocsvm iforest       1       0     3  False
+2869.8s 195 per_cell 0.05   ocsvm      ae       0       1     3  False
+2869.8s 196 per_cell 0.05 iforest      ae       0       1     3  False
+2869.8s 197 === best tuned unsupervised Pd vs wrapped oracle (test seeds) ===
+2869.8s 198 fading          none rayleigh      rician
+2869.8s 199 snr_db          20.0     15.0 20.0   20.0
+2869.8s 200 policy
+2869.8s 201 default_cusum  0.000    0.142  0.0   0.00
+2869.8s 202 default_plain  0.184    0.246  0.0   0.14
+2869.8s 203 global         0.000    0.006  0.0   0.00
+2869.8s 204 per_cell       0.000    0.006  0.0   0.00
+2870.0s 205 results archive: /kaggle/working/mimicguard_v2_r14_results.zip (0.7 MB)
+2870.0s 206 Download it from the Output tab (after Save Version -> Save & Run All), then send it back.
+2874.0s 207 /usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\|'
+2874.0s 208 cells[i][c] = re.sub('\\\\\|', '|', cell)
+2874.2s 209 /usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\_'
+2874.2s 210 text = re.sub(r'_', '\_', text) # Escape underscores in display text
+2874.9s 211 [NbConvertApp] Converting notebook __notebook__.ipynb to notebook
+2875.0s 212 [NbConvertApp] Writing 100826 bytes to __notebook__.ipynb
+2877.7s 213 [NbConvertApp] Converting notebook __notebook__.ipynb to html
+2878.3s 214 [NbConvertApp] Writing 395999 bytes to __results__.html

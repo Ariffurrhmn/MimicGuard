@@ -1,0 +1,19 @@
+e1 e1_rho00_s2_none_20: 149s
+e1 e1_rho00_s3_none_20: 183s
+e1 e1_rho00_s4_none_20: 174s
+e1 e1_rho00_s0_rician_20: 169s
+e1 e1_rho00_s1_rician_20: 111s
+e1 e1_rho00_s2_rician_20: 145s
+e1 e1_rho00_s3_rician_20: 132s
+e1 e1_rho00_s4_rician_20: 173s
+e1 e1_rho00_s0_rayleigh_20: 110s
+e1 e1_rho00_s1_rayleigh_20: 59s
+e1 e1_rho00_s2_rayleigh_20: 63s
+e1 e1_rho00_s3_rayleigh_20: 91s
+e1 e1_rho00_s4_rayleigh_20: 121s
+e1 e1_rho00_s0_rayleigh_15: 115s
+e1 e1_rho00_s1_rayleigh_15: 93s
+e1 e1_rho00_s2_rayleigh_15: 111s
+e1 e1_rho00_s3_rayleigh_15: 181s
+e1 e1_rho00_s4_rayleigh_15: 92s
+DONE r7
