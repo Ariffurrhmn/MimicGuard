@@ -1,0 +1,111 @@
+[{"stream_name":"stderr","time":7.963758426,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.96382133,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":9.112923938,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.113023058,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.11303018,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.113035255,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.899641816,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.899690586,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.899695081,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.899698175,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":15.429468039,"data":"python 3.13.18 | numpy 2.1.3 | sklearn 1.6.1 | CPUs 4\n"}
+,{"stream_name":"stdout","time":17.93787376,"data":"torch 2.11.0+cpu | cuda available: False | CPU only\n"}
+,{"stream_name":"stdout","time":36.34941735,"data":"......................................................................   [100%]\n"}
+,{"stream_name":"stdout","time":36.349498368,"data":"70 passed in 14.08s\n"}
+,{"stream_name":"stdout","time":36.349505786,"data":" \n"}
+,{"stream_name":"stdout","time":36.547936034,"data":"full [('none', 20), ('rician', 20), ('rayleigh', 20), ('rayleigh', 15)] [200, 201, 202, 203, 204] 15 configurations\n"}
+,{"stream_name":"stdout","time":226.255611452,"data":"r9b r9b_s200_none_20: 190s\n"}
+,{"stream_name":"stdout","time":430.831312437,"data":"r9b r9b_s201_none_20: 205s\n"}
+,{"stream_name":"stdout","time":631.565078691,"data":"r9b r9b_s202_none_20: 201s\n"}
+,{"stream_name":"stdout","time":838.546310688,"data":"r9b r9b_s203_none_20: 207s\n"}
+,{"stream_name":"stdout","time":1044.216012928,"data":"r9b r9b_s204_none_20: 206s\n"}
+,{"stream_name":"stdout","time":1169.374846023,"data":"r9b r9b_s200_rician_20: 125s\n"}
+,{"stream_name":"stdout","time":1305.521240294,"data":"r9b r9b_s201_rician_20: 136s\n"}
+,{"stream_name":"stdout","time":1441.767479811,"data":"r9b r9b_s202_rician_20: 136s\n"}
+,{"stream_name":"stdout","time":1585.788073021,"data":"r9b r9b_s203_rician_20: 144s\n"}
+,{"stream_name":"stdout","time":1720.451417592,"data":"r9b r9b_s204_rician_20: 135s\n"}
+,{"stream_name":"stdout","time":1859.709351867,"data":"r9b r9b_s200_rayleigh_20: 139s\n"}
+,{"stream_name":"stdout","time":2027.620371211,"data":"r9b r9b_s201_rayleigh_20: 168s\n"}
+,{"stream_name":"stdout","time":2155.225015643,"data":"r9b r9b_s202_rayleigh_20: 128s\n"}
+,{"stream_name":"stdout","time":2272.754690826,"data":"r9b r9b_s203_rayleigh_20: 118s\n"}
+,{"stream_name":"stdout","time":2403.483297351,"data":"r9b r9b_s204_rayleigh_20: 131s\n"}
+,{"stream_name":"stdout","time":2536.535043752,"data":"r9b r9b_s200_rayleigh_15: 133s\n"}
+,{"stream_name":"stdout","time":2662.759638053,"data":"r9b r9b_s201_rayleigh_15: 126s\n"}
+,{"stream_name":"stdout","time":2807.639569796,"data":"r9b r9b_s202_rayleigh_15: 145s\n"}
+,{"stream_name":"stdout","time":2942.031949429,"data":"r9b r9b_s203_rayleigh_15: 134s\n"}
+,{"stream_name":"stdout","time":3078.990808822,"data":"r9b r9b_s204_rayleigh_15: 137s\n"}
+,{"stream_name":"stdout","time":3079.155884977,"data":"7680 rows\n"}
+,{"stream_name":"stdout","time":3079.250617727,"data":"=== realised false alarm (p = 0.05 target), mean over configurations, cells and seeds ===\n"}
+,{"stream_name":"stdout","time":3079.250659996,"data":"shift          fading_to_rayleigh  fading_to_rician  nominal  snr+3dB  snr-3dB\n"}
+,{"stream_name":"stdout","time":3079.250667088,"data":"family  wrap                                                                  \n"}
+,{"stream_name":"stdout","time":3079.250672722,"data":"ae      k=0.0               0.883             0.372    0.054    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250678175,"data":"        k=0.5               0.816             0.353    0.054    0.976    1.000\n"}
+,{"stream_name":"stdout","time":3079.250684681,"data":"        none                0.765             0.353    0.053    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250689834,"data":"iforest k=0.0               1.000             0.333    0.051    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.25069515,"data":"        k=0.5               1.000             0.333    0.047    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250700178,"data":"        none                0.857             0.335    0.054    0.092    0.298\n"}
+,{"stream_name":"stdout","time":3079.250705818,"data":"lof     k=0.0               1.000             0.334    0.054    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250711046,"data":"        k=0.5               1.000             0.335    0.055    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250717098,"data":"        none                0.963             0.336    0.053    0.906    1.000\n"}
+,{"stream_name":"stdout","time":3079.250722237,"data":"ocsvm   k=0.0               1.000             0.466    0.053    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250727515,"data":"        k=0.5               1.000             0.334    0.052    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250732378,"data":"        none                0.951             0.335    0.055    0.532    1.000\n"}
+,{"stream_name":"stdout","time":3079.250737329,"data":"oracle  k=0.0               0.356             0.069    0.056    0.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250742929,"data":"        k=0.5               0.191             0.068    0.050    0.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250749147,"data":"        none                0.146             0.035    0.052    0.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.25075425,"data":"pca     k=0.0               0.972             0.334    0.056    0.641    0.775\n"}
+,{"stream_name":"stdout","time":3079.250759506,"data":"        k=0.5               0.871             0.335    0.053    0.487    0.745\n"}
+,{"stream_name":"stdout","time":3079.250765392,"data":"        none                0.806             0.334    0.053    0.224    0.509\n"}
+,{"stream_name":"stdout","time":3079.250771031,"data":"=== Pd under shift ===\n"}
+,{"stream_name":"stdout","time":3079.250776329,"data":"shift          fading_to_rayleigh  fading_to_rician  nominal  snr+3dB  snr-3dB\n"}
+,{"stream_name":"stdout","time":3079.250782256,"data":"family  wrap                                                                  \n"}
+,{"stream_name":"stdout","time":3079.250787478,"data":"ae      k=0.0               1.000             0.988    0.996    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250809333,"data":"        k=0.5               1.000             0.863    0.974    0.974    1.000\n"}
+,{"stream_name":"stdout","time":3079.250815666,"data":"        none                1.000             0.818    0.881    0.966    1.000\n"}
+,{"stream_name":"stdout","time":3079.250820411,"data":"iforest k=0.0               1.000             0.334    0.861    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250824865,"data":"        k=0.5               1.000             0.334    0.671    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250829011,"data":"        none                0.874             0.336    0.140    0.105    0.296\n"}
+,{"stream_name":"stdout","time":3079.250832949,"data":"lof     k=0.0               1.000             0.692    0.932    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250836867,"data":"        k=0.5               1.000             0.661    0.832    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250841087,"data":"        none                0.998             0.472    0.628    0.862    1.000\n"}
+,{"stream_name":"stdout","time":3079.250846109,"data":"ocsvm   k=0.0               1.000             0.800    0.925    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250850489,"data":"        k=0.5               1.000             0.628    0.853    1.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250854971,"data":"        none                0.994             0.393    0.593    0.481    1.000\n"}
+,{"stream_name":"stdout","time":3079.250859262,"data":"oracle  k=0.0               1.000             1.000    1.000    0.000    1.000\n"}
+,{"stream_name":"stdout","time":3079.250864064,"data":"        k=0.5               1.000             0.997    0.999    0.004    1.000\n"}
+,{"stream_name":"stdout","time":3079.25086797,"data":"        none                1.000             0.770    0.970    0.066    1.000\n"}
+,{"stream_name":"stdout","time":3079.250872408,"data":"pca     k=0.0               1.000             0.444    0.464    0.698    0.842\n"}
+,{"stream_name":"stdout","time":3079.250876307,"data":"        k=0.5               0.983             0.438    0.324    0.499    0.762\n"}
+,{"stream_name":"stdout","time":3079.250880388,"data":"        none                0.849             0.424    0.142    0.182    0.572\n"}
+,{"stream_name":"stdout","time":3079.250884401,"data":"=== share of (config, cell, seed) cases with the target inside the 95% interval ===\n"}
+,{"stream_name":"stdout","time":3079.250888632,"data":"shift          fading_to_rayleigh  fading_to_rician  nominal  snr+3dB  snr-3dB\n"}
+,{"stream_name":"stdout","time":3079.250894821,"data":"family  wrap                                                                  \n"}
+,{"stream_name":"stdout","time":3079.250905314,"data":"ae      k=0.0                 0.0              0.07     0.90     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250908379,"data":"        k=0.5                 0.0              0.30     0.68     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250910991,"data":"        none                  0.0              0.27     0.72     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.25091363,"data":"iforest k=0.0                 0.0              0.00     0.88     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250916328,"data":"        k=0.5                 0.0              0.00     0.90     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250918957,"data":"        none                  0.0              0.00     0.85     0.48     0.10\n"}
+,{"stream_name":"stdout","time":3079.250921659,"data":"lof     k=0.0                 0.0              0.00     0.88     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250924982,"data":"        k=0.5                 0.0              0.00     0.75     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250937343,"data":"        none                  0.0              0.00     0.82     0.02     0.00\n"}
+,{"stream_name":"stdout","time":3079.250940225,"data":"ocsvm   k=0.0                 0.0              0.00     0.80     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250942859,"data":"        k=0.5                 0.0              0.00     0.74     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250945564,"data":"        none                  0.0              0.00     0.82     0.08     0.00\n"}
+,{"stream_name":"stdout","time":3079.250948207,"data":"oracle  k=0.0                 0.0              0.27     0.95     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250950848,"data":"        k=0.5                 0.0              0.60     0.80     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250953548,"data":"        none                  0.4              0.33     0.95     0.00     0.00\n"}
+,{"stream_name":"stdout","time":3079.250956167,"data":"pca     k=0.0                 0.0              0.00     0.76     0.09     0.08\n"}
+,{"stream_name":"stdout","time":3079.250958873,"data":"        k=0.5                 0.0              0.00     0.75     0.30     0.16\n"}
+,{"stream_name":"stdout","time":3079.250961499,"data":"        none                  0.0              0.00     0.75     0.39     0.21\n"}
+,{"stream_name":"stdout","time":3079.345049367,"data":"results archive: /kaggle/working/mimicguard_v2_r9b_results.zip (0.3 MB)\n"}
+,{"stream_name":"stdout","time":3079.345080369,"data":"Download it from the Output tab (after Save Version -\u003e Save \u0026 Run All), then send it back.\n"}
+,{"stream_name":"stderr","time":3084.038887775,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":3084.038949171,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":3084.233505862,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":3084.233539424,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":3085.153476837,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":3085.248605678,"data":"[NbConvertApp] Writing 97751 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":3088.516079385,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":3089.171716037,"data":"[NbConvertApp] Writing 386868 bytes to __results__.html\n"}
+]

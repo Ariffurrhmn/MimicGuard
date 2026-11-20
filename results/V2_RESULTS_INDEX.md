@@ -9,7 +9,7 @@ Every v2 result lives in one folder with a `RUN_INFO.md` (notebook, commit, plat
 | `v2_nb2_local/` | Rerun of notebook 2 with the print bug fixed (full CSVs, per-stream arrays, headroom, correlated fading) | same notebook code, run locally | local PC, CPU, full | complete; agrees with the Kaggle run (see `RUN_INFO.md`) |
 | `v2_rawiq/` | E2 raw-IQ models and oracle headroom | `mimicguard_v2_03_rawiq_gpu.ipynb` | Kaggle T4, full | complete |
 
-Older runs (not v2): `kaggle_full/`, `kaggle_v2/`, `kaggle_v3/` (the draft paper's data).
+Older runs (not v2): `kaggle_v2/` (notebook `mimicguard_kaggle.ipynb`, 10 seeds) and `kaggle_v3/` (notebook `mimicguard_kaggle_ae_improve.ipynb`, 5 seeds). Draft v2 of the paper uses both.
 
 ## Where each statement can be traced
 
@@ -41,10 +41,11 @@ Rule: a number in the proposal or paper must point to one of these files, or be 
 | Calibration shift (SNR +-3 dB, fading type) | `v2_followups_kaggle/r8b/r8b_rows.csv` |
 | Correlated fading rho 0.9 / 0.99, five seeds | `v2_followups/r4/r4_rows.csv` |
 | AE with 300 training windows | `v2_followups/r7/r7_rows.csv` (written when the run finishes) |
-| Console logs of the Kaggle runs | the notebook logs in Downloads (not copied) |
+| Console logs of the Kaggle runs | the `*.log` file in each `v2_*_kaggle/` folder |
 
 | Tuned detectors on held-out seeds, tested on fresh seeds (R14) | `v2_r14_kaggle/r14_test_rows.csv`, `r14_tune_rows.csv`, `r14_selected_configs.csv`, `r14_ranking_summary.csv`, `r14_pairwise_flips.csv`, `r14_oracle_gap.csv`, `r14_selected_test_table.csv`; log `notebook-8.log` |
-| Label-free tuning, wider slack grid, tuned oracle (R15/R16) | `v2_r15_kaggle/results_r15/r15_selection_table.csv`, `r15_ranking_summary.csv`, `r15_selected_configs.csv`, `r15_test_rows.csv`, `r15_tune_rows.csv`; run zip `mimicguard_v2_r15_results.zip` |
+| Label-free tuning, wider slack grid, tuned oracle (R15/R16) | `v2_r15_kaggle/results_r15/r15_selection_table.csv`, `r15_ranking_summary.csv`, `r15_selected_configs.csv`, `r15_test_rows.csv`, `r15_tune_rows.csv` |
 | Tuned and label-free detectors against an on-off attacker (R17a) | `v2_r17a_kaggle/results_r17a/r17a_selection_table.csv`, `r17a_ranking_summary.csv`, `r17a_selected_configs.csv`, `r17a_test_rows.csv`, `r17a_tune_rows.csv`; log |
 | Same, weaker attacker alpha 0.3 (R17b) | `v2_r17b_kaggle/results_r17b/r17b_*.csv`; log |
 | Calibration shift for the tuned configurations (R9b) | `v2_r9b_kaggle/results_r9b/r9b_rows.csv`, `r9b_summary_p05.csv`; log |
+| Recalibration after a channel shift: static, threshold from N shifted streams, stream-head standardisation, refit (R18) | `v2_r18_kaggle/results_r18/r18_rows.csv`, `r18_summary_p05.csv`, `r18_summary_p01.csv`, `r18_by_family_p05.csv`, `r18_by_family_p01.csv`; log `notebook-13.log`. Complete run (4 cells x 5 seeds, 32,000 rows); an earlier cancelled version produced only none/20 dB, with identical values |

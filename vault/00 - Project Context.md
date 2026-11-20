@@ -39,6 +39,7 @@ The project name and goal line were not supplied explicitly at setup; they were 
 - 2026-11-19 (v3): story rewritten from the evidence in `docs/proposal/MimicGuard_Proposal_v3.md` (candidate sentences A/B/C; recommended A). See [[Session Log]].
 - 2026-11-19 (R14/R15): tuning removes the ranking flips (R14) and label-free tuning recovers the labelled gain except for PCA (R15); AE leads at Rayleigh 15 dB; sentence D stands, E's label claim is refuted, R17 (on-off attacker) is the next check. See `docs/proposal/MimicGuard_Proposal_v3.md` sections 9-10 and [[Session Log]].
 - 2026-11-20 (R17/R9b): weaker attacker repeats R15; an on-off attacker partly re-flips the tuned ranking and reopens the oracle gap; no detector keeps false-alarm control under a 3 dB shift. Sentence D narrows, a deployment statement G (recalibration is the bottleneck) is added; see `docs/proposal/MimicGuard_Proposal_v3.md` section 11.
+- 2026-11-20 (draft v2): new paper draft in `paper/draft_v2/` built from recomputed numbers; corrections list in `paper/draft_v2/CORRECTIONS.md`; awaiting owner review.
 - Next actions: top of [[Session Log]] and [[Open Questions]].
 - Novelty status: moderate-low; framed as integration and evaluation, not a new method ([[Prior Art Verdict]]).
 - Contribution options (2026-11-12): deferred on 2026-11-15; the original plan stands ([[Decisions]], [[Contribution Options]]).

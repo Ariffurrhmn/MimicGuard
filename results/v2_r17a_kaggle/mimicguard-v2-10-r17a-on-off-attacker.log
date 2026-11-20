@@ -1,0 +1,205 @@
+[{"stream_name":"stderr","time":7.515483093,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.515530583,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":8.592597409,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":8.592632823,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":8.592637275,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":8.592640609,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.377974316,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.378006735,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.378012736,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.378017598,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":14.556156226,"data":"python 3.13.18 | numpy 2.1.3 | sklearn 1.6.1 | CPUs 4\n"}
+,{"stream_name":"stdout","time":16.748215939,"data":"torch 2.11.0+cpu | cuda available: False | CPU only\n"}
+,{"stream_name":"stdout","time":35.010862814,"data":"......................................................................   [100%]\n"}
+,{"stream_name":"stdout","time":35.010914352,"data":"70 passed in 14.24s\n"}
+,{"stream_name":"stdout","time":35.01092101,"data":" \n"}
+,{"stream_name":"stdout","time":35.20634055,"data":"full [('none', 20), ('rician', 20), ('rayleigh', 20), ('rayleigh', 15)] attack {'kind': 'onoff', 'alpha': 0.5, 'duty': 0.25, 'period': 20} tune [100, 101, 102, 103, 104] test [200, 201, 202, 203, 204]\n"}
+,{"stream_name":"stdout","time":190.171236358,"data":"r14 r17a_tune_s100_none_20: 155s\n"}
+,{"stream_name":"stdout","time":366.7175578,"data":"r14 r17a_tune_s101_none_20: 177s\n"}
+,{"stream_name":"stdout","time":539.769666531,"data":"r14 r17a_tune_s102_none_20: 173s\n"}
+,{"stream_name":"stdout","time":716.109232119,"data":"r14 r17a_tune_s103_none_20: 176s\n"}
+,{"stream_name":"stdout","time":887.040176785,"data":"r14 r17a_tune_s104_none_20: 171s\n"}
+,{"stream_name":"stdout","time":1002.938842565,"data":"r14 r17a_tune_s100_rician_20: 116s\n"}
+,{"stream_name":"stdout","time":1109.816297638,"data":"r14 r17a_tune_s101_rician_20: 107s\n"}
+,{"stream_name":"stdout","time":1211.115412044,"data":"r14 r17a_tune_s102_rician_20: 101s\n"}
+,{"stream_name":"stdout","time":1323.674830655,"data":"r14 r17a_tune_s103_rician_20: 113s\n"}
+,{"stream_name":"stdout","time":1480.896460805,"data":"r14 r17a_tune_s104_rician_20: 157s\n"}
+,{"stream_name":"stdout","time":1589.959697039,"data":"r14 r17a_tune_s100_rayleigh_20: 109s\n"}
+,{"stream_name":"stdout","time":1689.949933285,"data":"r14 r17a_tune_s101_rayleigh_20: 100s\n"}
+,{"stream_name":"stdout","time":1836.800268145,"data":"r14 r17a_tune_s102_rayleigh_20: 147s\n"}
+,{"stream_name":"stdout","time":1936.195874981,"data":"r14 r17a_tune_s103_rayleigh_20: 99s\n"}
+,{"stream_name":"stdout","time":2035.368960366,"data":"r14 r17a_tune_s104_rayleigh_20: 99s\n"}
+,{"stream_name":"stdout","time":2165.941846883,"data":"r14 r17a_tune_s100_rayleigh_15: 131s\n"}
+,{"stream_name":"stdout","time":2273.268997546,"data":"r14 r17a_tune_s101_rayleigh_15: 107s\n"}
+,{"stream_name":"stdout","time":2386.471683399,"data":"r14 r17a_tune_s102_rayleigh_15: 113s\n"}
+,{"stream_name":"stdout","time":2484.278943082,"data":"r14 r17a_tune_s103_rayleigh_15: 98s\n"}
+,{"stream_name":"stdout","time":2583.848483276,"data":"r14 r17a_tune_s104_rayleigh_15: 100s\n"}
+,{"stream_name":"stdout","time":2746.526860422,"data":"r14 r17a_test_s200_none_20: 162s\n"}
+,{"stream_name":"stdout","time":2924.822957832,"data":"r14 r17a_test_s201_none_20: 178s\n"}
+,{"stream_name":"stdout","time":3099.456958975,"data":"r14 r17a_test_s202_none_20: 175s\n"}
+,{"stream_name":"stdout","time":3276.855652689,"data":"r14 r17a_test_s203_none_20: 177s\n"}
+,{"stream_name":"stdout","time":3452.019841639,"data":"r14 r17a_test_s204_none_20: 175s\n"}
+,{"stream_name":"stdout","time":3554.374519777,"data":"r14 r17a_test_s200_rician_20: 102s\n"}
+,{"stream_name":"stdout","time":3667.150146784,"data":"r14 r17a_test_s201_rician_20: 113s\n"}
+,{"stream_name":"stdout","time":3781.034912907,"data":"r14 r17a_test_s202_rician_20: 114s\n"}
+,{"stream_name":"stdout","time":3896.810161008,"data":"r14 r17a_test_s203_rician_20: 116s\n"}
+,{"stream_name":"stdout","time":4003.362336194,"data":"r14 r17a_test_s204_rician_20: 107s\n"}
+,{"stream_name":"stdout","time":4118.895153136,"data":"r14 r17a_test_s200_rayleigh_20: 116s\n"}
+,{"stream_name":"stdout","time":4270.991077323,"data":"r14 r17a_test_s201_rayleigh_20: 152s\n"}
+,{"stream_name":"stdout","time":4376.381547492,"data":"r14 r17a_test_s202_rayleigh_20: 105s\n"}
+,{"stream_name":"stdout","time":4474.588168304,"data":"r14 r17a_test_s203_rayleigh_20: 98s\n"}
+,{"stream_name":"stdout","time":4583.892725381,"data":"r14 r17a_test_s204_rayleigh_20: 109s\n"}
+,{"stream_name":"stdout","time":4696.374272676,"data":"r14 r17a_test_s200_rayleigh_15: 112s\n"}
+,{"stream_name":"stdout","time":4797.903270087,"data":"r14 r17a_test_s201_rayleigh_15: 102s\n"}
+,{"stream_name":"stdout","time":4915.828848445,"data":"r14 r17a_test_s202_rayleigh_15: 118s\n"}
+,{"stream_name":"stdout","time":5038.679133874,"data":"r14 r17a_test_s203_rayleigh_15: 123s\n"}
+,{"stream_name":"stdout","time":5154.802516564,"data":"r14 r17a_test_s204_rayleigh_15: 116s\n"}
+,{"stream_name":"stdout","time":5155.078363854,"data":"10920 10920 rows\n"}
+,{"stream_name":"stdout","time":5155.652712023,"data":"=== test Pd by selection policy (p = 0.05) ===\n"}
+,{"stream_name":"stdout","time":5155.652771434,"data":"fading              none rayleigh        rician\n"}
+,{"stream_name":"stdout","time":5155.652780303,"data":"snr_db              20.0     15.0   20.0   20.0\n"}
+,{"stream_name":"stdout","time":5155.652785743,"data":"family  policy                                 \n"}
+,{"stream_name":"stdout","time":5155.652791054,"data":"ae      global     0.802    0.602  0.998  0.994\n"}
+,{"stream_name":"stdout","time":5155.652796172,"data":"        hindsight  0.802    0.602  1.000  0.994\n"}
+,{"stream_name":"stdout","time":5155.652801645,"data":"        lf_cell    0.802    0.602  1.000  0.994\n"}
+,{"stream_name":"stdout","time":5155.652807074,"data":"        lf_global  0.802    0.602  0.998  0.994\n"}
+,{"stream_name":"stdout","time":5155.652812521,"data":"        lf_unit    0.832    0.600  1.000  0.994\n"}
+,{"stream_name":"stdout","time":5155.65281779,"data":"        random     0.591    0.482  0.969  0.965\n"}
+,{"stream_name":"stdout","time":5155.652823047,"data":"iforest global     0.766    0.234  0.408  0.544\n"}
+,{"stream_name":"stdout","time":5155.652828509,"data":"        hindsight  0.766    0.234  0.408  0.544\n"}
+,{"stream_name":"stdout","time":5155.652849781,"data":"        lf_cell    0.762    0.222  0.390  0.536\n"}
+,{"stream_name":"stdout","time":5155.652855641,"data":"        lf_global  0.762    0.222  0.390  0.536\n"}
+,{"stream_name":"stdout","time":5155.652860143,"data":"        lf_unit    0.744    0.226  0.394  0.536\n"}
+,{"stream_name":"stdout","time":5155.652864583,"data":"        random     0.619    0.161  0.286  0.397\n"}
+,{"stream_name":"stdout","time":5155.652868837,"data":"lof     global     0.866    0.322  0.956  0.860\n"}
+,{"stream_name":"stdout","time":5155.652873771,"data":"        hindsight  0.880    0.322  0.956  0.860\n"}
+,{"stream_name":"stdout","time":5155.652877938,"data":"        lf_cell    0.856    0.322  0.956  0.860\n"}
+,{"stream_name":"stdout","time":5155.652880898,"data":"        lf_global  0.866    0.322  0.956  0.860\n"}
+,{"stream_name":"stdout","time":5155.652883792,"data":"        lf_unit    0.884    0.322  0.956  0.866\n"}
+,{"stream_name":"stdout","time":5155.652886712,"data":"        random     0.754    0.176  0.704  0.640\n"}
+,{"stream_name":"stdout","time":5155.652889837,"data":"ocsvm   global     0.774    0.334  0.902  0.856\n"}
+,{"stream_name":"stdout","time":5155.652892695,"data":"        hindsight  0.836    0.338  0.912  0.878\n"}
+,{"stream_name":"stdout","time":5155.65289568,"data":"        lf_cell    0.774    0.288  0.906  0.830\n"}
+,{"stream_name":"stdout","time":5155.652898577,"data":"        lf_global  0.784    0.288  0.906  0.838\n"}
+,{"stream_name":"stdout","time":5155.652901458,"data":"        lf_unit    0.784    0.294  0.892  0.830\n"}
+,{"stream_name":"stdout","time":5155.652904399,"data":"        random     0.670    0.229  0.811  0.707\n"}
+,{"stream_name":"stdout","time":5155.652907714,"data":"pca     global     0.718    0.122  0.996  0.140\n"}
+,{"stream_name":"stdout","time":5155.652911981,"data":"        hindsight  0.718    0.138  0.998  0.538\n"}
+,{"stream_name":"stdout","time":5155.652916261,"data":"        lf_cell    0.600    0.118  0.996  0.104\n"}
+,{"stream_name":"stdout","time":5155.65292045,"data":"        lf_global  0.256    0.108  0.112  0.104\n"}
+,{"stream_name":"stdout","time":5155.652924584,"data":"        lf_unit    0.470    0.118  0.822  0.104\n"}
+,{"stream_name":"stdout","time":5155.65292889,"data":"        random     0.361    0.097  0.354  0.209\n"}
+,{"stream_name":"stdout","time":5155.652933136,"data":"policy\n"}
+,{"stream_name":"stdout","time":5155.652937607,"data":"random       0.509\n"}
+,{"stream_name":"stdout","time":5155.652942043,"data":"lf_global    0.585\n"}
+,{"stream_name":"stdout","time":5155.652946404,"data":"lf_unit      0.633\n"}
+,{"stream_name":"stdout","time":5155.652950527,"data":"lf_cell      0.646\n"}
+,{"stream_name":"stdout","time":5155.65295492,"data":"global       0.660\n"}
+,{"stream_name":"stdout","time":5155.652958995,"data":"hindsight    0.686\n"}
+,{"stream_name":"stdout","time":5155.652963417,"data":"Name: pd, dtype: float64\n"}
+,{"stream_name":"stdout","time":5155.652967909,"data":"            mean    min    max\n"}
+,{"stream_name":"stdout","time":5155.652972397,"data":"policy                        \n"}
+,{"stream_name":"stdout","time":5155.652976929,"data":"global     0.053  0.045  0.064\n"}
+,{"stream_name":"stdout","time":5155.652981048,"data":"hindsight  0.054  0.046  0.066\n"}
+,{"stream_name":"stdout","time":5155.652985308,"data":"lf_cell    0.054  0.044  0.070\n"}
+,{"stream_name":"stdout","time":5155.652989744,"data":"lf_global  0.053  0.044  0.068\n"}
+,{"stream_name":"stdout","time":5155.652992705,"data":"lf_unit    0.054  0.046  0.062\n"}
+,{"stream_name":"stdout","time":5155.6530007,"data":"random     0.053  0.045  0.063\n"}
+,{"stream_name":"stdout","time":5155.653003859,"data":"wrap       k=0.0\n"}
+,{"stream_name":"stdout","time":5155.653008689,"data":"policy          \n"}
+,{"stream_name":"stdout","time":5155.65301175,"data":"global         5\n"}
+,{"stream_name":"stdout","time":5155.653014641,"data":"lf_cell       20\n"}
+,{"stream_name":"stdout","time":5155.653017468,"data":"lf_global      5\n"}
+,{"stream_name":"stdout","time":5155.653021776,"data":"=== test Pd by selection policy (p = 0.01) ===\n"}
+,{"stream_name":"stdout","time":5155.65302618,"data":"fading              none rayleigh        rician\n"}
+,{"stream_name":"stdout","time":5155.653030685,"data":"snr_db              20.0     15.0   20.0   20.0\n"}
+,{"stream_name":"stdout","time":5155.653035467,"data":"family  policy                                 \n"}
+,{"stream_name":"stdout","time":5155.653040049,"data":"ae      global     0.564    0.164  0.786  0.640\n"}
+,{"stream_name":"stdout","time":5155.653044421,"data":"        hindsight  0.618    0.230  0.790  0.686\n"}
+,{"stream_name":"stdout","time":5155.65304843,"data":"        lf_cell    0.618    0.230  0.786  0.640\n"}
+,{"stream_name":"stdout","time":5155.653052907,"data":"        lf_global  0.618    0.230  0.790  0.686\n"}
+,{"stream_name":"stdout","time":5155.653057428,"data":"        lf_unit    0.622    0.230  0.802  0.710\n"}
+,{"stream_name":"stdout","time":5155.653061949,"data":"        random     0.386    0.109  0.480  0.428\n"}
+,{"stream_name":"stdout","time":5155.653066054,"data":"iforest global     0.524    0.094  0.226  0.354\n"}
+,{"stream_name":"stdout","time":5155.6530699,"data":"        hindsight  0.574    0.094  0.226  0.354\n"}
+,{"stream_name":"stdout","time":5155.653073644,"data":"        lf_cell    0.574    0.094  0.226  0.346\n"}
+,{"stream_name":"stdout","time":5155.653077429,"data":"        lf_global  0.574    0.084  0.208  0.346\n"}
+,{"stream_name":"stdout","time":5155.653081467,"data":"        lf_unit    0.574    0.094  0.226  0.350\n"}
+,{"stream_name":"stdout","time":5155.653085997,"data":"        random     0.392    0.052  0.134  0.229\n"}
+,{"stream_name":"stdout","time":5155.653090058,"data":"lof     global     0.680    0.054  0.706  0.412\n"}
+,{"stream_name":"stdout","time":5155.653094613,"data":"        hindsight  0.762    0.054  0.706  0.412\n"}
+,{"stream_name":"stdout","time":5155.653098727,"data":"        lf_cell    0.730    0.054  0.706  0.412\n"}
+,{"stream_name":"stdout","time":5155.653103125,"data":"        lf_global  0.680    0.054  0.706  0.412\n"}
+,{"stream_name":"stdout","time":5155.653107117,"data":"        lf_unit    0.754    0.062  0.746  0.414\n"}
+,{"stream_name":"stdout","time":5155.653111391,"data":"        random     0.561    0.035  0.278  0.171\n"}
+,{"stream_name":"stdout","time":5155.653115545,"data":"ocsvm   global     0.514    0.126  0.804  0.726\n"}
+,{"stream_name":"stdout","time":5155.653119635,"data":"        hindsight  0.658    0.146  0.806  0.726\n"}
+,{"stream_name":"stdout","time":5155.653123518,"data":"        lf_cell    0.598    0.122  0.800  0.666\n"}
+,{"stream_name":"stdout","time":5155.653127532,"data":"        lf_global  0.596    0.122  0.800  0.666\n"}
+,{"stream_name":"stdout","time":5155.65313208,"data":"        lf_unit    0.632    0.142  0.790  0.678\n"}
+,{"stream_name":"stdout","time":5155.653136298,"data":"        random     0.451    0.085  0.632  0.504\n"}
+,{"stream_name":"stdout","time":5155.653140715,"data":"pca     global     0.458    0.034  0.874  0.022\n"}
+,{"stream_name":"stdout","time":5155.65314529,"data":"        hindsight  0.458    0.038  0.874  0.028\n"}
+,{"stream_name":"stdout","time":5155.653154167,"data":"        lf_cell    0.294    0.038  0.874  0.028\n"}
+,{"stream_name":"stdout","time":5155.653158194,"data":"        lf_global  0.106    0.038  0.026  0.028\n"}
+,{"stream_name":"stdout","time":5155.653162215,"data":"        lf_unit    0.250    0.038  0.774  0.028\n"}
+,{"stream_name":"stdout","time":5155.653166941,"data":"        random     0.173    0.031  0.208  0.023\n"}
+,{"stream_name":"stdout","time":5155.653172328,"data":"policy\n"}
+,{"stream_name":"stdout","time":5155.653176819,"data":"random       0.268\n"}
+,{"stream_name":"stdout","time":5155.653181556,"data":"lf_global    0.388\n"}
+,{"stream_name":"stdout","time":5155.65318653,"data":"global       0.438\n"}
+,{"stream_name":"stdout","time":5155.653191065,"data":"lf_cell      0.442\n"}
+,{"stream_name":"stdout","time":5155.653195544,"data":"lf_unit      0.446\n"}
+,{"stream_name":"stdout","time":5155.653199981,"data":"hindsight    0.462\n"}
+,{"stream_name":"stdout","time":5155.653204166,"data":"Name: pd, dtype: float64\n"}
+,{"stream_name":"stdout","time":5155.653208159,"data":"            mean    min    max\n"}
+,{"stream_name":"stdout","time":5155.653212167,"data":"policy                        \n"}
+,{"stream_name":"stdout","time":5155.653216164,"data":"global     0.011  0.004  0.018\n"}
+,{"stream_name":"stdout","time":5155.653220559,"data":"hindsight  0.012  0.007  0.018\n"}
+,{"stream_name":"stdout","time":5155.653236343,"data":"lf_cell    0.012  0.008  0.016\n"}
+,{"stream_name":"stdout","time":5155.653241208,"data":"lf_global  0.011  0.008  0.016\n"}
+,{"stream_name":"stdout","time":5155.653246678,"data":"lf_unit    0.012  0.008  0.016\n"}
+,{"stream_name":"stdout","time":5155.653251104,"data":"random     0.011  0.007  0.014\n"}
+,{"stream_name":"stdout","time":5155.653255292,"data":"wrap       k=0.0\n"}
+,{"stream_name":"stdout","time":5155.653259959,"data":"policy          \n"}
+,{"stream_name":"stdout","time":5155.653264454,"data":"global         5\n"}
+,{"stream_name":"stdout","time":5155.653268634,"data":"lf_cell       20\n"}
+,{"stream_name":"stdout","time":5155.653272926,"data":"lf_global      5\n"}
+,{"stream_name":"stdout","time":5155.653277386,"data":"   policy    p  cells  sole_winners  n_distinct_sole_winners  cells_with_a_tie_for_first  mean_kendall_tau_across_cells  pairs_that_flip  pairs\n"}
+,{"stream_name":"stdout","time":5155.653282397,"data":"   global 0.01      4 lof;ocsvm;pca                        3                           1                       0.066667                6     10\n"}
+,{"stream_name":"stdout","time":5155.653287107,"data":"   global 0.05      4        ae;lof                        2                           1                       0.500000                3     10\n"}
+,{"stream_name":"stdout","time":5155.653292282,"data":"hindsight 0.01      4    ae;lof;pca                        3                           1                       0.200000                6     10\n"}
+,{"stream_name":"stdout","time":5155.653296934,"data":"hindsight 0.05      4            ae                        1                           2                       0.366667                3     10\n"}
+,{"stream_name":"stdout","time":5155.653301251,"data":"  lf_cell 0.01      4    ae;lof;pca                        3                           1                       0.166667                6     10\n"}
+,{"stream_name":"stdout","time":5155.653305893,"data":"  lf_cell 0.05      4        ae;lof                        2                           1                       0.600000                3     10\n"}
+,{"stream_name":"stdout","time":5155.653310724,"data":"lf_global 0.01      4        ae;lof                        2                           2                       0.600000                2     10\n"}
+,{"stream_name":"stdout","time":5155.653319489,"data":"lf_global 0.05      4        ae;lof                        2                           1                       0.900000                1     10\n"}
+,{"stream_name":"stdout","time":5155.653324191,"data":"  lf_unit 0.01      4        ae;lof                        2                           2                       0.400000                3     10\n"}
+,{"stream_name":"stdout","time":5155.653328778,"data":"  lf_unit 0.05      4        ae;lof                        2                           1                       0.800000                2     10\n"}
+,{"stream_name":"stdout","time":5155.653333698,"data":"   random 0.01      4     lof;ocsvm                        2                           1                       0.366667                4     10\n"}
+,{"stream_name":"stdout","time":5155.653338652,"data":"   random 0.05      4        ae;lof                        2                           0                       0.500000                4     10\n"}
+,{"stream_name":"stdout","time":5155.653343394,"data":"=== oracle, slack tuned (p = 0.05): k=0.0 ===\n"}
+,{"stream_name":"stdout","time":5155.653348381,"data":"fading    snr_db\n"}
+,{"stream_name":"stdout","time":5155.653352564,"data":"none      20.0      1.000\n"}
+,{"stream_name":"stdout","time":5155.653356949,"data":"rayleigh  15.0      0.824\n"}
+,{"stream_name":"stdout","time":5155.653361324,"data":"          20.0      1.000\n"}
+,{"stream_name":"stdout","time":5155.653372091,"data":"rician    20.0      0.996\n"}
+,{"stream_name":"stdout","time":5155.653376409,"data":"Name: pd, dtype: float64\n"}
+,{"stream_name":"stdout","time":5155.653380943,"data":"=== oracle, slack tuned (p = 0.01): k=0.0 ===\n"}
+,{"stream_name":"stdout","time":5155.653385559,"data":"fading    snr_db\n"}
+,{"stream_name":"stdout","time":5155.653389886,"data":"none      20.0      1.000\n"}
+,{"stream_name":"stdout","time":5155.653394268,"data":"rayleigh  15.0      0.616\n"}
+,{"stream_name":"stdout","time":5155.653398734,"data":"          20.0      0.988\n"}
+,{"stream_name":"stdout","time":5155.653403202,"data":"rician    20.0      0.994\n"}
+,{"stream_name":"stdout","time":5155.653407676,"data":"Name: pd, dtype: float64\n"}
+,{"stream_name":"stdout","time":5156.029163534,"data":"results archive: /kaggle/working/mimicguard_v2_r17a_results.zip (1.3 MB)\n"}
+,{"stream_name":"stdout","time":5156.029200205,"data":"Download it from the Output tab (after Save Version -\u003e Save \u0026 Run All), then send it back.\n"}
+,{"stream_name":"stderr","time":5161.569159923,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":5161.569196453,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":5161.758108209,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":5161.758135643,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":5162.691674484,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":5162.798841004,"data":"[NbConvertApp] Writing 102775 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":5166.184051844,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":5166.906147752,"data":"[NbConvertApp] Writing 399261 bytes to __results__.html\n"}
+]

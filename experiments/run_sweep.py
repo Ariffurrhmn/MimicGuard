@@ -68,10 +68,13 @@ def main() -> None:
     ap.add_argument("--detectors", default=",".join(DEFAULT_DETECTORS))
     ap.add_argument("--far", type=float, default=0.01)
     ap.add_argument("--workers", type=int, default=os.cpu_count() or 1)
+    ap.add_argument("--override", default=None, help='JSON merged over the config, e.g. {"handover":{"mode":"agc"}}')
     ap.add_argument("--quick", action="store_true", help="2 seeds, 2 SNRs, 2 fadings, 20 realisations")
     a = ap.parse_args()
 
     base = load_config(a.config)
+    if a.override:
+        base = deep_merge(base, json.loads(a.override))
     if a.quick:
         base = deep_merge(base, {"split": {"realisations": 20}})
     seeds = _parse_range(a.seeds) if a.seeds else list(range(2 if a.quick else int(base["grid"]["seeds"])))

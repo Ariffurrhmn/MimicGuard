@@ -1,0 +1,212 @@
+[{"stream_name":"stderr","time":7.915930897,"data":"/usr/local/lib/python3.13/dist-packages/nbformat/validator.py:434: MissingIDFieldWarning: Cell is missing an id field, this will become a hard error in future nbformat versions. You may want to use `normalize()` on your notebooks before validations (available since nbformat 5.1.4). Previous versions of nbformat are fixing this issue transparently, and will stop doing so in the future.\n"}
+,{"stream_name":"stderr","time":7.915994084,"data":"  _validate(nbdict, ref, version, version_minor, relax_add_props)\n"}
+,{"stream_name":"stderr","time":9.020736018,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.020778675,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.020784782,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.020793334,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":9.787622251,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":9.787658374,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":9.78766446,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":9.787669239,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":15.102938891,"data":"python 3.13.18 | numpy 2.1.3 | sklearn 1.6.1 | CPUs 4\n"}
+,{"stream_name":"stdout","time":17.616572476,"data":"torch 2.11.0+cpu | cuda available: False | CPU only\n"}
+,{"stream_name":"stdout","time":35.521692441,"data":"......................................................................   [100%]\n"}
+,{"stream_name":"stdout","time":35.521733304,"data":"70 passed in 13.72s\n"}
+,{"stream_name":"stdout","time":35.521739188,"data":" \n"}
+,{"stream_name":"stdout","time":35.709083516,"data":"full [('none', 20), ('rician', 20), ('rayleigh', 20), ('rayleigh', 15)] tune [100, 101, 102, 103, 104] test [200, 201, 202, 203, 204] slack grid (0.0, 0.0025, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5)\n"}
+,{"stream_name":"stdout","time":184.003573464,"data":"r14 r15_tune_s100_none_20: 148s\n"}
+,{"stream_name":"stdout","time":354.684124873,"data":"r14 r15_tune_s101_none_20: 171s\n"}
+,{"stream_name":"stdout","time":522.110253497,"data":"r14 r15_tune_s102_none_20: 167s\n"}
+,{"stream_name":"stdout","time":692.033942356,"data":"r14 r15_tune_s103_none_20: 170s\n"}
+,{"stream_name":"stdout","time":856.588365746,"data":"r14 r15_tune_s104_none_20: 165s\n"}
+,{"stream_name":"stdout","time":967.328347976,"data":"r14 r15_tune_s100_rician_20: 111s\n"}
+,{"stream_name":"stdout","time":1067.932785982,"data":"r14 r15_tune_s101_rician_20: 101s\n"}
+,{"stream_name":"stdout","time":1164.992642949,"data":"r14 r15_tune_s102_rician_20: 97s\n"}
+,{"stream_name":"stdout","time":1271.952519559,"data":"r14 r15_tune_s103_rician_20: 107s\n"}
+,{"stream_name":"stdout","time":1424.854948811,"data":"r14 r15_tune_s104_rician_20: 153s\n"}
+,{"stream_name":"stdout","time":1528.539962517,"data":"r14 r15_tune_s100_rayleigh_20: 104s\n"}
+,{"stream_name":"stdout","time":1624.191123288,"data":"r14 r15_tune_s101_rayleigh_20: 96s\n"}
+,{"stream_name":"stdout","time":1766.4847333,"data":"r14 r15_tune_s102_rayleigh_20: 142s\n"}
+,{"stream_name":"stdout","time":1862.867814869,"data":"r14 r15_tune_s103_rayleigh_20: 96s\n"}
+,{"stream_name":"stdout","time":1958.083491769,"data":"r14 r15_tune_s104_rayleigh_20: 95s\n"}
+,{"stream_name":"stdout","time":2085.326643005,"data":"r14 r15_tune_s100_rayleigh_15: 127s\n"}
+,{"stream_name":"stdout","time":2189.253387712,"data":"r14 r15_tune_s101_rayleigh_15: 104s\n"}
+,{"stream_name":"stdout","time":2299.954873658,"data":"r14 r15_tune_s102_rayleigh_15: 111s\n"}
+,{"stream_name":"stdout","time":2394.130590529,"data":"r14 r15_tune_s103_rayleigh_15: 94s\n"}
+,{"stream_name":"stdout","time":2489.580393932,"data":"r14 r15_tune_s104_rayleigh_15: 95s\n"}
+,{"stream_name":"stdout","time":2646.733014547,"data":"r14 r15_test_s200_none_20: 157s\n"}
+,{"stream_name":"stdout","time":2818.712614278,"data":"r14 r15_test_s201_none_20: 172s\n"}
+,{"stream_name":"stdout","time":2989.579319805,"data":"r14 r15_test_s202_none_20: 171s\n"}
+,{"stream_name":"stdout","time":3160.779679562,"data":"r14 r15_test_s203_none_20: 171s\n"}
+,{"stream_name":"stdout","time":3330.054981036,"data":"r14 r15_test_s204_none_20: 169s\n"}
+,{"stream_name":"stdout","time":3427.676462222,"data":"r14 r15_test_s200_rician_20: 98s\n"}
+,{"stream_name":"stdout","time":3536.68993207,"data":"r14 r15_test_s201_rician_20: 109s\n"}
+,{"stream_name":"stdout","time":3647.464467956,"data":"r14 r15_test_s202_rician_20: 111s\n"}
+,{"stream_name":"stdout","time":3760.322634481,"data":"r14 r15_test_s203_rician_20: 113s\n"}
+,{"stream_name":"stdout","time":3862.445552915,"data":"r14 r15_test_s204_rician_20: 102s\n"}
+,{"stream_name":"stdout","time":3974.667058425,"data":"r14 r15_test_s200_rayleigh_20: 112s\n"}
+,{"stream_name":"stdout","time":4123.405470466,"data":"r14 r15_test_s201_rayleigh_20: 149s\n"}
+,{"stream_name":"stdout","time":4225.095873615,"data":"r14 r15_test_s202_rayleigh_20: 102s\n"}
+,{"stream_name":"stdout","time":4319.133442224,"data":"r14 r15_test_s203_rayleigh_20: 94s\n"}
+,{"stream_name":"stdout","time":4424.337299186,"data":"r14 r15_test_s204_rayleigh_20: 105s\n"}
+,{"stream_name":"stdout","time":4532.997817056,"data":"r14 r15_test_s200_rayleigh_15: 109s\n"}
+,{"stream_name":"stdout","time":4630.964351514,"data":"r14 r15_test_s201_rayleigh_15: 98s\n"}
+,{"stream_name":"stdout","time":4745.057109099,"data":"r14 r15_test_s202_rayleigh_15: 114s\n"}
+,{"stream_name":"stdout","time":4863.326199007,"data":"r14 r15_test_s203_rayleigh_15: 118s\n"}
+,{"stream_name":"stdout","time":4975.916546425,"data":"r14 r15_test_s204_rayleigh_15: 113s\n"}
+,{"stream_name":"stdout","time":4976.199350155,"data":"10920 10920 rows\n"}
+,{"stream_name":"stdout","time":4976.772121605,"data":"=== test Pd by selection policy (p = 0.05) ===\n"}
+,{"stream_name":"stdout","time":4976.772205719,"data":"fading              none rayleigh        rician\n"}
+,{"stream_name":"stdout","time":4976.772216805,"data":"snr_db              20.0     15.0   20.0   20.0\n"}
+,{"stream_name":"stdout","time":4976.772222785,"data":"family  policy                                 \n"}
+,{"stream_name":"stdout","time":4976.772228297,"data":"ae      global     1.000    0.990  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.77224014,"data":"        hindsight  1.000    0.992  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772245893,"data":"        lf_cell    1.000    0.990  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772251202,"data":"        lf_global  1.000    0.990  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772261022,"data":"        lf_unit    1.000    0.990  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772288709,"data":"        random     0.929    0.945  0.992  0.993\n"}
+,{"stream_name":"stdout","time":4976.772294759,"data":"iforest global     1.000    0.464  0.982  1.000\n"}
+,{"stream_name":"stdout","time":4976.772299663,"data":"        hindsight  1.000    0.468  0.982  1.000\n"}
+,{"stream_name":"stdout","time":4976.772323215,"data":"        lf_cell    1.000    0.468  0.972  1.000\n"}
+,{"stream_name":"stdout","time":4976.772333848,"data":"        lf_global  1.000    0.468  0.972  1.000\n"}
+,{"stream_name":"stdout","time":4976.772338066,"data":"        lf_unit    1.000    0.472  0.978  1.000\n"}
+,{"stream_name":"stdout","time":4976.772342464,"data":"        random     0.939    0.345  0.827  0.897\n"}
+,{"stream_name":"stdout","time":4976.772374973,"data":"lof     global     1.000    0.842  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772381163,"data":"        hindsight  1.000    0.842  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772385537,"data":"        lf_cell    1.000    0.842  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772389958,"data":"        lf_global  1.000    0.842  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772394183,"data":"        lf_unit    1.000    0.842  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.77239875,"data":"        random     0.980    0.481  0.954  0.959\n"}
+,{"stream_name":"stdout","time":4976.772403046,"data":"ocsvm   global     1.000    0.680  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772407553,"data":"        hindsight  1.000    0.778  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.7724118,"data":"        lf_cell    1.000    0.680  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772416417,"data":"        lf_global  1.000    0.680  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.77242051,"data":"        lf_unit    1.000    0.670  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772424296,"data":"        random     0.969    0.574  0.985  0.953\n"}
+,{"stream_name":"stdout","time":4976.772428312,"data":"pca     global     1.000    0.354  1.000  0.544\n"}
+,{"stream_name":"stdout","time":4976.772432245,"data":"        hindsight  1.000    0.402  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772436098,"data":"        lf_cell    1.000    0.170  1.000  0.100\n"}
+,{"stream_name":"stdout","time":4976.772478643,"data":"        lf_global  0.494    0.154  0.094  0.100\n"}
+,{"stream_name":"stdout","time":4976.772483113,"data":"        lf_unit    0.884    0.178  0.820  0.100\n"}
+,{"stream_name":"stdout","time":4976.772487777,"data":"        random     0.752    0.150  0.515  0.528\n"}
+,{"stream_name":"stdout","time":4976.772492262,"data":"=== mean Pd over families and cells (p = 0.05) ===\n"}
+,{"stream_name":"stdout","time":4976.772497,"data":"policy\n"}
+,{"stream_name":"stdout","time":4976.772501714,"data":"random       0.783\n"}
+,{"stream_name":"stdout","time":4976.772506187,"data":"lf_global    0.790\n"}
+,{"stream_name":"stdout","time":4976.772519397,"data":"lf_unit      0.847\n"}
+,{"stream_name":"stdout","time":4976.772523526,"data":"lf_cell      0.861\n"}
+,{"stream_name":"stdout","time":4976.772527374,"data":"global       0.893\n"}
+,{"stream_name":"stdout","time":4976.772530957,"data":"hindsight    0.923\n"}
+,{"stream_name":"stdout","time":4976.772536692,"data":"Name: pd, dtype: float64\n"}
+,{"stream_name":"stdout","time":4976.772546088,"data":"=== realised false alarm on check streams (p = 0.05); target 0.05 ===\n"}
+,{"stream_name":"stdout","time":4976.772549569,"data":"            mean    min    max\n"}
+,{"stream_name":"stdout","time":4976.77256136,"data":"policy                        \n"}
+,{"stream_name":"stdout","time":4976.772564054,"data":"global     0.053  0.044  0.066\n"}
+,{"stream_name":"stdout","time":4976.772567459,"data":"hindsight  0.053  0.046  0.061\n"}
+,{"stream_name":"stdout","time":4976.772589439,"data":"lf_cell    0.054  0.044  0.070\n"}
+,{"stream_name":"stdout","time":4976.772602989,"data":"lf_global  0.053  0.044  0.068\n"}
+,{"stream_name":"stdout","time":4976.772608042,"data":"lf_unit    0.054  0.046  0.062\n"}
+,{"stream_name":"stdout","time":4976.77261208,"data":"random     0.053  0.045  0.063\n"}
+,{"stream_name":"stdout","time":4976.772615826,"data":"=== slack chosen (p = 0.05) ===\n"}
+,{"stream_name":"stdout","time":4976.77261957,"data":"wrap       k=0.0\n"}
+,{"stream_name":"stdout","time":4976.772623283,"data":"policy          \n"}
+,{"stream_name":"stdout","time":4976.772627061,"data":"global         5\n"}
+,{"stream_name":"stdout","time":4976.77263075,"data":"lf_cell       20\n"}
+,{"stream_name":"stdout","time":4976.772634503,"data":"lf_global      5\n"}
+,{"stream_name":"stdout","time":4976.772638271,"data":"=== test Pd by selection policy (p = 0.01) ===\n"}
+,{"stream_name":"stdout","time":4976.772642165,"data":"fading              none rayleigh        rician\n"}
+,{"stream_name":"stdout","time":4976.772645991,"data":"snr_db              20.0     15.0   20.0   20.0\n"}
+,{"stream_name":"stdout","time":4976.772649816,"data":"family  policy                                 \n"}
+,{"stream_name":"stdout","time":4976.7726538,"data":"ae      global     0.968    0.794  0.990  0.996\n"}
+,{"stream_name":"stdout","time":4976.772659725,"data":"        hindsight  1.000    0.920  0.994  0.998\n"}
+,{"stream_name":"stdout","time":4976.772669097,"data":"        lf_cell    1.000    0.920  0.990  0.996\n"}
+,{"stream_name":"stdout","time":4976.772672889,"data":"        lf_global  1.000    0.920  0.994  0.998\n"}
+,{"stream_name":"stdout","time":4976.772700077,"data":"        lf_unit    1.000    0.920  0.994  0.998\n"}
+,{"stream_name":"stdout","time":4976.77270485,"data":"        random     0.870    0.528  0.784  0.720\n"}
+,{"stream_name":"stdout","time":4976.772709364,"data":"iforest global     1.000    0.248  0.932  0.998\n"}
+,{"stream_name":"stdout","time":4976.77271377,"data":"        hindsight  1.000    0.248  0.932  0.998\n"}
+,{"stream_name":"stdout","time":4976.772721698,"data":"        lf_cell    1.000    0.248  0.932  0.996\n"}
+,{"stream_name":"stdout","time":4976.772725536,"data":"        lf_global  1.000    0.242  0.908  0.996\n"}
+,{"stream_name":"stdout","time":4976.772729439,"data":"        lf_unit    1.000    0.248  0.936  0.996\n"}
+,{"stream_name":"stdout","time":4976.772733285,"data":"        random     0.910    0.158  0.730  0.874\n"}
+,{"stream_name":"stdout","time":4976.772737103,"data":"lof     global     1.000    0.346  1.000  0.994\n"}
+,{"stream_name":"stdout","time":4976.772740905,"data":"        hindsight  1.000    0.346  1.000  0.994\n"}
+,{"stream_name":"stdout","time":4976.772744748,"data":"        lf_cell    1.000    0.346  1.000  0.994\n"}
+,{"stream_name":"stdout","time":4976.772748604,"data":"        lf_global  1.000    0.346  1.000  0.994\n"}
+,{"stream_name":"stdout","time":4976.772752356,"data":"        lf_unit    1.000    0.398  1.000  0.998\n"}
+,{"stream_name":"stdout","time":4976.772756181,"data":"        random     0.936    0.110  0.840  0.798\n"}
+,{"stream_name":"stdout","time":4976.772759968,"data":"ocsvm   global     1.000    0.466  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772763811,"data":"        hindsight  1.000    0.498  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772767696,"data":"        lf_cell    1.000    0.466  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772773771,"data":"        lf_global  1.000    0.466  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772777986,"data":"        lf_unit    1.000    0.466  1.000  1.000\n"}
+,{"stream_name":"stdout","time":4976.772783937,"data":"        random     0.913    0.346  0.917  0.900\n"}
+,{"stream_name":"stdout","time":4976.77279375,"data":"pca     global     1.000    0.044  1.000  0.024\n"}
+,{"stream_name":"stdout","time":4976.772798931,"data":"        hindsight  1.000    0.052  1.000  0.100\n"}
+,{"stream_name":"stdout","time":4976.772804305,"data":"        lf_cell    0.996    0.052  1.000  0.028\n"}
+,{"stream_name":"stdout","time":4976.772808817,"data":"        lf_global  0.238    0.044  0.028  0.028\n"}
+,{"stream_name":"stdout","time":4976.772813015,"data":"        lf_unit    0.834    0.052  0.812  0.028\n"}
+,{"stream_name":"stdout","time":4976.77281696,"data":"        random     0.679    0.035  0.304  0.043\n"}
+,{"stream_name":"stdout","time":4976.77282082,"data":"=== mean Pd over families and cells (p = 0.01) ===\n"}
+,{"stream_name":"stdout","time":4976.772824732,"data":"policy\n"}
+,{"stream_name":"stdout","time":4976.772828614,"data":"random       0.620\n"}
+,{"stream_name":"stdout","time":4976.772832461,"data":"lf_global    0.710\n"}
+,{"stream_name":"stdout","time":4976.772836363,"data":"lf_unit      0.784\n"}
+,{"stream_name":"stdout","time":4976.772840132,"data":"global       0.790\n"}
+,{"stream_name":"stdout","time":4976.772843861,"data":"lf_cell      0.798\n"}
+,{"stream_name":"stdout","time":4976.772847646,"data":"hindsight    0.804\n"}
+,{"stream_name":"stdout","time":4976.77285132,"data":"Name: pd, dtype: float64\n"}
+,{"stream_name":"stdout","time":4976.772856204,"data":"=== realised false alarm on check streams (p = 0.01); target 0.01 ===\n"}
+,{"stream_name":"stdout","time":4976.772860303,"data":"            mean    min    max\n"}
+,{"stream_name":"stdout","time":4976.772863801,"data":"policy                        \n"}
+,{"stream_name":"stdout","time":4976.772869358,"data":"global     0.011  0.006  0.015\n"}
+,{"stream_name":"stdout","time":4976.772873214,"data":"hindsight  0.011  0.006  0.016\n"}
+,{"stream_name":"stdout","time":4976.772877085,"data":"lf_cell    0.012  0.008  0.016\n"}
+,{"stream_name":"stdout","time":4976.772883131,"data":"lf_global  0.011  0.008  0.016\n"}
+,{"stream_name":"stdout","time":4976.772887506,"data":"lf_unit    0.012  0.008  0.016\n"}
+,{"stream_name":"stdout","time":4976.772891786,"data":"random     0.011  0.007  0.014\n"}
+,{"stream_name":"stdout","time":4976.772896577,"data":"=== slack chosen (p = 0.01) ===\n"}
+,{"stream_name":"stdout","time":4976.772901388,"data":"wrap       k=0.0\n"}
+,{"stream_name":"stdout","time":4976.772906019,"data":"policy          \n"}
+,{"stream_name":"stdout","time":4976.772909947,"data":"global         5\n"}
+,{"stream_name":"stdout","time":4976.772913691,"data":"lf_cell       20\n"}
+,{"stream_name":"stdout","time":4976.772917405,"data":"lf_global      5\n"}
+,{"stream_name":"stdout","time":4976.772921272,"data":"=== ranking summary ===\n"}
+,{"stream_name":"stdout","time":4976.77292521,"data":"   policy    p  cells sole_winners  n_distinct_sole_winners  cells_with_a_tie_for_first  mean_kendall_tau_across_cells  pairs_that_flip  pairs\n"}
+,{"stream_name":"stdout","time":4976.772929529,"data":"   global 0.01      4           ae                        1                           3                      -0.055430                1     10\n"}
+,{"stream_name":"stdout","time":4976.772933638,"data":"   global 0.05      4           ae                        1                           3                       0.232894                0     10\n"}
+,{"stream_name":"stdout","time":4976.772937918,"data":"hindsight 0.01      4           ae                        1                           3                       0.051849                1     10\n"}
+,{"stream_name":"stdout","time":4976.772942043,"data":"hindsight 0.05      4           ae                        1                           3                       0.316228                0     10\n"}
+,{"stream_name":"stdout","time":4976.772950515,"data":"  lf_cell 0.01      4           ae                        1                           3                       0.179451                1     10\n"}
+,{"stream_name":"stdout","time":4976.772954923,"data":"  lf_cell 0.05      4           ae                        1                           3                       0.232894                0     10\n"}
+,{"stream_name":"stdout","time":4976.772959304,"data":"lf_global 0.01      4           ae                        1                           3                       0.597612                0     10\n"}
+,{"stream_name":"stdout","time":4976.772963527,"data":"lf_global 0.05      4           ae                        1                           3                       0.768905                0     10\n"}
+,{"stream_name":"stdout","time":4976.772993629,"data":"  lf_unit 0.01      4           ae                        1                           3                       0.686598                0     10\n"}
+,{"stream_name":"stdout","time":4976.772999154,"data":"  lf_unit 0.05      4           ae                        1                           3                       0.768905                0     10\n"}
+,{"stream_name":"stdout","time":4976.773005025,"data":"   random 0.01      4     ae;ocsvm                        2                           2                       0.433333                4     10\n"}
+,{"stream_name":"stdout","time":4976.77300958,"data":"   random 0.05      4           ae                        1                           3                       0.566667                1     10\n"}
+,{"stream_name":"stdout","time":4976.773014019,"data":"=== oracle, slack tuned on tuning seeds (p = 0.05): k=0.25 ===\n"}
+,{"stream_name":"stdout","time":4976.773017946,"data":"fading    snr_db\n"}
+,{"stream_name":"stdout","time":4976.773021667,"data":"none      20.0      1.0\n"}
+,{"stream_name":"stdout","time":4976.773025491,"data":"rayleigh  15.0      1.0\n"}
+,{"stream_name":"stdout","time":4976.773029157,"data":"          20.0      1.0\n"}
+,{"stream_name":"stdout","time":4976.77303274,"data":"rician    20.0      1.0\n"}
+,{"stream_name":"stdout","time":4976.773036456,"data":"Name: pd, dtype: float64\n"}
+,{"stream_name":"stdout","time":4976.773040301,"data":"=== oracle, slack tuned on tuning seeds (p = 0.01): k=0.25 ===\n"}
+,{"stream_name":"stdout","time":4976.773044132,"data":"fading    snr_db\n"}
+,{"stream_name":"stdout","time":4976.773047547,"data":"none      20.0      1.0\n"}
+,{"stream_name":"stdout","time":4976.773051251,"data":"rayleigh  15.0      1.0\n"}
+,{"stream_name":"stdout","time":4976.773063366,"data":"          20.0      1.0\n"}
+,{"stream_name":"stdout","time":4976.77307191,"data":"rician    20.0      1.0\n"}
+,{"stream_name":"stdout","time":4976.773090184,"data":"Name: pd, dtype: float64\n"}
+,{"stream_name":"stdout","time":4977.088619732,"data":"results archive: /kaggle/working/mimicguard_v2_r15_results.zip (1.3 MB)\n"}
+,{"stream_name":"stdout","time":4977.088650959,"data":"Download it from the Output tab (after Save Version -\u003e Save \u0026 Run All), then send it back.\n"}
+,{"stream_name":"stderr","time":4981.633031947,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":4981.63307203,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":4981.821522196,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":4981.821584484,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":4982.752100546,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":4982.854272655,"data":"[NbConvertApp] Writing 101254 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":4986.068690602,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":4986.72881939,"data":"[NbConvertApp] Writing 397590 bytes to __results__.html\n"}
+]
