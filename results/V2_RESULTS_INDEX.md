@@ -48,3 +48,4 @@ Rule: a number in the proposal or paper must point to one of these files, or be 
 | Tuned and label-free detectors against an on-off attacker (R17a) | `v2_r17a_kaggle/results_r17a/r17a_selection_table.csv`, `r17a_ranking_summary.csv`, `r17a_selected_configs.csv`, `r17a_test_rows.csv`, `r17a_tune_rows.csv`; log |
 | Same, weaker attacker alpha 0.3 (R17b) | `v2_r17b_kaggle/results_r17b/r17b_*.csv`; log |
 | Calibration shift for the tuned configurations (R9b) | `v2_r9b_kaggle/results_r9b/r9b_rows.csv`, `r9b_summary_p05.csv`; log |
+| Recalibration after a channel shift: threshold, stream-head, refit (R18) | `v2_r18_kaggle/results_r18/r18_rows.csv`, `r18_summary_p05.csv`, `r18_summary_p01.csv`, `r18_by_family_p05.csv`, `r18_by_family_p01.csv`; log |
