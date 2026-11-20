@@ -79,13 +79,14 @@ def synthetic_streams(data: dict, seed: int, magnitudes=SYN_MAGNITUDES, n_pairs:
 
 
 def run_r14(base: dict, cells, seeds, out_dir, role: str, sizes: dict, ks=KS, n_jobs=1, alpha=0.5, ps=(0.01, 0.05),
-            grids=None, train_sizes=TRAIN_SIZES, synthetic: bool = False, tag: str = "r14") -> pd.DataFrame:
+            grids=None, train_sizes=TRAIN_SIZES, synthetic: bool = False, tag: str = "r14", attack: dict | None = None) -> pd.DataFrame:
     """One JSON per (role, seed, cell). ``sizes['n_train']`` must be at least ``max(train_sizes)``; smaller training sets are
     the first streams of the larger one (windows are stored stream after stream)."""
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     rows = []
-    spec = {"kind": "ladder", "alpha": float(alpha)}
+    otrain = {"kind": "ladder", "alpha": float(alpha)}  # the oracle is always trained on a continuous attack
+    spec = attack or otrain  # R17: the test attack may differ (on-off, weaker alpha)
     H, onset = int(sizes["H"]), int(sizes["onset"])
     for fading, snr in cells:
         for seed in seeds:
@@ -95,7 +96,7 @@ def run_r14(base: dict, cells, seeds, out_dir, role: str, sizes: dict, ks=KS, n_
                 rows += json.loads(jp.read_text(encoding="utf-8"))
                 continue
             t0 = time.time()
-            data = make_cell_data(base, seed, fading, snr, sizes, {"a": spec}, n_jobs=n_jobs, otrain_spec=spec)
+            data = make_cell_data(base, seed, fading, snr, sizes, {"a": spec}, n_jobs=n_jobs, otrain_spec=otrain)
             cell_rows = []
             extra = {"role": role, "seed": seed, "fading": fading, "snr_db": float(snr)}
 

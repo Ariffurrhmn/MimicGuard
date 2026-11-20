@@ -45,3 +45,6 @@ Rule: a number in the proposal or paper must point to one of these files, or be 
 
 | Tuned detectors on held-out seeds, tested on fresh seeds (R14) | `v2_r14_kaggle/r14_test_rows.csv`, `r14_tune_rows.csv`, `r14_selected_configs.csv`, `r14_ranking_summary.csv`, `r14_pairwise_flips.csv`, `r14_oracle_gap.csv`, `r14_selected_test_table.csv`; log `notebook-8.log` |
 | Label-free tuning, wider slack grid, tuned oracle (R15/R16) | `v2_r15_kaggle/results_r15/r15_selection_table.csv`, `r15_ranking_summary.csv`, `r15_selected_configs.csv`, `r15_test_rows.csv`, `r15_tune_rows.csv`; run zip `mimicguard_v2_r15_results.zip` |
+| Tuned and label-free detectors against an on-off attacker (R17a) | `v2_r17a_kaggle/results_r17a/r17a_selection_table.csv`, `r17a_ranking_summary.csv`, `r17a_selected_configs.csv`, `r17a_test_rows.csv`, `r17a_tune_rows.csv`; log |
+| Same, weaker attacker alpha 0.3 (R17b) | `v2_r17b_kaggle/results_r17b/r17b_*.csv`; log |
+| Calibration shift for the tuned configurations (R9b) | `v2_r9b_kaggle/results_r9b/r9b_rows.csv`, `r9b_summary_p05.csv`; log |

@@ -8,6 +8,11 @@ updated: 2026-11-19
 
 Newest first. Hub: [[00 - Project Context]]. Entry template: [[Session Entry]]. Rules: [[Vault Conventions]].
 
+## 2026-11-20 - R17a, R17b, R9b built, pushed to Kaggle, results read (proposal v3, section 11)
+- Done: `run_r14` takes an `attack` override; new `src/mimicguard/v2/r9b.py` and `notebooks/build_v2_r17_notebooks.py` (notebooks 10-12); pushed all three with the CLI, downloaded to `results/v2_r17a_kaggle`, `v2_r17b_kaggle`, `v2_r9b_kaggle`; wrote section 11.
+- Results (VERIFIED): alpha 0.3 repeats R15 (AE sole winner, 0 flips at p = 0.05); on-off attacker (duty 0.25) partly re-flips the tuned ranking (3 of 10 pairs, LOF wins no-fading) and the tuned oracle is ahead of the AE by 0.22 at Rayleigh 15 dB; slack 0.0 chosen in all cases; under a 3 dB or fading shift every detector, tuned or not, and the oracle lose false-alarm control (tuned slack no more fragile than 0.5).
+- Next: owner chooses between narrowed D and F; possible online recalibration experiment.
+
 ## 2026-11-19 - R15/R16 built, pushed to Kaggle by token, result read (proposal v3, section 10)
 - Done: built `notebooks/build_v2_r15_notebook.py` and notebook 9; pushed to Kaggle with the CLI, watched status, downloaded `results/v2_r15_kaggle/`; analysed against the CSVs; wrote section 10.
 - Result (VERIFIED): label-free selection (synthetic anomaly on normal streams) matches labelled tuning for AE, LOF, OC-SVM, iForest in all four cells; PCA is the exception; selected slack is 0.0 everywhere; AE sole winner under all tuned/label-free policies, Rayleigh 15 dB p = 0.05 AE 0.99 vs LOF 0.84; tuned oracle saturates at 1.00. Sentence E (first clause) refuted; D stands in a stronger form.
